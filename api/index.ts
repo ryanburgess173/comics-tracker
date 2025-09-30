@@ -1,10 +1,13 @@
+import 'dotenv/config';
 import express from 'express';
 import sequelize from './db';
 import logger from './utils/logger';
 import authRouter from './controllers/auth';
 
 const app: express.Application = express();
-const port: number = 3000;
+
+// app port number for listening
+const port: number = process.env.PORT ? parseInt(process.env.PORT) : 3000;
 
 sequelize.sync().then(() => {
     logger.info('Database synced');
