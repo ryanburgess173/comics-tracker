@@ -53,4 +53,31 @@ router.post('/login', (req: Request, res: Response) => {
     });
 });
 
+// register endpoint
+router.post('/register', async (req: Request, res: Response) => {
+    const { username, email, password } = req.body;
+    logger.info('Register attempt for email: %s', email);
+
+    try {
+        // Check if user already exists
+        const existingUser = await User.findOne({ where: { email } });
+        if (existingUser) {
+            logger.warn('Registration failed: User already exists for email: %s', email);
+            return res.status(409).json({ message: 'User already exists.' });
+        }
+
+        // Create new user
+        const newUser = await User.create({
+            username,
+            email,
+            passwordHash: password
+        });
+        logger.info('User registered: %s', email);
+        res.status(201).json({ message: 'User registered successfully.' });
+    } catch (err) {
+        logger.error('Internal server error during registration: %o', err);
+        res.status(500).json({ message: 'Internal server error: ' + (err as Error).message });
+    }
+});
+
 export default router;

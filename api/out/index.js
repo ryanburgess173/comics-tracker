@@ -11,6 +11,9 @@ const auth_1 = __importDefault(require("./controllers/auth"));
 const app = (0, express_1.default)();
 // app port number for listening
 const port = process.env.PORT ? parseInt(process.env.PORT) : 3000;
+// add middleware to parse JSON request bodies
+app.use(express_1.default.json());
+// sync database
 db_1.default.sync().then(() => {
     logger_1.default.info('Database synced');
 }).catch((err) => {

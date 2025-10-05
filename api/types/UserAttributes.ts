@@ -1,5 +1,5 @@
 export interface UserAttributes {
-  id: number;
+  id?: number;
   username: string;
   email: string;
   passwordHash: string;

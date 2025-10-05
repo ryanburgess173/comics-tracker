@@ -9,6 +9,10 @@ const app: express.Application = express();
 // app port number for listening
 const port: number = process.env.PORT ? parseInt(process.env.PORT) : 3000;
 
+// add middleware to parse JSON request bodies
+app.use(express.json());
+
+// sync database
 sequelize.sync().then(() => {
     logger.info('Database synced');
 }).catch((err: Error) => {
