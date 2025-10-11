@@ -79,11 +79,12 @@ export default tseslint.config(
 
       // Security rules from eslint-plugin-security-node
       'security-node/detect-crlf': 'error',
-      'security-node/detect-absence-of-name-option-in-express-session': 'error',
+      'security-node/detect-absence-of-name-option-in-exrpress-session':
+        'error', // Note: typo in plugin name (exrpress)
       'security-node/detect-buffer-unsafe-allocation': 'error',
       'security-node/detect-insecure-randomness': 'error',
       'security-node/detect-runinthiscontext-method-in-nodes-vm': 'error',
-      'security-node/detect-security-misconfiguration-cookie': 'warn',
+      'security-node/detect-security-missconfiguration-cookie': 'warn', // Note: typo in plugin name (missconfiguration)
       'security-node/detect-unhandled-async-errors': 'error',
       'security-node/detect-unhandled-event-errors': 'error',
       'security-node/detect-child-process': 'warn',
