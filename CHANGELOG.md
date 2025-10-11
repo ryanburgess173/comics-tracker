@@ -7,11 +7,32 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- **Password Reset System**
+  - Complete password reset flow with email notifications
+  - Secure token generation using crypto (SHA-256 hashing)
+  - 1-hour token expiration for security
+  - Email utility with nodemailer integration
+  - Development mode with console logging fallback
+  - Two new endpoints: `POST /auth/reset-password` and `POST /auth/reset-password/:token`
+  - Comprehensive Swagger documentation for password reset endpoints
+  - 26 comprehensive test cases covering all password reset scenarios
+  - User model extended with `resetPasswordToken` and `resetPasswordExpires` fields
+  - **100% test coverage** achieved across all modules (up from 95.03%)
+
 ### Changed
 
 - **Quality Gates**: Increased minimum code coverage threshold from 70% to 90%
   - Updated PR validation workflow coverage requirements
   - Enhanced test coverage standards across all workflows
+
+### Security
+
+- Password reset tokens are hashed before database storage
+- Generic success messages to prevent user enumeration
+- One-time use tokens (cleared after successful reset)
+- Secure random token generation (32 bytes)
 
 ### Planned
 

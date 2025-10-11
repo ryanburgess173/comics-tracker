@@ -19,6 +19,13 @@ Example: `2025-10-11-ci-cd-testing-improvements.md`
 
 ## Contents
 
+- **[2025-10-11: Password Reset Implementation](./2025-10-11-password-reset-implementation.md)**
+  - Complete password reset system with email notifications
+  - Secure token generation and validation
+  - Added 18 new test cases
+  - Email utility with nodemailer integration
+  - Comprehensive security features
+
 - **[2025-10-11: CI/CD & Testing Improvements](./2025-10-11-ci-cd-testing-improvements.md)**
   - GitHub Actions CI/CD pipeline setup
   - Test coverage improved from 67% to 87.8%

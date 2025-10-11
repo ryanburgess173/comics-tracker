@@ -3,7 +3,10 @@ export interface UserAttributes {
   username: string;
   email: string;
   passwordHash: string;
-  // Add other fields if needed
+  resetPasswordToken?: string | null;
+  resetPasswordExpires?: Date | null;
+  createdAt?: Date;
+  updatedAt?: Date;
 }
 
 import { Model } from 'sequelize';
