@@ -83,7 +83,7 @@ export default tseslint.config(
       'security-node/detect-buffer-unsafe-allocation': 'error',
       'security-node/detect-insecure-randomness': 'error',
       'security-node/detect-runinthiscontext-method-in-nodes-vm': 'error',
-      'security-node/detect-security-missconfiguration-cookie': 'warn',
+      'security-node/detect-security-misconfiguration-cookie': 'warn',
       'security-node/detect-unhandled-async-errors': 'error',
       'security-node/detect-unhandled-event-errors': 'error',
       'security-node/detect-child-process': 'warn',
