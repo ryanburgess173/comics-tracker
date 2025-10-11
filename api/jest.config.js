@@ -17,6 +17,7 @@ module.exports = {
     '!**/out/**',
     '!**/coverage/**',
     '!jest.config.js',
+    '!index.ts', // Exclude server entry point from coverage
   ],
   coverageDirectory: 'coverage',
   coverageReporters: ['text', 'lcov', 'html'],

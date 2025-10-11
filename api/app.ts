@@ -23,6 +23,7 @@ app.use(
 );
 
 // sync database (only in non-test environment)
+/* istanbul ignore next */
 if (process.env.NODE_ENV !== "test") {
   sequelize
     .sync()
