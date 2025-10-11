@@ -23,19 +23,25 @@ The API will be running at `http://localhost:3000`
 ## 📖 API Documentation
 
 ### Interactive Documentation
+
 Once the server is running, access the Swagger UI for interactive API testing:
+
 - **Swagger UI:** http://localhost:3000/api-docs
 
 ### Setup Guide
+
 For detailed Swagger configuration and setup instructions, see:
+
 - [Swagger Setup Guide](../docs/api/swagger.md)
 
 ## 🔌 Available Endpoints
 
 ### Health Check
+
 - `GET /` - API status and health check
 
 ### Authentication
+
 - `POST /auth/register` - Register a new user account
 - `POST /auth/login` - Login and receive JWT token
 - `GET /auth/test` - Test authentication with valid token
@@ -54,19 +60,23 @@ The API uses JWT (JSON Web Tokens) for authentication:
    - `Authorization: Bearer <token>` header
 
 ### Password Security
+
 Passwords are securely hashed using bcrypt with 10 salt rounds. See the [Password Security Guide](../docs/security/password-security.md) for implementation details.
 
 ## 💾 Database
 
 ### Technology
+
 - **SQLite** - Lightweight, file-based database
 - **Sequelize** - Promise-based ORM for Node.js
 
 ### Models
+
 - **User** (`models/User.ts`) - User accounts with authentication
   - Fields: id, username, email, passwordHash, createdAt, updatedAt
 
 ### Database File
+
 The database file (`database.sqlite`) is automatically created in the `api/` directory when you first run the application.
 
 ## 🛠️ Development
@@ -129,6 +139,7 @@ See the [Testing Guide](../docs/development/testing.md) for more details.
 - **Security Linting** - Automated vulnerability detection
 
 Run quality checks:
+
 ```bash
 npm run lint              # Check for linting errors
 npm run lint:security     # Run security-focused linting
@@ -158,6 +169,7 @@ DB_PATH=./database.sqlite
 ### Logging
 
 The API uses Winston for structured logging:
+
 - **Development:** Console output with colors and timestamps
 - **Production:** JSON-formatted logs to files
 - **Configuration:** See `utils/logger.ts`

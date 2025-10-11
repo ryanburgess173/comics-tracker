@@ -138,21 +138,26 @@ The API uses JWT (JSON Web Tokens) for authentication. After logging in, the tok
 This project maintains comprehensive documentation organized by category:
 
 ### 📖 [Documentation Index](./docs/INDEX.md)
+
 Complete guide to the documentation structure and organization.
 
 ### 🔧 Development Documentation
+
 - **[CI/CD Pipeline](./docs/development/ci-cd.md)** - Continuous integration and deployment workflows
 - **[GitHub Actions](./docs/development/github-actions.md)** - Automated linting and testing
 - **[Testing Guide](./docs/development/testing.md)** - How to write and run tests
 
 ### 🔐 Security Documentation
+
 - **[Security Linting](./docs/security/security-linting.md)** - Security rules and vulnerability detection
 - **[Password Security](./docs/security/password-security.md)** - Best practices for password handling
 
 ### 📡 API Documentation
+
 - **[Swagger Setup](./docs/api/swagger.md)** - Interactive API documentation setup
 
 ### 📰 Updates & Changelog
+
 - **[Updates](./docs/updates/)** - Project updates and version history
 
 ## �📝 Development
@@ -160,6 +165,7 @@ Complete guide to the documentation structure and organization.
 ### Available Scripts
 
 **Root directory:**
+
 - `npm run lint` - Run ESLint on all code
 - `npm run lint:fix` - Auto-fix linting issues
 - `npm run lint:security` - Run security-focused linting
@@ -168,6 +174,7 @@ Complete guide to the documentation structure and organization.
 - `npm test` - Run API tests
 
 **In the `api` directory:**
+
 - `npm run build` - Compile TypeScript to JavaScript
 - `npm start` - Run the compiled application
 - `npm test` - Run test suite with coverage

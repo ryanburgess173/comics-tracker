@@ -11,6 +11,7 @@ This project uses GitHub Actions to automatically check code quality on every pu
 ## What Gets Checked
 
 ### 1. ESLint
+
 - TypeScript/JavaScript syntax errors
 - Code quality issues
 - Security vulnerabilities (28 security rules)
@@ -18,6 +19,7 @@ This project uses GitHub Actions to automatically check code quality on every pu
 - Type safety issues
 
 ### 2. Prettier
+
 - Code formatting consistency
 - Indentation
 - Quote style
@@ -54,11 +56,13 @@ The README includes a status badge showing the current linting status:
 ## Viewing Results
 
 ### In Pull Requests
+
 1. Open any pull request
 2. Scroll to the "Checks" section at the bottom
 3. Click on "Lint" to see detailed results
 
 ### In GitHub Actions Tab
+
 1. Go to the "Actions" tab in the repository
 2. Click on "Lint" in the left sidebar
 3. Click on any workflow run to see details
@@ -106,6 +110,7 @@ npx husky init
 ```
 
 Then add to `package.json`:
+
 ```json
 {
   "lint-staged": {
@@ -120,7 +125,8 @@ Then add to `package.json`:
 ### Workflow Fails on Dependencies
 
 **Issue:** `npm ci` fails  
-**Solution:** 
+**Solution:**
+
 - Delete `package-lock.json`
 - Run `npm install` locally
 - Commit the new `package-lock.json`
@@ -129,6 +135,7 @@ Then add to `package.json`:
 
 **Issue:** ESLint reports errors  
 **Solution:**
+
 ```bash
 npm run lint:fix
 git add .
@@ -140,6 +147,7 @@ git push
 
 **Issue:** Prettier reports formatting issues  
 **Solution:**
+
 ```bash
 npm run format
 git add .
@@ -182,7 +190,7 @@ Currently using Node.js 20.x. To change:
 ```yaml
 strategy:
   matrix:
-    node-version: [20.x]  # Change to [18.x] or [22.x]
+    node-version: [20.x] # Change to [18.x] or [22.x]
 ```
 
 ### Add More Checks
@@ -210,6 +218,7 @@ strategy:
 ## Performance
 
 ### Current Runtime
+
 - Average workflow time: **~2-3 minutes**
 - Steps breakdown:
   - Checkout: ~5 seconds
@@ -247,10 +256,12 @@ on:
 ### VS Code
 
 Install these extensions:
+
 - ESLint (`dbaeumer.vscode-eslint`)
 - Prettier (`esbenp.prettier-vscode`)
 
 Add to `.vscode/settings.json`:
+
 ```json
 {
   "editor.formatOnSave": true,

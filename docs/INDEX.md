@@ -23,21 +23,25 @@ README.md                          # Main project documentation
 ## 🔍 Issues Identified
 
 ### 1. **Duplicate CI/CD Documentation**
+
 - `/docs/github-actions.md` - General linting workflow
 - `/api/docs/ci-cd.md` - API tests workflow
 - **Impact:** Confusing for contributors, hard to maintain
 
 ### 2. **Inconsistent Scope**
+
 - Some docs are project-wide (`/docs`)
 - Some are API-specific (`/api/docs`)
 - Not always clear which is which
 
 ### 3. **Security Docs Scattered**
+
 - Password security in `/docs`
 - Security linting in `/docs`
 - No central security guide
 
 ### 4. **Missing Index**
+
 - No `/docs/README.md` to guide navigation
 - Hard to discover all documentation
 
@@ -109,6 +113,7 @@ comics-tracker/
 ## 🎯 Recommendation: Option 2 (Minimal Disruption)
 
 **Why?**
+
 - Less disruptive to existing structure
 - Easier to implement incrementally
 - Maintains API-specific docs separation
@@ -117,11 +122,13 @@ comics-tracker/
 ## 📋 Action Plan
 
 ### Phase 1: Create Indexes (Immediate)
+
 1. Create `/docs/README.md` - Documentation hub
 2. Create `/api/docs/README.md` - API docs index
 3. Create `/docs/security-overview.md` - Security hub linking to all security docs
 
 ### Phase 2: Consolidate CI/CD (Immediate)
+
 1. Merge `/docs/github-actions.md` + `/api/docs/ci-cd.md` → `/docs/ci-cd.md`
 2. Create comprehensive CI/CD guide covering:
    - Linting workflow
@@ -130,6 +137,7 @@ comics-tracker/
 3. Remove duplicate file
 
 ### Phase 3: Improve Structure (Optional)
+
 1. Add cross-references between related docs
 2. Add "Related Documentation" sections
 3. Standardize document headers and formatting
@@ -144,29 +152,35 @@ Welcome to the Comics Tracker documentation!
 ## 📚 Table of Contents
 
 ### Getting Started
+
 - [Main README](../README.md) - Project overview and setup
 - [Installation Guide](../README.md#-getting-started)
 - [API Documentation](../README.md#-api-documentation)
 
 ### Development
+
 - [API Testing Guide](../api/docs/testing.md) - Writing and running tests
 - [API Documentation Setup](../api/docs/swagger.md) - Swagger/OpenAPI
 
 ### Security 🔒
+
 - [Security Overview](./security-overview.md) - Security practices hub
 - [Password Security](./password-security.md) - Bcrypt implementation
 - [Security Linting](./security-linting.md) - Security rules and scanning
 
 ### CI/CD 🔄
+
 - [GitHub Actions](./github-actions.md) - Automated workflows
 - [Testing CI/CD](../api/docs/ci-cd.md) - Test automation
 
 ### Project Updates
+
 - [Updates](./updates/README.md) - Changelog and improvements
 
 ## 🤝 Contributing
 
 When adding new documentation:
+
 1. Follow the existing structure
 2. Use clear, descriptive titles
 3. Add links to related documents
@@ -192,12 +206,14 @@ Comprehensive security documentation for Comics Tracker.
 ## 🛡️ Security Measures
 
 ### Authentication & Authorization
+
 - JWT-based authentication with secure cookies
 - 30-day token expiration
 - HTTP-only cookies in production
 - See: [Main README - API Endpoints](../README.md#-api-endpoints)
 
 ### Password Security
+
 - **[Password Security Guide](./password-security.md)** 📖
   - Bcrypt password hashing (10 salt rounds)
   - Secure password storage
@@ -205,6 +221,7 @@ Comprehensive security documentation for Comics Tracker.
   - Implementation details
 
 ### Code Security
+
 - **[Security Linting Guide](./security-linting.md)** 📖
   - 28 automated security rules
   - SQL/NoSQL injection detection
@@ -213,6 +230,7 @@ Comprehensive security documentation for Comics Tracker.
   - Timing attack detection
 
 ### CI/CD Security
+
 - **[GitHub Actions](./github-actions.md)** 📖
   - Automated security scanning on every commit
   - Pull request security checks
@@ -240,6 +258,7 @@ Comprehensive security documentation for Comics Tracker.
 ## 🚨 Reporting Security Issues
 
 If you discover a security vulnerability, please:
+
 1. **DO NOT** open a public issue
 2. Email: [security contact]
 3. Include detailed description and steps to reproduce
@@ -256,19 +275,14 @@ If you discover a security vulnerability, please:
 ## 🎯 Implementation Priority
 
 **High Priority (Do Now):**
+
 1. ✅ Create `/docs/README.md` index
 2. ✅ Create `/docs/security-overview.md` hub
 3. ✅ Merge CI/CD docs into `/docs/ci-cd.md`
 
-**Medium Priority (This Week):**
-4. Create `/api/docs/README.md` index
-5. Add cross-references between docs
-6. Standardize document formatting
+**Medium Priority (This Week):** 4. Create `/api/docs/README.md` index 5. Add cross-references between docs 6. Standardize document formatting
 
-**Low Priority (Future):**
-7. Consider full reorganization (Option 1)
-8. Add diagrams/visuals
-9. Create video tutorials
+**Low Priority (Future):** 7. Consider full reorganization (Option 1) 8. Add diagrams/visuals 9. Create video tutorials
 
 ## 📊 Benefits of Improved Organization
 
