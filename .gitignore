@@ -1,10 +1,12 @@
 /api/node_modules/
 /api/package-lock.json
 /api/tsconfig.tsbuildinfo
+/api/out/
 .DS_Store
 /node_modules/
 /dist/
 /build/
+/out/
 *.log
 *.tsbuildinfo
 .vscode/
