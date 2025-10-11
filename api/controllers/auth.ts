@@ -1,6 +1,7 @@
 import { Router, Request, Response } from 'express';
 import User from '../models/User';
 import jwt from 'jsonwebtoken';
+import bcrypt from 'bcrypt';
 import logger from '../utils/logger';
 
 const router = Router();
@@ -8,6 +9,9 @@ const secret_key = process.env.JWT_SECRET as string;
 if (!secret_key) {
   throw new Error('JWT_SECRET environment variable is not defined');
 }
+
+// Number of bcrypt salt rounds (10 is a good balance between security and performance)
+const SALT_ROUNDS = 10;
 
 /**
  * @swagger
@@ -76,42 +80,43 @@ router.get('/test', (req: Request, res: Response) => {
  *             schema:
  *               $ref: '#/components/schemas/ErrorResponse'
  */
-router.post('/login', (req: Request, res: Response) => {
+router.post('/login', async (req: Request, res: Response) => {
   const { email, password } = req.body as { email: string; password: string };
 
   logger.info('Login attempt for email: %s', email);
 
-  // Checks if the user exists in the database
-  User.findOne({ where: { email } })
-    .then((user) => {
-      if (!user) {
-        logger.warn('Authentication failed: User does not exist for email: %s', email);
-        return res.status(401).json({ message: 'Authentication failed. User does not exist.' });
-      }
+  try {
+    // Checks if the user exists in the database
+    const user = await User.findOne({ where: { email } });
 
-      // Here you should verify the password with the stored hash
-      // For simplicity, we assume the password is correct if it matches the passwordHash directly
-      if (user.passwordHash !== password) {
-        logger.warn('Authentication failed: Incorrect password for email: %s', email);
-        return res.status(401).json({ message: 'Authentication failed. Password is incorrect.' });
-      }
+    if (!user) {
+      logger.warn('Authentication failed: User does not exist for email: %s', email);
+      return res.status(401).json({ message: 'Authentication failed. User does not exist.' });
+    }
 
-      const payload = { id: user.id, email: user.email };
-      const token = jwt.sign(payload, secret_key, { expiresIn: '30d' });
+    // Verify password using bcrypt (constant-time comparison, prevents timing attacks)
+    const isPasswordValid = await bcrypt.compare(password, user.passwordHash);
 
-      res.cookie('access_token', token, {
-        httpOnly: true,
-        secure: process.env.NODE_ENV === 'production',
-        sameSite: 'strict',
-      });
+    if (!isPasswordValid) {
+      logger.warn('Authentication failed: Incorrect password for email: %s', email);
+      return res.status(401).json({ message: 'Authentication failed. Password is incorrect.' });
+    }
 
-      logger.info('User logged in: %s', email);
-      res.json({ message: 'Logged in', token });
-    })
-    .catch((err: Error) => {
-      logger.error('Internal server error during login: %o', err);
-      res.status(500).json({ message: 'Internal server error: ' + err.message });
+    const payload = { id: user.id, email: user.email };
+    const token = jwt.sign(payload, secret_key, { expiresIn: '30d' });
+
+    res.cookie('access_token', token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'strict',
     });
+
+    logger.info('User logged in: %s', email);
+    res.json({ message: 'Logged in', token });
+  } catch (err) {
+    logger.error('Internal server error during login: %o', err);
+    res.status(500).json({ message: 'Internal server error: ' + (err as Error).message });
+  }
 });
 
 /**
@@ -172,11 +177,14 @@ router.post('/register', async (req: Request, res: Response) => {
       return res.status(409).json({ message: 'User already exists.' });
     }
 
-    // Create new user
+    // Hash the password before storing
+    const passwordHash = await bcrypt.hash(password, SALT_ROUNDS);
+
+    // Create new user with hashed password
     await User.create({
       username,
       email,
-      passwordHash: password,
+      passwordHash,
     });
     logger.info('User registered: %s', email);
     res.status(201).json({ message: 'User registered successfully.' });

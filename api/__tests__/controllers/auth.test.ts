@@ -1,6 +1,7 @@
 import request from 'supertest';
 import express from 'express';
 import { Sequelize } from 'sequelize';
+import bcrypt from 'bcrypt';
 import authRouter from '../../controllers/auth';
 import User from '../../models/User';
 
@@ -100,11 +101,12 @@ describe('Auth Controller', () => {
 
   describe('POST /auth/login', () => {
     beforeEach(async () => {
-      // Create a test user before each login test
+      // Create a test user before each login test with hashed password
+      const passwordHash = await bcrypt.hash('password123', 10);
       await User.create({
         username: 'testuser',
         email: 'test@example.com',
-        passwordHash: 'password123', // Note: In production, this should be hashed
+        passwordHash,
       });
     });
 
@@ -164,11 +166,12 @@ describe('Auth Controller', () => {
 
   describe('JWT Token Validation', () => {
     it('should return a valid JWT token on login', async () => {
-      // Create a test user
+      // Create a test user with hashed password
+      const passwordHash = await bcrypt.hash('password123', 10);
       await User.create({
         username: 'testuser',
         email: 'test@example.com',
-        passwordHash: 'password123',
+        passwordHash,
       });
 
       const loginData = {
