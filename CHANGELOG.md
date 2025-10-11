@@ -25,7 +25,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 - **GitHub Actions CI/CD Pipeline**
-
   - Automated testing on push to `develop`
   - PR validation workflow for merges to `main`
   - Multi-version Node.js testing (18.x, 20.x)
@@ -33,7 +32,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Quality gates with 70% minimum coverage
 
 - **Comprehensive Testing Suite**
-
   - 40 total tests (up from 17)
   - Application route tests
   - Database configuration tests
@@ -66,32 +64,27 @@ See [detailed changes](docs/updates/2025-10-11-ci-cd-testing-improvements.md) fo
 ### Added
 
 - **API Server Setup**
-
   - Express.js server with TypeScript
   - SQLite database with Sequelize ORM
   - Winston logger for structured logging
 
 - **Swagger/OpenAPI Documentation**
-
   - Interactive API documentation at `/api-docs`
   - Schema definitions for all endpoints
   - JWT security scheme documentation
 
 - **Authentication System**
-
   - User registration endpoint (`POST /auth/register`)
   - User login endpoint (`POST /auth/login`)
   - JWT token-based authentication
   - HTTP-only cookie support
 
 - **Database Models**
-
   - User model with username, email, and password hash
   - Unique constraints on username and email
   - Timestamps for created/updated tracking
 
 - **Initial Testing**
-
   - Jest testing framework setup
   - User model tests (8 tests)
   - Auth controller tests (9 tests)

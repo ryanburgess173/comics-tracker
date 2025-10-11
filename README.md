@@ -1,5 +1,7 @@
 # Comics Tracker 📚
 
+[![Lint](https://github.com/ryanburgess173/comics-tracker/actions/workflows/lint.yml/badge.svg)](https://github.com/ryanburgess173/comics-tracker/actions/workflows/lint.yml)
+
 A full-stack application for tracking your comic book collection with user authentication and a RESTful API.
 
 ## 🚀 Features
@@ -23,12 +25,16 @@ comics-tracker/
 │   │   └── UserAttributes.ts
 │   ├── utils/             # Utility functions
 │   │   └── logger.ts      # Winston logger config
-│   ├── docs/              # API documentation
-│   │   └── swagger.md     # Swagger setup guide
 │   ├── db.ts              # Database configuration
 │   ├── index.ts           # Express app entry point
 │   ├── swagger.ts         # Swagger/OpenAPI config
 │   └── package.json       # API dependencies
+├── docs/                  # Documentation
+│   ├── api/              # API documentation
+│   ├── development/      # Development workflow docs
+│   ├── guides/           # User guides and tutorials
+│   ├── security/         # Security-related documentation
+│   └── updates/          # Project updates and changelogs
 ├── .gitignore
 ├── LICENSE
 └── README.md
@@ -37,6 +43,7 @@ comics-tracker/
 ## 🛠️ Tech Stack
 
 ### Backend
+
 - **Node.js** with **Express.js** - Web framework
 - **TypeScript** - Type-safe JavaScript
 - **Sequelize** - ORM for database operations
@@ -55,20 +62,23 @@ comics-tracker/
 ### Installation
 
 1. **Clone the repository**
+
    ```bash
    git clone https://github.com/ryanburgess173/comics-tracker.git
    cd comics-tracker
    ```
 
 2. **Install API dependencies**
+
    ```bash
    cd api
    npm install
    ```
 
 3. **Set up environment variables**
-   
+
    Create a `.env` file in the `api` directory:
+
    ```env
    PORT=3000
    JWT_SECRET=your_secret_key_here
@@ -76,6 +86,7 @@ comics-tracker/
    ```
 
 4. **Build the TypeScript code**
+
    ```bash
    npm run build
    ```
@@ -93,14 +104,16 @@ Once the server is running, visit the interactive API documentation:
 
 **Swagger UI:** `http://localhost:3000/api-docs`
 
-For detailed setup and usage information, see [API Documentation](./api/docs/swagger.md)
+For detailed setup and usage information, see [API Documentation](./docs/api/swagger.md)
 
 ## 🔌 API Endpoints
 
 ### Health Check
+
 - `GET /` - API status check
 
 ### Authentication
+
 - `POST /auth/register` - Register a new user
 - `POST /auth/login` - Login and receive JWT token
 - `GET /auth/test` - Test authentication endpoint
@@ -116,18 +129,55 @@ The application uses SQLite with Sequelize ORM. The database file (`database.sql
 ## 🔐 Authentication
 
 The API uses JWT (JSON Web Tokens) for authentication. After logging in, the token is:
+
 - Returned in the response body
 - Set as an HTTP-only cookie (`access_token`)
 
-## 📝 Development
+## � Documentation
+
+This project maintains comprehensive documentation organized by category:
+
+### 📖 [Documentation Index](./docs/INDEX.md)
+
+Complete guide to the documentation structure and organization.
+
+### 🔧 Development Documentation
+
+- **[CI/CD Pipeline](./docs/development/ci-cd.md)** - Continuous integration and deployment workflows
+- **[GitHub Actions](./docs/development/github-actions.md)** - Automated linting and testing
+- **[Testing Guide](./docs/development/testing.md)** - How to write and run tests
+
+### 🔐 Security Documentation
+
+- **[Security Linting](./docs/security/security-linting.md)** - Security rules and vulnerability detection
+- **[Password Security](./docs/security/password-security.md)** - Best practices for password handling
+
+### 📡 API Documentation
+
+- **[Swagger Setup](./docs/api/swagger.md)** - Interactive API documentation setup
+
+### 📰 Updates & Changelog
+
+- **[Updates](./docs/updates/)** - Project updates and version history
+
+## �📝 Development
 
 ### Available Scripts
 
-In the `api` directory:
+**Root directory:**
+
+- `npm run lint` - Run ESLint on all code
+- `npm run lint:fix` - Auto-fix linting issues
+- `npm run lint:security` - Run security-focused linting
+- `npm run format` - Format code with Prettier
+- `npm run format:check` - Check code formatting
+- `npm test` - Run API tests
+
+**In the `api` directory:**
 
 - `npm run build` - Compile TypeScript to JavaScript
 - `npm start` - Run the compiled application
-- `npm test` - Run tests (to be implemented)
+- `npm test` - Run test suite with coverage
 
 ### Project Conventions
 
@@ -135,6 +185,8 @@ In the `api` directory:
 - Build output goes to `/api/out` (git-ignored)
 - Use the Winston logger for all logging
 - Follow RESTful API design principles
+- All code must pass ESLint and Prettier checks
+- Security linting enforces best practices
 
 ## 🤝 Contributing
 
@@ -158,6 +210,7 @@ This project is licensed under the terms in the [LICENSE](./LICENSE) file.
 ## 👤 Author
 
 **Ryan Burgess**
+
 - GitHub: [@ryanburgess173](https://github.com/ryanburgess173)
 
 ## 🙏 Acknowledgments
