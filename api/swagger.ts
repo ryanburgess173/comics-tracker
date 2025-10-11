@@ -107,7 +107,7 @@ const options: swaggerJsdoc.Options = {
       },
     },
   },
-  apis: ["./controllers/*.ts", "./index.ts"], // Path to the API routes
+  apis: ["./controllers/*.ts", "./app.ts"], // Path to the API routes
 };
 
 const swaggerSpec = swaggerJsdoc(options);

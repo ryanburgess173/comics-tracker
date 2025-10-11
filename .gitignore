@@ -2,6 +2,7 @@
 /api/package-lock.json
 /api/tsconfig.tsbuildinfo
 /api/out/
+/api/coverage/
 .DS_Store
 /node_modules/
 /dist/
