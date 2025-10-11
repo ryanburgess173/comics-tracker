@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+
+- **Quality Gates**: Increased minimum code coverage threshold from 70% to 90%
+  - Updated PR validation workflow coverage requirements
+  - Enhanced test coverage standards across all workflows
+
 ### Planned
 
 - Comic book models and endpoints
