@@ -1,5 +1,4 @@
 // Jest setup file - runs before all tests
-// You can add global test setup here
 
 // Suppress console logs during tests (optional)
 // global.console = {
@@ -14,3 +13,6 @@
 process.env.NODE_ENV = 'test';
 process.env.JWT_SECRET = 'test-secret-key-for-testing-only';
 process.env.PORT = '3001';
+
+// Note: Model tests now use isolated in-memory databases via testDatabase.ts helper
+// This prevents SQLITE_BUSY errors by giving each test file its own database instance
