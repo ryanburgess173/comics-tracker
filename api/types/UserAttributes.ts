@@ -6,6 +6,6 @@ export interface UserAttributes {
   // Add other fields if needed
 }
 
-import { Model } from "sequelize";
+import { Model } from 'sequelize';
 
 export interface UserInstance extends Model<UserAttributes>, UserAttributes {}

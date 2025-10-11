@@ -1,10 +1,10 @@
-import "dotenv/config";
-import express from "express";
-import swaggerUi from "swagger-ui-express";
-import sequelize from "./db";
-import logger from "./utils/logger";
-import authRouter from "./controllers/auth";
-import swaggerSpec from "./swagger";
+import 'dotenv/config';
+import express from 'express';
+import swaggerUi from 'swagger-ui-express';
+import sequelize from './db';
+import logger from './utils/logger';
+import authRouter from './controllers/auth';
+import swaggerSpec from './swagger';
 
 const app: express.Application = express();
 
@@ -13,25 +13,25 @@ app.use(express.json());
 
 // Swagger UI setup
 app.use(
-  "/api-docs",
+  '/api-docs',
   swaggerUi.serve,
   swaggerUi.setup(swaggerSpec, {
     explorer: true,
-    customCss: ".swagger-ui .topbar { display: none }",
-    customSiteTitle: "Comics Tracker API Docs",
+    customCss: '.swagger-ui .topbar { display: none }',
+    customSiteTitle: 'Comics Tracker API Docs',
   })
 );
 
 // sync database (only in non-test environment)
 /* istanbul ignore next */
-if (process.env.NODE_ENV !== "test") {
+if (process.env.NODE_ENV !== 'test') {
   sequelize
     .sync()
     .then(() => {
-      logger.info("Database synced");
+      logger.info('Database synced');
     })
     .catch((err: Error) => {
-      logger.error("Error syncing database: %o", err);
+      logger.error('Error syncing database: %o', err);
     });
 }
 
@@ -55,11 +55,11 @@ if (process.env.NODE_ENV !== "test") {
  *                   type: string
  *                   example: API is running
  */
-app.get("/", (req: express.Request, res: express.Response) => {
-  logger.info("Root endpoint accessed");
-  res.json({ status: "API is running" });
+app.get('/', (req: express.Request, res: express.Response) => {
+  logger.info('Root endpoint accessed');
+  res.json({ status: 'API is running' });
 });
 
-app.use("/auth", authRouter);
+app.use('/auth', authRouter);
 
 export default app;

@@ -37,6 +37,7 @@ comics-tracker/
 ## 🛠️ Tech Stack
 
 ### Backend
+
 - **Node.js** with **Express.js** - Web framework
 - **TypeScript** - Type-safe JavaScript
 - **Sequelize** - ORM for database operations
@@ -55,20 +56,23 @@ comics-tracker/
 ### Installation
 
 1. **Clone the repository**
+
    ```bash
    git clone https://github.com/ryanburgess173/comics-tracker.git
    cd comics-tracker
    ```
 
 2. **Install API dependencies**
+
    ```bash
    cd api
    npm install
    ```
 
 3. **Set up environment variables**
-   
+
    Create a `.env` file in the `api` directory:
+
    ```env
    PORT=3000
    JWT_SECRET=your_secret_key_here
@@ -76,6 +80,7 @@ comics-tracker/
    ```
 
 4. **Build the TypeScript code**
+
    ```bash
    npm run build
    ```
@@ -98,9 +103,11 @@ For detailed setup and usage information, see [API Documentation](./api/docs/swa
 ## 🔌 API Endpoints
 
 ### Health Check
+
 - `GET /` - API status check
 
 ### Authentication
+
 - `POST /auth/register` - Register a new user
 - `POST /auth/login` - Login and receive JWT token
 - `GET /auth/test` - Test authentication endpoint
@@ -116,6 +123,7 @@ The application uses SQLite with Sequelize ORM. The database file (`database.sql
 ## 🔐 Authentication
 
 The API uses JWT (JSON Web Tokens) for authentication. After logging in, the token is:
+
 - Returned in the response body
 - Set as an HTTP-only cookie (`access_token`)
 
@@ -158,6 +166,7 @@ This project is licensed under the terms in the [LICENSE](./LICENSE) file.
 ## 👤 Author
 
 **Ryan Burgess**
+
 - GitHub: [@ryanburgess173](https://github.com/ryanburgess173)
 
 ## 🙏 Acknowledgments

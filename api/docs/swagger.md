@@ -82,7 +82,7 @@ To document a new endpoint, add a JSDoc comment above the route handler:
  *                 message:
  *                   type: string
  */
-router.get("/your-path", (req, res) => {
+router.get('/your-path', (req, res) => {
   // Your handler code
 });
 ```

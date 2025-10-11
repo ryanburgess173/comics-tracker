@@ -128,16 +128,16 @@ All files        |   87.80 |    66.66 |   70.00 |   87.65
 ### Model Test Example
 
 ```typescript
-import { Sequelize } from "sequelize";
-import User from "../../models/User";
+import { Sequelize } from 'sequelize';
+import User from '../../models/User';
 
-describe("User Model", () => {
+describe('User Model', () => {
   let sequelize: Sequelize;
 
   beforeAll(async () => {
     // Setup in-memory database
-    sequelize = new Sequelize("sqlite::memory:", { logging: false });
-    User.init(User.getAttributes(), { sequelize, modelName: "User" });
+    sequelize = new Sequelize('sqlite::memory:', { logging: false });
+    User.init(User.getAttributes(), { sequelize, modelName: 'User' });
     await sequelize.sync({ force: true });
   });
 
@@ -150,14 +150,14 @@ describe("User Model", () => {
     await User.destroy({ where: {}, truncate: true });
   });
 
-  it("should create a user with valid data", async () => {
+  it('should create a user with valid data', async () => {
     const user = await User.create({
-      username: "testuser",
-      email: "test@example.com",
-      passwordHash: "hash123",
+      username: 'testuser',
+      email: 'test@example.com',
+      passwordHash: 'hash123',
     });
 
-    expect(user.username).toBe("testuser");
+    expect(user.username).toBe('testuser');
     expect(user.id).toBeDefined();
   });
 });
@@ -166,30 +166,30 @@ describe("User Model", () => {
 ### Controller/API Test Example
 
 ```typescript
-import request from "supertest";
-import app from "../app";
+import request from 'supertest';
+import app from '../app';
 
-describe("Auth Controller", () => {
-  it("should register a new user", async () => {
+describe('Auth Controller', () => {
+  it('should register a new user', async () => {
     const response = await request(app)
-      .post("/auth/register")
+      .post('/auth/register')
       .send({
-        username: "testuser",
-        email: "test@example.com",
-        password: "password123",
+        username: 'testuser',
+        email: 'test@example.com',
+        password: 'password123',
       })
       .expect(201);
 
-    expect(response.body.message).toBe("User registered successfully.");
+    expect(response.body.message).toBe('User registered successfully.');
   });
 
-  it("should handle invalid credentials", async () => {
+  it('should handle invalid credentials', async () => {
     const response = await request(app)
-      .post("/auth/login")
-      .send({ email: "wrong@example.com", password: "wrong" })
+      .post('/auth/login')
+      .send({ email: 'wrong@example.com', password: 'wrong' })
       .expect(401);
 
-    expect(response.body).toHaveProperty("message");
+    expect(response.body).toHaveProperty('message');
   });
 });
 ```
@@ -197,22 +197,22 @@ describe("Auth Controller", () => {
 ### Testing Utility Functions
 
 ```typescript
-import logger from "../../utils/logger";
+import logger from '../../utils/logger';
 
-describe("Logger Utility", () => {
+describe('Logger Utility', () => {
   let infoSpy: jest.SpyInstance;
 
   beforeEach(() => {
-    infoSpy = jest.spyOn(logger, "info").mockImplementation();
+    infoSpy = jest.spyOn(logger, 'info').mockImplementation();
   });
 
   afterEach(() => {
     infoSpy.mockRestore();
   });
 
-  it("should log info messages", () => {
-    logger.info("Test message");
-    expect(infoSpy).toHaveBeenCalledWith("Test message");
+  it('should log info messages', () => {
+    logger.info('Test message');
+    expect(infoSpy).toHaveBeenCalledWith('Test message');
   });
 });
 ```
@@ -223,20 +223,20 @@ describe("Logger Utility", () => {
 
 ```javascript
 module.exports = {
-  preset: "ts-jest",
-  testEnvironment: "node",
-  roots: ["<rootDir>"],
-  testMatch: ["**/__tests__/**/*.ts", "**/?(*.)+(spec|test).ts"],
+  preset: 'ts-jest',
+  testEnvironment: 'node',
+  roots: ['<rootDir>'],
+  testMatch: ['**/__tests__/**/*.ts', '**/?(*.)+(spec|test).ts'],
   collectCoverageFrom: [
-    "**/*.ts",
-    "!**/*.d.ts",
-    "!**/node_modules/**",
-    "!**/out/**",
-    "!**/coverage/**",
-    "!jest.config.js",
+    '**/*.ts',
+    '!**/*.d.ts',
+    '!**/node_modules/**',
+    '!**/out/**',
+    '!**/coverage/**',
+    '!jest.config.js',
   ],
-  coverageDirectory: "coverage",
-  setupFilesAfterEnv: ["<rootDir>/jest.setup.ts"],
+  coverageDirectory: 'coverage',
+  setupFilesAfterEnv: ['<rootDir>/jest.setup.ts'],
 };
 ```
 
@@ -244,9 +244,9 @@ module.exports = {
 
 ```typescript
 // Test environment configuration
-process.env.NODE_ENV = "test";
-process.env.JWT_SECRET = "test-secret-key-for-testing-only";
-process.env.PORT = "3001";
+process.env.NODE_ENV = 'test';
+process.env.JWT_SECRET = 'test-secret-key-for-testing-only';
+process.env.PORT = '3001';
 ```
 
 ## 🎭 Testing Best Practices
@@ -268,28 +268,28 @@ Use clear, descriptive names that explain what is being tested.
 
 ```typescript
 // ❌ Bad
-it("test 1", () => {});
+it('test 1', () => {});
 
 // ✅ Good
-it("should create user with valid email and username", () => {});
-it("should reject registration with duplicate email", () => {});
+it('should create user with valid email and username', () => {});
+it('should reject registration with duplicate email', () => {});
 ```
 
 ### 3. AAA Pattern (Arrange, Act, Assert)
 
 ```typescript
-it("should update user information", async () => {
+it('should update user information', async () => {
   // Arrange - Setup
   const user = await User.create({
-    username: "oldname",
-    email: "test@example.com",
+    username: 'oldname',
+    email: 'test@example.com',
   });
 
   // Act - Perform action
-  await user.update({ username: "newname" });
+  await user.update({ username: 'newname' });
 
   // Assert - Verify result
-  expect(user.username).toBe("newname");
+  expect(user.username).toBe('newname');
 });
 ```
 
@@ -306,7 +306,7 @@ it("should update user information", async () => {
 
 ```typescript
 // Fast, isolated testing
-const sequelize = new Sequelize("sqlite::memory:", {
+const sequelize = new Sequelize('sqlite::memory:', {
   logging: false,
 });
 ```
@@ -316,7 +316,7 @@ const sequelize = new Sequelize("sqlite::memory:", {
 ### Testing Async Functions
 
 ```typescript
-it("should handle async operations", async () => {
+it('should handle async operations', async () => {
   const result = await asyncFunction();
   expect(result).toBeDefined();
 });
@@ -325,7 +325,7 @@ it("should handle async operations", async () => {
 ### Testing Promise Rejections
 
 ```typescript
-it("should throw error for invalid data", async () => {
+it('should throw error for invalid data', async () => {
   await expect(User.create({})).rejects.toThrow();
 });
 ```
@@ -333,28 +333,28 @@ it("should throw error for invalid data", async () => {
 ### Testing HTTP Status Codes
 
 ```typescript
-it("should return 404 for missing resource", async () => {
-  await request(app).get("/nonexistent").expect(404);
+it('should return 404 for missing resource', async () => {
+  await request(app).get('/nonexistent').expect(404);
 });
 ```
 
 ### Testing Response Body
 
 ```typescript
-it("should return user data", async () => {
-  const res = await request(app).get("/auth/test").expect(200);
+it('should return user data', async () => {
+  const res = await request(app).get('/auth/test').expect(200);
 
-  expect(res.body).toHaveProperty("message");
-  expect(res.body.message).toBe("Auth route works!");
+  expect(res.body).toHaveProperty('message');
+  expect(res.body.message).toBe('Auth route works!');
 });
 ```
 
 ### Mocking Functions
 
 ```typescript
-const mockFn = jest.spyOn(logger, "info").mockImplementation();
+const mockFn = jest.spyOn(logger, 'info').mockImplementation();
 
-it("should call logger", () => {
+it('should call logger', () => {
   someFunction();
   expect(mockFn).toHaveBeenCalled();
 });
@@ -413,14 +413,14 @@ await sequelize.sync({ force: true });
 ```typescript
 // For intentionally testing invalid types
 // @ts-expect-error - Testing validation
-await User.create({ invalidField: "value" });
+await User.create({ invalidField: 'value' });
 ```
 
 ### Port Already in Use
 
 ```typescript
 // Use different port for tests (jest.setup.ts)
-process.env.PORT = "3001";
+process.env.PORT = '3001';
 ```
 
 ### Module Not Found Errors
@@ -465,8 +465,8 @@ npm run test:ci
 2. **Write tests first** (TDD approach):
 
    ```typescript
-   describe("New Feature", () => {
-     it("should do something", async () => {
+   describe('New Feature', () => {
+     it('should do something', async () => {
        // Write test before implementation
      });
    });
@@ -492,33 +492,30 @@ npm run test:ci
 
 ```typescript
 // __tests__/controllers/comics.test.ts
-import request from "supertest";
-import app from "../app";
+import request from 'supertest';
+import app from '../app';
 
-describe("Comics Controller", () => {
-  describe("GET /comics", () => {
-    it("should return list of comics", async () => {
-      const res = await request(app)
-        .get("/comics")
-        .expect(200)
-        .expect("Content-Type", /json/);
+describe('Comics Controller', () => {
+  describe('GET /comics', () => {
+    it('should return list of comics', async () => {
+      const res = await request(app).get('/comics').expect(200).expect('Content-Type', /json/);
 
       expect(Array.isArray(res.body)).toBe(true);
     });
   });
 
-  describe("POST /comics", () => {
-    it("should create a new comic", async () => {
+  describe('POST /comics', () => {
+    it('should create a new comic', async () => {
       const comic = {
-        title: "Amazing Spider-Man",
+        title: 'Amazing Spider-Man',
         issue: 1,
         year: 1963,
       };
 
-      const res = await request(app).post("/comics").send(comic).expect(201);
+      const res = await request(app).post('/comics').send(comic).expect(201);
 
-      expect(res.body).toHaveProperty("id");
-      expect(res.body.title).toBe("Amazing Spider-Man");
+      expect(res.body).toHaveProperty('id');
+      expect(res.body.title).toBe('Amazing Spider-Man');
     });
   });
 });
