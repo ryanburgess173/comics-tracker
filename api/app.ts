@@ -26,7 +26,7 @@ app.use(
 /* istanbul ignore next */
 if (process.env.NODE_ENV !== 'test') {
   sequelize
-    .sync()
+    .sync({ alter: true })
     .then(() => {
       logger.info('Database synced');
     })
