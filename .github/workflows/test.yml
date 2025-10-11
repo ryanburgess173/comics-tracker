@@ -66,4 +66,4 @@ jobs:
       - name: Check coverage threshold
         run: |
           cd api
-          npm run test:coverage -- --coverageThreshold='{"global":{"statements":70,"branches":65,"functions":70,"lines":70}}'
+          npm run test:coverage -- --coverageThreshold='{"global":{"statements":90,"branches":90,"functions":90,"lines":90}}'
