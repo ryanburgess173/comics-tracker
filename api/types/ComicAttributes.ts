@@ -1,0 +1,18 @@
+export interface ComicAttributes {
+  id?: number;
+  title: string;
+  author: string;
+  description?: string;
+  imageUrl?: string;
+  pages?: number;
+  publisher?: string;
+  publishedDate?: Date;
+  runId?: number;
+  variant?: number;
+  createdAt?: Date;
+  updatedAt?: Date;
+}
+
+import { Model } from 'sequelize';
+
+export interface ComicInstance extends Model<ComicAttributes>, ComicAttributes {}

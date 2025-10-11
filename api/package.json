@@ -12,7 +12,8 @@
     "start": "node out/index.js",
     "dev": "ts-node index.ts",
     "lint": "cd .. && npm run lint",
-    "lint:fix": "cd .. && npm run lint:fix"
+    "lint:fix": "cd .. && npm run lint:fix",
+    "lint:security": "cd .. && npm run lint:security"
   },
   "keywords": [],
   "author": "",
