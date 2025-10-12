@@ -5,6 +5,11 @@ import Omnibus from './Omnibus';
 import TradePaperbackComicXRef from './TradePaperbackComicXRef';
 import OmnibusComicXRef from './OmnibusComicXRef';
 import Universe from './Universe';
+import User from './User';
+import Role from './Role';
+import Permission from './Permission';
+import UserRoleXRef from './UserRoleXRef';
+import RolePermissionXRef from './RolePermissionXRef';
 
 // Define associations
 export const setupAssociations = () => {
@@ -61,6 +66,49 @@ export const setupAssociations = () => {
     otherKey: 'omnibusId',
     as: 'omnibuses',
   });
+
+  // Many-to-Many: User <-> Role
+  User.belongsToMany(Role, {
+    through: UserRoleXRef,
+    foreignKey: 'userId',
+    otherKey: 'roleId',
+    as: 'roles',
+  });
+
+  Role.belongsToMany(User, {
+    through: UserRoleXRef,
+    foreignKey: 'roleId',
+    otherKey: 'userId',
+    as: 'users',
+  });
+
+  // Many-to-Many: Role <-> Permission
+  Role.belongsToMany(Permission, {
+    through: RolePermissionXRef,
+    foreignKey: 'roleId',
+    otherKey: 'permissionId',
+    as: 'permissions',
+  });
+
+  Permission.belongsToMany(Role, {
+    through: RolePermissionXRef,
+    foreignKey: 'permissionId',
+    otherKey: 'roleId',
+    as: 'roles',
+  });
 };
 
-export { Run, Comic, TradePaperback, Omnibus, TradePaperbackComicXRef, OmnibusComicXRef, Universe };
+export {
+  Run,
+  Comic,
+  TradePaperback,
+  Omnibus,
+  TradePaperbackComicXRef,
+  OmnibusComicXRef,
+  Universe,
+  User,
+  Role,
+  Permission,
+  UserRoleXRef,
+  RolePermissionXRef,
+};

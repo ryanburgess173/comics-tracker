@@ -19,6 +19,13 @@ Example: `2025-10-11-ci-cd-testing-improvements.md`
 
 ## Contents
 
+- **[2025-10-12: Sequelize CLI Integration](./2025-10-12-sequelize-cli-integration.md)**
+  - Implemented proper Sequelize CLI workflow
+  - Created comprehensive initial migration for all tables
+  - Added `model:generate` npm script
+  - Complete workflow documentation and best practices guide
+  - Hybrid approach preserving TypeScript models
+
 - **[2025-10-11: Password Reset Implementation](./2025-10-11-password-reset-implementation.md)**
   - Complete password reset system with email notifications
   - Secure token generation and validation
