@@ -26,6 +26,9 @@ module.exports = {
     '!**/coverage/**',
     '!jest.config.js',
     '!index.ts', // Exclude server entry point from coverage
+    '!migrations/**', // Exclude migrations (run via Sequelize CLI)
+    '!seeders/**', // Exclude seeders (run via Sequelize CLI)
+    '!config/**', // Exclude config (loaded by Sequelize CLI)
   ],
   coverageDirectory: 'coverage',
   coverageReporters: ['text', 'lcov', 'html'],

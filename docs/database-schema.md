@@ -4,6 +4,8 @@
 
 The Comics Tracker database is designed to manage a comprehensive comic book collection, including individual issues, collected editions (trade paperbacks and omnibuses), and their relationships within universes and runs.
 
+> **Note:** Database schema is managed through Sequelize migrations. See [Database Migrations Guide](./database-migrations.md) for information on running and creating migrations.
+
 ## Entity Relationship Diagram
 
 ```

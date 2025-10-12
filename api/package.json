@@ -13,7 +13,16 @@
     "dev": "ts-node index.ts",
     "lint": "cd .. && npm run lint",
     "lint:fix": "cd .. && npm run lint:fix",
-    "lint:security": "cd .. && npm run lint:security"
+    "lint:security": "cd .. && npm run lint:security",
+    "migrate": "sequelize-cli db:migrate",
+    "migrate:undo": "sequelize-cli db:migrate:undo",
+    "migrate:undo:all": "sequelize-cli db:migrate:undo:all",
+    "migrate:status": "sequelize-cli db:migrate:status",
+    "migration:generate": "sequelize-cli migration:generate --name",
+    "seed": "sequelize-cli db:seed:all",
+    "seed:undo": "sequelize-cli db:seed:undo",
+    "seed:undo:all": "sequelize-cli db:seed:undo:all",
+    "seed:generate": "sequelize-cli seed:generate --name"
   },
   "keywords": [],
   "author": "",
@@ -41,6 +50,7 @@
     "@types/swagger-jsdoc": "^6.0.4",
     "@types/swagger-ui-express": "^4.1.8",
     "jest": "^30.2.0",
+    "sequelize-cli": "^6.6.3",
     "supertest": "^7.1.4",
     "ts-jest": "^29.4.5",
     "typescript": "^5.9.2"
