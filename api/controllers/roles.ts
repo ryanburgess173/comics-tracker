@@ -141,7 +141,7 @@ router.get('/:id', async (req: Request, res: Response) => {
  */
 router.post('/', async (req: Request, res: Response) => {
   try {
-    const { name, description } = req.body;
+    const { name, description } = req.body as { name?: string; description?: string };
 
     logger.info(`Creating new role: ${name}`);
 
@@ -161,8 +161,8 @@ router.post('/', async (req: Request, res: Response) => {
 
     // Create role
     const role = await Role.create({
-      name,
-      description,
+      name: name,
+      description: description,
     });
 
     logger.info(`Role created successfully: ${role.id}`);
@@ -222,7 +222,7 @@ router.post('/', async (req: Request, res: Response) => {
 router.put('/:id', async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
-    const { name, description } = req.body;
+    const { name, description } = req.body as { name?: string; description?: string };
 
     logger.info(`Updating role with id: ${id}`);
 
@@ -234,7 +234,7 @@ router.put('/:id', async (req: Request, res: Response) => {
 
     // Update role fields
     if (name) role.name = name;
-    if (description !== undefined) role.description = description;
+    if (description !== undefined) role.description = description as string | undefined;
 
     await role.save();
 
@@ -360,7 +360,9 @@ router.get('/:id/permissions', async (req: Request, res: Response) => {
       include: [{ model: Permission }],
     });
 
-    const permissions = rolePermissions.map((rp: any) => rp.Permission);
+    const permissions = rolePermissions.map(
+      (rp) => (rp as unknown as { Permission: unknown }).Permission
+    );
 
     res.json(permissions);
   } catch (error) {
@@ -429,7 +431,7 @@ router.get('/:id/permissions', async (req: Request, res: Response) => {
 router.post('/:id/permissions', async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
-    const { permissionId } = req.body;
+    const { permissionId } = req.body as { permissionId?: string };
 
     logger.info(`Assigning permission ${permissionId} to role ${id}`);
 
@@ -451,7 +453,7 @@ router.post('/:id/permissions', async (req: Request, res: Response) => {
 
     // Check if role already has this permission
     const existingAssignment = await RolePermissionXRef.findOne({
-      where: { roleId: id, permissionId },
+      where: { roleId: id, permissionId: permissionId },
     });
 
     if (existingAssignment) {
@@ -459,7 +461,10 @@ router.post('/:id/permissions', async (req: Request, res: Response) => {
     }
 
     // Assign permission
-    await RolePermissionXRef.create({ roleId: parseInt(id), permissionId: parseInt(permissionId) });
+    await RolePermissionXRef.create({
+      roleId: parseInt(id),
+      permissionId: parseInt(permissionId),
+    });
 
     logger.info(`Permission assigned successfully to role ${id}`);
     res.status(201).json({ message: 'Permission assigned successfully' });
@@ -605,7 +610,7 @@ router.delete('/:id/permissions/:permissionId', async (req: Request, res: Respon
 router.post('/:id/permissions/bulk', async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
-    const { permissionIds } = req.body;
+    const { permissionIds } = req.body as { permissionIds?: string[] };
 
     logger.info(`Bulk assigning permissions to role ${id}`);
 
@@ -622,9 +627,9 @@ router.post('/:id/permissions/bulk', async (req: Request, res: Response) => {
     let assigned = 0;
     let skipped = 0;
 
-    for (const permissionId of permissionIds) {
+    for (const permissionId of permissionIds as unknown[]) {
       // Check if permission exists
-      const permission = await Permission.findByPk(permissionId);
+      const permission = await Permission.findByPk(permissionId as string);
       if (!permission) {
         skipped++;
         continue;
@@ -632,7 +637,7 @@ router.post('/:id/permissions/bulk', async (req: Request, res: Response) => {
 
       // Check if already assigned
       const existingAssignment = await RolePermissionXRef.findOne({
-        where: { roleId: id, permissionId },
+        where: { roleId: id, permissionId: permissionId as string },
       });
 
       if (existingAssignment) {
@@ -643,7 +648,7 @@ router.post('/:id/permissions/bulk', async (req: Request, res: Response) => {
       // Assign permission
       await RolePermissionXRef.create({
         roleId: parseInt(id),
-        permissionId: parseInt(permissionId),
+        permissionId: parseInt(permissionId as string),
       });
       assigned++;
     }

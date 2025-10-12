@@ -81,7 +81,7 @@ router.get('/by-resource', async (req: Request, res: Response) => {
     });
 
     // Group permissions by resource
-    const groupedPermissions: { [key: string]: any[] } = {};
+    const groupedPermissions: Record<string, typeof permissions> = {};
     permissions.forEach((permission) => {
       if (!groupedPermissions[permission.resource]) {
         groupedPermissions[permission.resource] = [];
@@ -202,7 +202,12 @@ router.get('/:id', async (req: Request, res: Response) => {
  */
 router.post('/', async (req: Request, res: Response) => {
   try {
-    const { name, resource, action, description } = req.body;
+    const { name, resource, action, description } = req.body as {
+      name?: string;
+      resource?: string;
+      action?: string;
+      description?: string;
+    };
 
     logger.info(`Creating new permission: ${name}`);
 
@@ -222,10 +227,10 @@ router.post('/', async (req: Request, res: Response) => {
 
     // Create permission
     const permission = await Permission.create({
-      name,
-      resource,
-      action,
-      description,
+      name: name,
+      resource: resource,
+      action: action,
+      description: description,
     });
 
     logger.info(`Permission created successfully: ${permission.id}`);
@@ -289,7 +294,12 @@ router.post('/', async (req: Request, res: Response) => {
 router.put('/:id', async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
-    const { name, resource, action, description } = req.body;
+    const { name, resource, action, description } = req.body as {
+      name?: string;
+      resource?: string;
+      action?: string;
+      description?: string;
+    };
 
     logger.info(`Updating permission with id: ${id}`);
 
@@ -303,7 +313,7 @@ router.put('/:id', async (req: Request, res: Response) => {
     if (name) permission.name = name;
     if (resource) permission.resource = resource;
     if (action) permission.action = action;
-    if (description !== undefined) permission.description = description;
+    if (description !== undefined) permission.description = description as string | undefined;
 
     await permission.save();
 

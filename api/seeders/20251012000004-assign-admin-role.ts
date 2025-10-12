@@ -1,11 +1,19 @@
 import { QueryInterface } from 'sequelize';
 
+interface UserResult {
+  id: number;
+}
+
+interface RoleResult {
+  id: number;
+}
+
 export default {
   async up(queryInterface: QueryInterface): Promise<void> {
     // Get the admin user ID
-    const [users]: any = await queryInterface.sequelize.query(
+    const [users] = (await queryInterface.sequelize.query(
       `SELECT id FROM Users WHERE email = 'ryanburgess173@outlook.com' LIMIT 1;`
-    );
+    )) as [UserResult[], unknown];
 
     if (users.length === 0) {
       throw new Error('Admin user not found. Make sure the admin user seeder has run first.');
@@ -14,9 +22,9 @@ export default {
     const adminUserId = users[0].id;
 
     // Get the Admin role ID
-    const [roles]: any = await queryInterface.sequelize.query(
+    const [roles] = (await queryInterface.sequelize.query(
       `SELECT id FROM Roles WHERE name = 'Admin' LIMIT 1;`
-    );
+    )) as [RoleResult[], unknown];
 
     if (roles.length === 0) {
       throw new Error('Admin role not found. Make sure the roles seeder has run first.');
@@ -41,9 +49,9 @@ export default {
 
   async down(queryInterface: QueryInterface): Promise<void> {
     // Get the admin user ID
-    const [users]: any = await queryInterface.sequelize.query(
+    const [users] = (await queryInterface.sequelize.query(
       `SELECT id FROM Users WHERE email = 'ryanburgess173@outlook.com' LIMIT 1;`
-    );
+    )) as [UserResult[], unknown];
 
     if (users.length > 0) {
       const adminUserId = users[0].id;

@@ -102,8 +102,8 @@ describe('Permissions Controller', () => {
       });
       expect(response.body).toHaveProperty('comics');
       expect(response.body).toHaveProperty('users');
-      expect(response.body.comics).toHaveLength(2);
-      expect(response.body.users).toHaveLength(1);
+      expect((response.body as { comics: unknown[] }).comics).toHaveLength(2);
+      expect((response.body as { users: unknown[] }).users).toHaveLength(1);
     });
 
     it('should handle errors gracefully', async () => {
@@ -226,10 +226,7 @@ describe('Permissions Controller', () => {
       };
       (Permission.findByPk as jest.Mock).mockResolvedValue(mockPermission);
 
-      const response = await request(app)
-        .put('/permissions/1')
-        .send({ description: 'New description' })
-        .expect(200);
+      await request(app).put('/permissions/1').send({ description: 'New description' }).expect(200);
 
       expect(mockPermission.save).toHaveBeenCalled();
       expect(mockPermission.description).toBe('New description');

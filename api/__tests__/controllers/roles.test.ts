@@ -156,10 +156,7 @@ describe('Roles Controller', () => {
       };
       (Role.findByPk as jest.Mock).mockResolvedValue(mockRole);
 
-      const response = await request(app)
-        .put('/roles/1')
-        .send({ description: 'New description' })
-        .expect(200);
+      await request(app).put('/roles/1').send({ description: 'New description' }).expect(200);
 
       expect(mockRole.save).toHaveBeenCalled();
       expect(mockRole.description).toBe('New description');

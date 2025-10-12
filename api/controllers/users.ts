@@ -3,9 +3,7 @@ import User from '../models/User';
 import Role from '../models/Role';
 import UserRoleXRef from '../models/UserRoleXRef';
 import bcrypt from 'bcrypt';
-import crypto from 'crypto';
 import logger from '../utils/logger';
-import { sendPasswordResetEmail } from '../utils/email';
 
 const router = Router();
 const SALT_ROUNDS = 10;
@@ -154,7 +152,11 @@ router.get('/:id', async (req: Request, res: Response) => {
  */
 router.post('/', async (req: Request, res: Response) => {
   try {
-    const { username, email, password } = req.body;
+    const { username, email, password } = req.body as {
+      username?: string;
+      email?: string;
+      password?: string;
+    };
 
     logger.info(`Creating new user: ${username}`);
 
@@ -183,7 +185,7 @@ router.post('/', async (req: Request, res: Response) => {
     });
 
     // Remove sensitive data before sending response
-    const userResponse: any = user.toJSON();
+    const userResponse = user.toJSON() as unknown as Record<string, unknown>;
     delete userResponse.passwordHash;
     delete userResponse.resetPasswordToken;
     delete userResponse.resetPasswordExpires;
@@ -246,7 +248,7 @@ router.post('/', async (req: Request, res: Response) => {
 router.put('/:id', async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
-    const { username, email } = req.body;
+    const { username, email } = req.body as { username?: string; email?: string };
 
     logger.info(`Updating user with id: ${id}`);
 
@@ -263,7 +265,7 @@ router.put('/:id', async (req: Request, res: Response) => {
     await user.save();
 
     // Remove sensitive data
-    const userResponse: any = user.toJSON();
+    const userResponse = user.toJSON() as unknown as Record<string, unknown>;
     delete userResponse.passwordHash;
     delete userResponse.resetPasswordToken;
     delete userResponse.resetPasswordExpires;
@@ -390,7 +392,7 @@ router.get('/:id/roles', async (req: Request, res: Response) => {
       include: [{ model: Role }],
     });
 
-    const roles = userRoles.map((ur: any) => ur.Role);
+    const roles = userRoles.map((ur) => (ur as unknown as { Role: unknown }).Role);
 
     res.json(roles);
   } catch (error) {
@@ -459,7 +461,7 @@ router.get('/:id/roles', async (req: Request, res: Response) => {
 router.post('/:id/roles', async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
-    const { roleId } = req.body;
+    const { roleId } = req.body as { roleId?: string };
 
     logger.info(`Assigning role ${roleId} to user ${id}`);
 
@@ -481,7 +483,7 @@ router.post('/:id/roles', async (req: Request, res: Response) => {
 
     // Check if user already has this role
     const existingAssignment = await UserRoleXRef.findOne({
-      where: { userId: id, roleId },
+      where: { userId: id, roleId: roleId },
     });
 
     if (existingAssignment) {
@@ -631,7 +633,10 @@ router.delete('/:id/roles/:roleId', async (req: Request, res: Response) => {
 router.post('/:id/change-password', async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
-    const { currentPassword, newPassword } = req.body;
+    const { currentPassword, newPassword } = req.body as {
+      currentPassword?: string;
+      newPassword?: string;
+    };
 
     logger.info(`Changing password for user: ${id}`);
 
