@@ -104,6 +104,68 @@ const options: swaggerJsdoc.Options = {
             },
           },
         },
+        Permission: {
+          type: 'object',
+          properties: {
+            id: {
+              type: 'integer',
+              description: 'Permission ID',
+            },
+            name: {
+              type: 'string',
+              description: 'Permission name (e.g., comics:create)',
+            },
+            resource: {
+              type: 'string',
+              description: 'Resource type (e.g., comics, users)',
+            },
+            action: {
+              type: 'string',
+              description: 'Action type (e.g., create, read, update, delete)',
+            },
+            description: {
+              type: 'string',
+              description: 'Permission description',
+            },
+            createdAt: {
+              type: 'string',
+              format: 'date-time',
+              description: 'Creation timestamp',
+            },
+            updatedAt: {
+              type: 'string',
+              format: 'date-time',
+              description: 'Last update timestamp',
+            },
+          },
+        },
+        Role: {
+          type: 'object',
+          properties: {
+            id: {
+              type: 'integer',
+              description: 'Role ID',
+            },
+            name: {
+              type: 'string',
+              description: 'Role name (e.g., Admin, Editor)',
+            },
+            description: {
+              type: 'string',
+              description: 'Role description',
+            },
+            createdAt: {
+              type: 'string',
+              format: 'date-time',
+              description: 'Creation timestamp',
+            },
+            updatedAt: {
+              type: 'string',
+              format: 'date-time',
+              description: 'Last update timestamp',
+            },
+          },
+        },
       },
     },
   },
