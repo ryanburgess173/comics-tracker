@@ -126,6 +126,82 @@ This document outlines the CRUD (Create, Read, Update, Delete) controllers that 
 
 ---
 
+### 8. Users Controller (`/api/controllers/users.ts`)
+
+**Route:** `/users`
+
+**Endpoints:**
+
+- `GET /users` - Get all users (excludes password and sensitive fields)
+- `GET /users/:id` - Get a specific user by ID
+- `POST /users` - Create a new user
+- `PUT /users/:id` - Update a user's information
+- `DELETE /users/:id` - Delete a user
+- `GET /users/:id/roles` - Get all roles assigned to a user
+- `POST /users/:id/roles` - Assign a role to a user
+- `DELETE /users/:id/roles/:roleId` - Remove a role from a user
+- `POST /users/:id/change-password` - Change a user's password
+
+**Required Fields for Creation:** `username`, `email`, `password`
+
+**Security Features:**
+
+- Passwords are hashed using bcrypt with salt rounds
+- Sensitive fields (passwordHash, resetPasswordToken, resetPasswordExpires) are excluded from all responses
+- Password change requires current password verification
+
+---
+
+### 9. Permissions Controller (`/api/controllers/permissions.ts`)
+
+**Route:** `/permissions`
+
+**Endpoints:**
+
+- `GET /permissions` - Get all permissions ordered by resource and action
+- `GET /permissions/by-resource` - Get permissions grouped by resource type
+- `GET /permissions/:id` - Get a specific permission by ID
+- `POST /permissions` - Create a new permission
+- `PUT /permissions/:id` - Update a permission
+- `DELETE /permissions/:id` - Delete a permission
+
+**Required Fields:** `name`, `resource`, `action`
+
+**Optional Fields:** `description`
+
+**Permission Format:** Permissions follow the format `resource:action` (e.g., `comics:create`, `users:read`)
+
+---
+
+### 10. Roles Controller (`/api/controllers/roles.ts`)
+
+**Route:** `/roles`
+
+**Endpoints:**
+
+- `GET /roles` - Get all roles ordered by name
+- `GET /roles/:id` - Get a specific role by ID
+- `POST /roles` - Create a new role
+- `PUT /roles/:id` - Update a role
+- `DELETE /roles/:id` - Delete a role
+- `GET /roles/:id/permissions` - Get all permissions assigned to a role
+- `POST /roles/:id/permissions` - Assign a permission to a role
+- `DELETE /roles/:id/permissions/:permissionId` - Remove a permission from a role
+- `POST /roles/:id/permissions/bulk` - Assign multiple permissions to a role at once
+
+**Required Fields:** `name`
+
+**Optional Fields:** `description`
+
+**RBAC Features:**
+
+- Roles can have multiple permissions
+- Bulk permission assignment for efficient role setup
+- Prevents duplicate permission assignments
+- Returns count of assigned and skipped permissions in bulk operations
+
+---
+
 ## Common Features
 
 All controllers include:
@@ -153,6 +229,9 @@ app.use('/creators', creatorsRouter);
 app.use('/runs', runsRouter);
 app.use('/omnibus', omnibusRouter);
 app.use('/trade-paperbacks', tradePaperbacksRouter);
+app.use('/users', usersRouter);
+app.use('/permissions', permissionsRouter);
+app.use('/roles', rolesRouter);
 ```
 
 ## Testing the API
@@ -227,11 +306,89 @@ curl -X DELETE http://localhost:3000/comics/1
 - `404 Not Found` - Resource not found
 - `500 Internal Server Error` - Server error
 
+## RBAC System
+
+The Users, Permissions, and Roles controllers implement a comprehensive Role-Based Access Control (RBAC) system:
+
+### Permission Structure
+
+- **Format:** `resource:action` (e.g., `comics:create`, `users:delete`)
+- **Resources:** comics, creators, publishers, universes, runs, omnibuses, tradePaperbacks, users, roles, permissions, system
+- **Actions:** create, read, update, delete, list, plus special actions (e.g., `users:resetPassword`, `roles:assignPermissions`)
+
+### Predefined Roles
+
+1. **Admin** - Full access to all resources (61 permissions)
+2. **Editor** - Full content management (39 permissions)
+3. **Contributor** - Create and read content (21 permissions)
+4. **Reader** - Read-only access (14 permissions)
+5. **Moderator** - User and content moderation (34 permissions)
+
+### RBAC Examples
+
+**Get all roles:**
+
+```bash
+curl http://localhost:3000/roles
+```
+
+**Assign a role to a user:**
+
+```bash
+curl -X POST http://localhost:3000/users/1/roles \
+  -H "Content-Type: application/json" \
+  -d '{"roleId": 2}'
+```
+
+**Get user's roles:**
+
+```bash
+curl http://localhost:3000/users/1/roles
+```
+
+**Assign permissions to a role:**
+
+```bash
+curl -X POST http://localhost:3000/roles/3/permissions \
+  -H "Content-Type: application/json" \
+  -d '{"permissionId": 5}'
+```
+
+**Bulk assign permissions:**
+
+```bash
+curl -X POST http://localhost:3000/roles/3/permissions/bulk \
+  -H "Content-Type: application/json" \
+  -d '{"permissionIds": [1, 2, 3, 5, 8, 13]}'
+```
+
+**Get permissions grouped by resource:**
+
+```bash
+curl http://localhost:3000/permissions/by-resource
+```
+
+## Testing
+
+All controllers include comprehensive unit tests located in `/api/__tests__/controllers/`:
+
+- `users.test.ts` - Users controller tests (350+ lines, 20+ test cases)
+- `permissions.test.ts` - Permissions controller tests (250+ lines, 15+ test cases)
+- `roles.test.ts` - Roles controller tests (400+ lines, 25+ test cases)
+
+Run tests with:
+
+```bash
+cd api
+npm test
+```
+
 ## Next Steps
 
 Consider adding:
 
-- Authentication/authorization middleware
+- **Authentication/authorization middleware** - Verify JWT tokens and check permissions before allowing access
+- **Permission checking middleware** - Enforce RBAC rules on protected endpoints
 - Pagination for GET all endpoints
 - Filtering and sorting capabilities
 - Relationship endpoints (e.g., get all comics for a specific universe)
@@ -239,3 +396,4 @@ Consider adding:
 - Rate limiting
 - Caching
 - Database transactions for complex operations
+- **Audit logging** - Track all RBAC changes (role assignments, permission modifications)

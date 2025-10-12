@@ -11,6 +11,9 @@ import creatorsRouter from './controllers/creators';
 import runsRouter from './controllers/runs';
 import omnibusRouter from './controllers/omnibus';
 import tradePaperbacksRouter from './controllers/tradePaperbacks';
+import usersRouter from './controllers/users';
+import permissionsRouter from './controllers/permissions';
+import rolesRouter from './controllers/roles';
 import swaggerSpec from './swagger';
 
 const app: express.Application = express();
@@ -78,5 +81,8 @@ app.use('/creators', creatorsRouter);
 app.use('/runs', runsRouter);
 app.use('/omnibus', omnibusRouter);
 app.use('/trade-paperbacks', tradePaperbacksRouter);
+app.use('/users', usersRouter);
+app.use('/permissions', permissionsRouter);
+app.use('/roles', rolesRouter);
 
 export default app;
