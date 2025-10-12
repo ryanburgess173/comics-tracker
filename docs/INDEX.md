@@ -161,6 +161,7 @@ Welcome to the Comics Tracker documentation!
 
 - [API Testing Guide](../api/docs/testing.md) - Writing and running tests
 - [API Documentation Setup](../api/docs/swagger.md) - Swagger/OpenAPI
+- [Sequelize Workflow Guide](./development/sequelize-workflow.md) - Models and migrations best practices
 
 ### Security 🔒
 

@@ -88,12 +88,12 @@ export default {
         {
           id: 1,
           title: 'The Amazing Spider-Man #1',
-          author: 'Stan Lee',
+          authorId: 1, // Stan Lee
           description:
             'First issue of The Amazing Spider-Man featuring the first appearance of J. Jonah Jameson',
           imageUrl: null,
           pages: 22,
-          publisher: 'Marvel Comics',
+          publisherId: 1, // Marvel Comics
           publishedDate: new Date('1963-03-01'),
           runId: 1,
           variant: 1,
@@ -103,11 +103,11 @@ export default {
         {
           id: 2,
           title: 'The Amazing Spider-Man #50',
-          author: 'Stan Lee',
+          authorId: 1, // Stan Lee
           description: 'Spider-Man No More! - Peter Parker quits being Spider-Man',
           imageUrl: null,
           pages: 20,
-          publisher: 'Marvel Comics',
+          publisherId: 1, // Marvel Comics
           publishedDate: new Date('1967-07-01'),
           runId: 1,
           variant: 1,
@@ -117,12 +117,12 @@ export default {
         {
           id: 3,
           title: 'The Amazing Spider-Man #121',
-          author: 'Gerry Conway',
+          authorId: null, // Gerry Conway not in seed data
           description:
             'The Night Gwen Stacy Died - One of the most significant issues in Spider-Man history',
           imageUrl: null,
           pages: 20,
-          publisher: 'Marvel Comics',
+          publisherId: 1, // Marvel Comics
           publishedDate: new Date('1973-06-01'),
           runId: 1,
           variant: 1,
@@ -133,11 +133,11 @@ export default {
         {
           id: 4,
           title: 'Fantastic Four #1',
-          author: 'Stan Lee',
+          authorId: 1, // Stan Lee
           description: 'First appearance of the Fantastic Four',
           imageUrl: null,
           pages: 25,
-          publisher: 'Marvel Comics',
+          publisherId: 1, // Marvel Comics
           publishedDate: new Date('1961-11-01'),
           runId: 2,
           variant: 1,
@@ -147,11 +147,11 @@ export default {
         {
           id: 5,
           title: 'Fantastic Four #5',
-          author: 'Stan Lee',
+          authorId: 1, // Stan Lee
           description: 'First appearance of Doctor Doom',
           imageUrl: null,
           pages: 23,
-          publisher: 'Marvel Comics',
+          publisherId: 1, // Marvel Comics
           publishedDate: new Date('1962-07-01'),
           runId: 2,
           variant: 1,
@@ -161,11 +161,11 @@ export default {
         {
           id: 6,
           title: 'Fantastic Four #48',
-          author: 'Stan Lee',
+          authorId: 1, // Stan Lee
           description: 'First appearance of Galactus and Silver Surfer',
           imageUrl: null,
           pages: 20,
-          publisher: 'Marvel Comics',
+          publisherId: 1, // Marvel Comics
           publishedDate: new Date('1966-03-01'),
           runId: 2,
           variant: 1,
@@ -176,11 +176,11 @@ export default {
         {
           id: 7,
           title: 'Batman #1',
-          author: 'Bill Finger',
+          authorId: null, // Bill Finger not in seed data
           description: 'First appearances of the Joker and Catwoman',
           imageUrl: null,
           pages: 60,
-          publisher: 'DC Comics',
+          publisherId: 2, // DC Comics
           publishedDate: new Date('1940-04-25'),
           runId: 3,
           variant: 1,
@@ -190,11 +190,11 @@ export default {
         {
           id: 8,
           title: 'Batman #404',
-          author: 'Frank Miller',
+          authorId: 5, // Frank Miller
           description: 'Batman: Year One Part 1',
           imageUrl: null,
           pages: 22,
-          publisher: 'DC Comics',
+          publisherId: 2, // DC Comics
           publishedDate: new Date('1987-02-01'),
           runId: 3,
           variant: 1,
@@ -205,11 +205,11 @@ export default {
         {
           id: 9,
           title: 'The Sandman #1',
-          author: 'Neil Gaiman',
+          authorId: 6, // Neil Gaiman
           description: 'Sleep of the Just - Introduction to Morpheus/Dream',
           imageUrl: null,
           pages: 24,
-          publisher: 'DC Comics',
+          publisherId: 2, // DC Comics
           publishedDate: new Date('1989-01-01'),
           runId: 4,
           variant: 1,
@@ -219,11 +219,11 @@ export default {
         {
           id: 10,
           title: 'The Sandman #8',
-          author: 'Neil Gaiman',
+          authorId: 6, // Neil Gaiman
           description: 'The Sound of Her Wings - Introduction to Death',
           imageUrl: null,
           pages: 24,
-          publisher: 'DC Comics',
+          publisherId: 2, // DC Comics
           publishedDate: new Date('1989-08-01'),
           runId: 4,
           variant: 1,
@@ -234,11 +234,11 @@ export default {
         {
           id: 11,
           title: 'Ultimate Spider-Man #1',
-          author: 'Brian Michael Bendis',
+          authorId: 10, // Brian Michael Bendis
           description: 'Powerless - Peter Parker gets his powers in the Ultimate Universe',
           imageUrl: null,
           pages: 32,
-          publisher: 'Marvel Comics',
+          publisherId: 1, // Marvel Comics
           publishedDate: new Date('2000-10-01'),
           runId: 5,
           variant: 1,
@@ -248,11 +248,11 @@ export default {
         {
           id: 12,
           title: 'Ultimate Spider-Man #160',
-          author: 'Brian Michael Bendis',
+          authorId: 10, // Brian Michael Bendis
           description: 'Death of Spider-Man conclusion',
           imageUrl: null,
           pages: 32,
-          publisher: 'Marvel Comics',
+          publisherId: 1, // Marvel Comics
           publishedDate: new Date('2011-08-01'),
           runId: 5,
           variant: 1,
