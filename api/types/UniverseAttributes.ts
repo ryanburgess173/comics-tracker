@@ -2,7 +2,7 @@ export interface UniverseAttributes {
   id?: number;
   name: string;
   description?: string;
-  publisher?: string;
+  publisherId?: number;
   createdAt?: Date;
   updatedAt?: Date;
 }

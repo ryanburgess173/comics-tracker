@@ -131,7 +131,7 @@ router.get('/:id', async (req: Request, res: Response) => {
 router.post('/', async (req: Request, res: Response) => {
   try {
     // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-    const { name, description, publisher } = req.body;
+    const { name, description, publisherId } = req.body;
 
     if (!name) {
       return res.status(400).json({ error: 'Name is required' });
@@ -144,7 +144,7 @@ router.post('/', async (req: Request, res: Response) => {
       // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
       description,
       // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-      publisher,
+      publisherId,
     });
 
     res.status(201).json(universe);
@@ -194,7 +194,7 @@ router.put('/:id', async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
     // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-    const { name, description, publisher } = req.body;
+    const { name, description, publisherId } = req.body;
 
     logger.info(`Updating universe with id: ${id}`);
     const universe = await Universe.findByPk(id);
@@ -209,7 +209,7 @@ router.put('/:id', async (req: Request, res: Response) => {
       // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
       description,
       // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-      publisher,
+      publisherId,
     });
 
     res.json(universe);

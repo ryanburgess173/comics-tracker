@@ -171,7 +171,7 @@ router.post('/', async (req: Request, res: Response) => {
       isbn,
       description,
       pageCount,
-      publisher,
+      publisherId,
       volume,
     } = req.body;
 
@@ -194,7 +194,7 @@ router.post('/', async (req: Request, res: Response) => {
       // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
       pageCount,
       // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-      publisher,
+      publisherId,
       // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
       volume,
     });
@@ -264,7 +264,7 @@ router.put('/:id', async (req: Request, res: Response) => {
       isbn,
       description,
       pageCount,
-      publisher,
+      publisherId,
       volume,
     } = req.body;
 
@@ -289,7 +289,7 @@ router.put('/:id', async (req: Request, res: Response) => {
       // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
       pageCount,
       // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-      publisher,
+      publisherId,
       // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
       volume,
     });

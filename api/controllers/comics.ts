@@ -159,10 +159,10 @@ router.get('/:id', async (req: Request, res: Response) => {
 router.post('/', async (req: Request, res: Response) => {
   try {
     // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-    const { title, author, description, imageUrl, pages, publisher, publishedDate } = req.body;
+    const { title, authorId, description, imageUrl, pages, publisherId, publishedDate } = req.body;
 
-    if (!title || !author) {
-      return res.status(400).json({ error: 'Title and author are required' });
+    if (!title) {
+      return res.status(400).json({ error: 'Title is required' });
     }
 
     logger.info(`Creating new comic: ${title as string}`);
@@ -170,7 +170,7 @@ router.post('/', async (req: Request, res: Response) => {
       // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
       title,
       // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-      author,
+      authorId,
       // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
       description,
       // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
@@ -178,7 +178,7 @@ router.post('/', async (req: Request, res: Response) => {
       // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
       pages,
       // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-      publisher,
+      publisherId,
       // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
       publishedDate,
     });
@@ -239,7 +239,7 @@ router.put('/:id', async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
     // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-    const { title, author, description, imageUrl, pages, publisher, publishedDate } = req.body;
+    const { title, authorId, description, imageUrl, pages, publisherId, publishedDate } = req.body;
 
     logger.info(`Updating comic with id: ${id}`);
     const comic = await Comic.findByPk(id);
@@ -252,7 +252,7 @@ router.put('/:id', async (req: Request, res: Response) => {
       // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
       title,
       // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-      author,
+      authorId,
       // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
       description,
       // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
@@ -260,7 +260,7 @@ router.put('/:id', async (req: Request, res: Response) => {
       // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
       pages,
       // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-      publisher,
+      publisherId,
       // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
       publishedDate,
     });

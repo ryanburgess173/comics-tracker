@@ -9,7 +9,7 @@ export default {
           id: 1,
           name: 'Marvel Universe',
           description: 'The primary shared universe where most Marvel Comics stories take place',
-          publisher: 'Marvel Comics',
+          publisherId: 1, // Marvel Comics
           createdAt: new Date(),
           updatedAt: new Date(),
         },
@@ -17,7 +17,7 @@ export default {
           id: 2,
           name: 'DC Universe',
           description: 'The shared universe of DC Comics superheroes and stories',
-          publisher: 'DC Comics',
+          publisherId: 2, // DC Comics
           createdAt: new Date(),
           updatedAt: new Date(),
         },
@@ -25,7 +25,7 @@ export default {
           id: 3,
           name: 'Ultimate Universe',
           description: "Marvel's modernized reimagining of classic characters (Earth-1610)",
-          publisher: 'Marvel Comics',
+          publisherId: 1, // Marvel Comics
           createdAt: new Date(),
           updatedAt: new Date(),
         },
@@ -33,7 +33,7 @@ export default {
           id: 4,
           name: 'Image Universe',
           description: 'Shared universe for Image Comics characters',
-          publisher: 'Image Comics',
+          publisherId: 3, // Image Comics
           createdAt: new Date(),
           updatedAt: new Date(),
         },
