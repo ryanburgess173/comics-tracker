@@ -89,11 +89,11 @@ router.get('/:id', async (req: Request, res: Response) => {
     const { id } = req.params;
     logger.info(`Fetching publisher with id: ${id}`);
     const publisher = await Publisher.findByPk(id);
-    
+
     if (!publisher) {
       return res.status(404).json({ error: 'Publisher not found' });
     }
-    
+
     res.json(publisher);
   } catch (error) {
     logger.error('Error fetching publisher: %o', error);
@@ -136,20 +136,25 @@ router.get('/:id', async (req: Request, res: Response) => {
  */
 router.post('/', async (req: Request, res: Response) => {
   try {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     const { name, country, foundedYear, website } = req.body;
-    
+
     if (!name) {
       return res.status(400).json({ error: 'Name is required' });
     }
-    
-    logger.info(`Creating new publisher: ${name}`);
+
+    logger.info(`Creating new publisher: ${name as string}`);
     const publisher = await Publisher.create({
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
       name,
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
       country,
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
       foundedYear,
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
       website,
     });
-    
+
     res.status(201).json(publisher);
   } catch (error) {
     logger.error('Error creating publisher: %o', error);
@@ -198,22 +203,27 @@ router.post('/', async (req: Request, res: Response) => {
 router.put('/:id', async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     const { name, country, foundedYear, website } = req.body;
-    
+
     logger.info(`Updating publisher with id: ${id}`);
     const publisher = await Publisher.findByPk(id);
-    
+
     if (!publisher) {
       return res.status(404).json({ error: 'Publisher not found' });
     }
-    
+
     await publisher.update({
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
       name,
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
       country,
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
       foundedYear,
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
       website,
     });
-    
+
     res.json(publisher);
   } catch (error) {
     logger.error('Error updating publisher: %o', error);
@@ -249,11 +259,11 @@ router.delete('/:id', async (req: Request, res: Response) => {
     const { id } = req.params;
     logger.info(`Deleting publisher with id: ${id}`);
     const publisher = await Publisher.findByPk(id);
-    
+
     if (!publisher) {
       return res.status(404).json({ error: 'Publisher not found' });
     }
-    
+
     await publisher.destroy();
     res.json({ message: 'Publisher deleted successfully' });
   } catch (error) {

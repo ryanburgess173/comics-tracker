@@ -53,7 +53,7 @@ export default tseslint.config(
       ],
       '@typescript-eslint/explicit-function-return-type': 'off',
       '@typescript-eslint/explicit-module-boundary-types': 'off',
-      '@typescript-eslint/no-explicit-any': 'warn',
+      '@typescript-eslint/no-explicit-any': 'error',
       '@typescript-eslint/no-floating-promises': 'error',
       '@typescript-eslint/no-misused-promises': 'error',
       'no-console': ['warn', { allow: ['warn', 'error'] }],
@@ -74,7 +74,7 @@ export default tseslint.config(
       'security/detect-no-csrf-before-method-override': 'error',
       'security/detect-non-literal-fs-filename': 'warn',
       'security/detect-non-literal-require': 'warn',
-      'security/detect-possible-timing-attacks': 'warn',
+      'security/detect-possible-timing-attacks': 'error',
       'security/detect-pseudoRandomBytes': 'error',
 
       // Security rules from eslint-plugin-security-node

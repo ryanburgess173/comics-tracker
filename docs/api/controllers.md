@@ -1,14 +1,17 @@
 # CRUD Controllers Implementation
 
 ## Overview
+
 This document outlines the CRUD (Create, Read, Update, Delete) controllers that have been implemented for the Comics Tracker API.
 
 ## Controllers Created
 
 ### 1. Comics Controller (`/api/controllers/comics.ts`)
+
 **Route:** `/comics`
 
 **Endpoints:**
+
 - `GET /comics` - Get all comics
 - `GET /comics/:id` - Get a specific comic by ID
 - `POST /comics` - Create a new comic
@@ -20,9 +23,11 @@ This document outlines the CRUD (Create, Read, Update, Delete) controllers that 
 ---
 
 ### 2. Publishers Controller (`/api/controllers/publishers.ts`)
+
 **Route:** `/publishers`
 
 **Endpoints:**
+
 - `GET /publishers` - Get all publishers
 - `GET /publishers/:id` - Get a specific publisher by ID
 - `POST /publishers` - Create a new publisher
@@ -34,9 +39,11 @@ This document outlines the CRUD (Create, Read, Update, Delete) controllers that 
 ---
 
 ### 3. Universes Controller (`/api/controllers/universes.ts`)
+
 **Route:** `/universes`
 
 **Endpoints:**
+
 - `GET /universes` - Get all universes
 - `GET /universes/:id` - Get a specific universe by ID
 - `POST /universes` - Create a new universe
@@ -48,9 +55,11 @@ This document outlines the CRUD (Create, Read, Update, Delete) controllers that 
 ---
 
 ### 4. Creators Controller (`/api/controllers/creators.ts`)
+
 **Route:** `/creators`
 
 **Endpoints:**
+
 - `GET /creators` - Get all creators
 - `GET /creators/:id` - Get a specific creator by ID
 - `POST /creators` - Create a new creator
@@ -64,9 +73,11 @@ This document outlines the CRUD (Create, Read, Update, Delete) controllers that 
 ---
 
 ### 5. Runs Controller (`/api/controllers/runs.ts`)
+
 **Route:** `/runs`
 
 **Endpoints:**
+
 - `GET /runs` - Get all comic runs
 - `GET /runs/:id` - Get a specific run by ID
 - `POST /runs` - Create a new run
@@ -80,9 +91,11 @@ This document outlines the CRUD (Create, Read, Update, Delete) controllers that 
 ---
 
 ### 6. Omnibus Controller (`/api/controllers/omnibus.ts`)
+
 **Route:** `/omnibus`
 
 **Endpoints:**
+
 - `GET /omnibus` - Get all omnibus editions
 - `GET /omnibus/:id` - Get a specific omnibus by ID
 - `POST /omnibus` - Create a new omnibus edition
@@ -96,9 +109,11 @@ This document outlines the CRUD (Create, Read, Update, Delete) controllers that 
 ---
 
 ### 7. Trade Paperbacks Controller (`/api/controllers/tradePaperbacks.ts`)
+
 **Route:** `/trade-paperbacks`
 
 **Endpoints:**
+
 - `GET /trade-paperbacks` - Get all trade paperbacks
 - `GET /trade-paperbacks/:id` - Get a specific trade paperback by ID
 - `POST /trade-paperbacks` - Create a new trade paperback
@@ -114,6 +129,7 @@ This document outlines the CRUD (Create, Read, Update, Delete) controllers that 
 ## Common Features
 
 All controllers include:
+
 - ✅ Full CRUD operations
 - ✅ Comprehensive Swagger/OpenAPI documentation
 - ✅ Input validation
@@ -142,6 +158,7 @@ app.use('/trade-paperbacks', tradePaperbacksRouter);
 ## Testing the API
 
 1. Start the server:
+
    ```bash
    cd api
    npm run dev
@@ -158,6 +175,7 @@ app.use('/trade-paperbacks', tradePaperbacksRouter);
 ## Example Usage
 
 ### Creating a Comic
+
 ```bash
 curl -X POST http://localhost:3000/comics \
   -H "Content-Type: application/json" \
@@ -172,16 +190,19 @@ curl -X POST http://localhost:3000/comics \
 ```
 
 ### Getting All Comics
+
 ```bash
 curl http://localhost:3000/comics
 ```
 
 ### Getting a Specific Comic
+
 ```bash
 curl http://localhost:3000/comics/1
 ```
 
 ### Updating a Comic
+
 ```bash
 curl -X PUT http://localhost:3000/comics/1 \
   -H "Content-Type: application/json" \
@@ -193,6 +214,7 @@ curl -X PUT http://localhost:3000/comics/1 \
 ```
 
 ### Deleting a Comic
+
 ```bash
 curl -X DELETE http://localhost:3000/comics/1
 ```
@@ -208,6 +230,7 @@ curl -X DELETE http://localhost:3000/comics/1
 ## Next Steps
 
 Consider adding:
+
 - Authentication/authorization middleware
 - Pagination for GET all endpoints
 - Filtering and sorting capabilities
