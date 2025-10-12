@@ -7,9 +7,13 @@ const Comic = sequelize.define<ComicInstance>('Comic', {
     type: DataTypes.STRING,
     allowNull: false,
   },
-  author: {
-    type: DataTypes.STRING,
-    allowNull: false,
+  authorId: {
+    type: DataTypes.INTEGER,
+    allowNull: true,
+    references: {
+      model: 'Creators',
+      key: 'id',
+    },
   },
   description: {
     type: DataTypes.TEXT,
@@ -23,9 +27,13 @@ const Comic = sequelize.define<ComicInstance>('Comic', {
     type: DataTypes.INTEGER,
     allowNull: true,
   },
-  publisher: {
-    type: DataTypes.STRING,
+  publisherId: {
+    type: DataTypes.INTEGER,
     allowNull: true,
+    references: {
+      model: 'Publishers',
+      key: 'id',
+    },
   },
   publishedDate: {
     type: DataTypes.DATE,

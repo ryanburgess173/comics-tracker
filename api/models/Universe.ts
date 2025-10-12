@@ -19,9 +19,13 @@ const Universe = sequelize.define<UniverseInstance>(
       type: DataTypes.TEXT,
       allowNull: true,
     },
-    publisher: {
-      type: DataTypes.STRING,
+    publisherId: {
+      type: DataTypes.INTEGER,
       allowNull: true,
+      references: {
+        model: 'Publishers',
+        key: 'id',
+      },
     },
   },
   {

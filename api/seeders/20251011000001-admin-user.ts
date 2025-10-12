@@ -10,7 +10,7 @@ export default {
       [
         {
           username: 'admin',
-          email: 'admin@comics-tracker.com',
+          email: 'ryanburgess173@outlook.com',
           passwordHash: passwordHash,
           resetPasswordToken: null,
           resetPasswordExpires: null,
@@ -26,7 +26,7 @@ export default {
     await queryInterface.bulkDelete(
       'Users',
       {
-        email: 'admin@comics-tracker.com',
+        email: 'ryanburgess173@outlook.com',
       },
       {}
     );

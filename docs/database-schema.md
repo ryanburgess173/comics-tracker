@@ -97,10 +97,11 @@ Represents a comic book universe (e.g., Marvel 616, Star Wars, DC Universe).
 - `id`: Auto-increment primary key
 - `name`: Unique universe name (required)
 - `description`: Optional description
-- `publisher`: Publisher name (e.g., Marvel Comics, DC Comics)
+- `publisherId`: Foreign key to Publisher
 
 **Relationships:**
 
+- Belongs to one Publisher (N:1)
 - Has many Runs (1:N)
 
 **Example:**
@@ -108,7 +109,7 @@ Represents a comic book universe (e.g., Marvel 616, Star Wars, DC Universe).
 ```typescript
 {
   name: "Star Wars",
-  publisher: "Marvel Comics",
+  publisherId: 1, // Marvel Comics
   description: "Star Wars comics universe"
 }
 ```

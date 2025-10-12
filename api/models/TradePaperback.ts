@@ -35,9 +35,13 @@ const TradePaperback = sequelize.define<TradePaperbackInstance>(
       type: DataTypes.INTEGER,
       allowNull: true,
     },
-    publisher: {
-      type: DataTypes.STRING,
+    publisherId: {
+      type: DataTypes.INTEGER,
       allowNull: true,
+      references: {
+        model: 'Publishers',
+        key: 'id',
+      },
     },
     volume: {
       type: DataTypes.INTEGER,

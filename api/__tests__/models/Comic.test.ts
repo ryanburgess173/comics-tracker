@@ -15,10 +15,9 @@ describe('Comic Model', () => {
     expect(attributes.title.allowNull).toBe(false);
   });
 
-  it('should have required author attribute', () => {
+  it('should have optional authorId attribute', () => {
     const attributes = Comic.getAttributes();
-    expect(attributes.author).toBeDefined();
-    expect(attributes.author.allowNull).toBe(false);
+    expect(attributes.authorId).toBeDefined();
   });
 
   it('should have variant attribute with default value', () => {

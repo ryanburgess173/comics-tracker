@@ -6,7 +6,7 @@ export interface OmnibusAttributes {
   isbn?: string;
   description?: string;
   pageCount?: number;
-  publisher?: string;
+  publisherId?: number;
   volume?: number;
   createdAt?: Date;
   updatedAt?: Date;

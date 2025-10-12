@@ -96,7 +96,7 @@ describe('Comics Controller', () => {
     it('should create a new comic successfully', async () => {
       const newComic = {
         title: 'Spider-Man #1',
-        author: 'Stan Lee',
+        authorId: 1,
         description: 'First appearance of Spider-Man',
         pages: 32,
       };
@@ -110,7 +110,7 @@ describe('Comics Controller', () => {
     });
 
     it('should create a comic with only required fields', async () => {
-      const newComic = { title: 'Batman #1', author: 'Bob Kane' };
+      const newComic = { title: 'Batman #1', authorId: 2 };
       const mockCreatedComic = { id: 2, ...newComic };
       (Comic.create as jest.Mock).mockResolvedValue(mockCreatedComic);
 
@@ -121,25 +121,16 @@ describe('Comics Controller', () => {
     });
 
     it('should return 400 when title is missing', async () => {
-      const newComic = { author: 'Stan Lee' };
+      const newComic = { authorId: 1 };
 
       const response = await request(app).post('/comics').send(newComic).expect(400);
 
       expect(Comic.create).not.toHaveBeenCalled();
-      expect(response.body).toHaveProperty('error', 'Title and author are required');
-    });
-
-    it('should return 400 when author is missing', async () => {
-      const newComic = { title: 'Spider-Man #1' };
-
-      const response = await request(app).post('/comics').send(newComic).expect(400);
-
-      expect(Comic.create).not.toHaveBeenCalled();
-      expect(response.body).toHaveProperty('error', 'Title and author are required');
+      expect(response.body).toHaveProperty('error', 'Title is required');
     });
 
     it('should handle errors gracefully', async () => {
-      const newComic = { title: 'Spider-Man #1', author: 'Stan Lee' };
+      const newComic = { title: 'Spider-Man #1', authorId: 1 };
       (Comic.create as jest.Mock).mockRejectedValue(new Error('Database error'));
 
       const response = await request(app).post('/comics').send(newComic).expect(500);
@@ -152,13 +143,13 @@ describe('Comics Controller', () => {
     it('should update a comic successfully', async () => {
       const updates = {
         title: 'Amazing Spider-Man #1',
-        author: 'Stan Lee',
+        authorId: 1,
         pages: 40,
       };
       const mockComic = {
         id: 1,
         title: 'Spider-Man #1',
-        author: 'Stan Lee',
+        authorId: 1,
         pages: 32,
         update: jest.fn().mockResolvedValue({ id: 1, ...updates }),
       };

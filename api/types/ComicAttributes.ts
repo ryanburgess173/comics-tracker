@@ -1,11 +1,11 @@
 export interface ComicAttributes {
   id?: number;
   title: string;
-  author: string;
+  authorId?: number;
   description?: string;
   imageUrl?: string;
   pages?: number;
-  publisher?: string;
+  publisherId?: number;
   publishedDate?: Date;
   runId?: number;
   variant?: number;

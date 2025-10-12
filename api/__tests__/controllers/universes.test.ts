@@ -97,7 +97,7 @@ describe('Universes Controller', () => {
       const newUniverse = {
         name: 'Ultimate Universe',
         description: 'Earth-1610',
-        publisher: 'Marvel Comics',
+        publisherId: 1,
       };
       const mockCreatedUniverse = { id: 1, ...newUniverse };
       (Universe.create as jest.Mock).mockResolvedValue(mockCreatedUniverse);
@@ -143,13 +143,13 @@ describe('Universes Controller', () => {
       const updates = {
         name: 'Marvel Cinematic Universe',
         description: 'Earth-199999',
-        publisher: 'Marvel Studios',
+        publisherId: 1,
       };
       const mockUniverse = {
         id: 1,
         name: 'Marvel Universe',
         description: 'Earth-616',
-        publisher: 'Marvel Comics',
+        publisherId: 1,
         update: jest.fn().mockResolvedValue({ id: 1, ...updates }),
       };
       (Universe.findByPk as jest.Mock).mockResolvedValue(mockUniverse);

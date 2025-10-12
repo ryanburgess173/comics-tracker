@@ -20,9 +20,9 @@ describe('Universe Model', () => {
     expect(attributes.name.unique).toBe(true);
   });
 
-  it('should have optional publisher attribute', () => {
+  it('should have optional publisherId attribute', () => {
     const attributes = Universe.getAttributes();
-    expect(attributes.publisher).toBeDefined();
+    expect(attributes.publisherId).toBeDefined();
   });
 
   it('should have optional description attribute', () => {
