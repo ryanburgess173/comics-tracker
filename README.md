@@ -85,13 +85,31 @@ comics-tracker/
    NODE_ENV=development
    ```
 
-4. **Build the TypeScript code**
+4. **Run database migrations**
+
+   ```bash
+   npm run migrate
+   ```
+
+5. **(Optional) Seed the database with sample data**
+
+   ```bash
+   npm run seed
+   ```
+
+   This creates:
+   - Default admin account (`admin@comics-tracker.com` / `Admin123!`)
+   - Sample publishers (Marvel, DC, Image, etc.)
+   - Comic universes and creators
+   - Sample comic book data
+
+6. **Build the TypeScript code**
 
    ```bash
    npm run build
    ```
 
-5. **Start the server**
+7. **Start the server**
    ```bash
    npm start
    ```
@@ -120,11 +138,31 @@ For detailed setup and usage information, see [API Documentation](./docs/api/swa
 
 ## 💾 Database
 
-The application uses SQLite with Sequelize ORM. The database file (`database.sqlite`) is automatically created when you first run the application.
+The application uses SQLite with Sequelize ORM. Database schema is managed through **migrations** for version control and safe schema updates.
+
+### Database Migrations
+
+Run migrations to set up your database schema:
+
+```bash
+cd api
+npm run migrate              # Run all pending migrations
+npm run migrate:status       # Check migration status
+npm run migrate:undo         # Rollback last migration
+```
+
+For detailed migration guide, see [Database Migrations Documentation](./docs/database-migrations.md)
 
 ### Models
 
 - **User** - User accounts with authentication
+- **Comic** - Individual comic books
+- **Run** - Comic series/runs
+- **Universe** - Comic universes (Marvel, DC, etc.)
+- **Publisher** - Comic publishers
+- **Creator** - Authors and artists
+- **Omnibus** - Collected editions
+- **TradePaperback** - Trade paperback collections
 
 ## 🔐 Authentication
 

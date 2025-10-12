@@ -29,16 +29,18 @@ app.use(
   })
 );
 
-// sync database (only in non-test environment)
+// Database migrations are now managed via Sequelize CLI
+// Run migrations with: npm run migrate
+// Test the database connection only
 /* istanbul ignore next */
 if (process.env.NODE_ENV !== 'test') {
   sequelize
-    .sync({ alter: true })
+    .authenticate()
     .then(() => {
-      logger.info('Database synced');
+      logger.info('Database connection established successfully');
     })
     .catch((err: Error) => {
-      logger.error('Error syncing database: %o', err);
+      logger.error('Unable to connect to the database: %o', err);
     });
 }
 
