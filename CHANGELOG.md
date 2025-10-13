@@ -9,6 +9,23 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- **JWT Authentication & Authorization Middleware**
+  - `authenticateJWT` middleware for validating JWT tokens and extracting user info
+  - `optionalAuthenticateJWT` middleware for endpoints that work with or without authentication
+  - `requirePermissions` middleware for role-based access control (RBAC)
+  - JWT tokens now include `roles` array claim for permission checking
+  - User roles extracted from `UserRoleXRef` table on login
+  - 14 unit tests for `authenticateJWT` middleware (100% coverage)
+  - 10 unit tests for `requirePermissions` middleware (100% coverage)
+  - Example implementation in comics controller showing middleware chaining
+  - Improved error handling distinguishing between authentication (401) and authorization (403) errors
+
+- **User Change Password Endpoint**
+  - New endpoint: `POST /users/:id/change-password`
+  - Validates current password before allowing change
+  - Requires authentication and `user:update` permission
+  - Comprehensive test coverage (4 test cases)
+
 - **Password Reset System**
   - Complete password reset flow with email notifications
   - Secure token generation using crypto (SHA-256 hashing)
@@ -19,13 +36,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Comprehensive Swagger documentation for password reset endpoints
   - 26 comprehensive test cases covering all password reset scenarios
   - User model extended with `resetPasswordToken` and `resetPasswordExpires` fields
-  - **100% test coverage** achieved across all modules (up from 95.03%)
 
 ### Changed
 
 - **Quality Gates**: Increased minimum code coverage threshold from 70% to 90%
   - Updated PR validation workflow coverage requirements
   - Enhanced test coverage standards across all workflows
+  - **98.14% overall test coverage** achieved (up from 95.03%)
+
+- **Authentication Flow**
+  - Login endpoint now returns JWT with roles claim
+  - All protected endpoints now require both JWT authentication and permission checks
+  - Middleware execution order: `authenticateJWT` → `requirePermissions` → route handler
 
 ### Security
 

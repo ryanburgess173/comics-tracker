@@ -6,6 +6,7 @@ import bcrypt from 'bcrypt';
 import crypto from 'crypto';
 import logger from '../utils/logger';
 import { sendPasswordResetEmail } from '../utils/email';
+import { requirePermissions } from '../middleware/checkPermissions';
 
 const router = Router();
 const secret_key = process.env.JWT_SECRET as string;
@@ -36,7 +37,7 @@ const SALT_ROUNDS = 10;
  *                   type: string
  *                   example: Auth route works!
  */
-router.get('/test', (req: Request, res: Response) => {
+router.get('/test', requirePermissions(['user:read']), (req: Request, res: Response) => {
   logger.info('Auth test endpoint accessed');
   res.json({ message: 'Auth route works!' });
 });

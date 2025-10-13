@@ -4,6 +4,7 @@ import Role from '../models/Role';
 import UserRoleXRef from '../models/UserRoleXRef';
 import bcrypt from 'bcrypt';
 import logger from '../utils/logger';
+import { requirePermissions } from '../middleware/checkPermissions';
 
 const router = Router();
 const SALT_ROUNDS = 10;
@@ -32,7 +33,7 @@ const SALT_ROUNDS = 10;
  *             schema:
  *               $ref: '#/components/schemas/ErrorResponse'
  */
-router.get('/', async (req: Request, res: Response) => {
+router.get('/', requirePermissions(['user:list']), async (req: Request, res: Response) => {
   try {
     logger.info('Fetching all users');
     const users = await User.findAll({
@@ -80,7 +81,7 @@ router.get('/', async (req: Request, res: Response) => {
  *             schema:
  *               $ref: '#/components/schemas/ErrorResponse'
  */
-router.get('/:id', async (req: Request, res: Response) => {
+router.get('/:id', requirePermissions(['user:read']), async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
     logger.info(`Fetching user with id: ${id}`);
@@ -150,7 +151,7 @@ router.get('/:id', async (req: Request, res: Response) => {
  *             schema:
  *               $ref: '#/components/schemas/ErrorResponse'
  */
-router.post('/', async (req: Request, res: Response) => {
+router.post('/', requirePermissions(['user:create']), async (req: Request, res: Response) => {
   try {
     const { username, email, password } = req.body as {
       username?: string;
@@ -245,7 +246,7 @@ router.post('/', async (req: Request, res: Response) => {
  *             schema:
  *               $ref: '#/components/schemas/ErrorResponse'
  */
-router.put('/:id', async (req: Request, res: Response) => {
+router.put('/:id', requirePermissions(['user:update']), async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
     const { username, email } = req.body as { username?: string; email?: string };
@@ -317,7 +318,7 @@ router.put('/:id', async (req: Request, res: Response) => {
  *             schema:
  *               $ref: '#/components/schemas/ErrorResponse'
  */
-router.delete('/:id', async (req: Request, res: Response) => {
+router.delete('/:id', requirePermissions(['user:delete']), async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
     logger.info(`Deleting user with id: ${id}`);
@@ -337,6 +338,88 @@ router.delete('/:id', async (req: Request, res: Response) => {
     res.status(500).json({ error: 'Failed to delete user' });
   }
 });
+
+/**
+ * @swagger
+ * /users/{id}/change-password:
+ *   post:
+ *     summary: Change user password
+ *     description: Change a user's password by verifying the current password
+ *     tags:
+ *       - Users
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: integer
+ *         description: The user ID
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - currentPassword
+ *               - newPassword
+ *             properties:
+ *               currentPassword:
+ *                 type: string
+ *               newPassword:
+ *                 type: string
+ *     responses:
+ *       200:
+ *         description: Password changed successfully
+ *       400:
+ *         description: Bad request - missing fields or incorrect current password
+ *       404:
+ *         description: User not found
+ *       500:
+ *         description: Server error
+ */
+router.post(
+  '/:id/change-password',
+  requirePermissions(['user:update']),
+  async (req: Request, res: Response) => {
+    try {
+      const { id } = req.params;
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+      const { currentPassword, newPassword } = req.body;
+
+      // Validate required fields
+      if (!currentPassword || !newPassword) {
+        return res.status(400).json({
+          error: 'Current password and new password are required',
+        });
+      }
+
+      // Find user
+      const user = await User.findByPk(id);
+      if (!user) {
+        return res.status(404).json({ error: 'User not found' });
+      }
+
+      // Verify current password
+
+      const isValidPassword = await bcrypt.compare(currentPassword as string, user.passwordHash);
+      if (!isValidPassword) {
+        return res.status(400).json({ error: 'Current password is incorrect' });
+      }
+
+      // Hash new password and update
+
+      const hashedPassword = await bcrypt.hash(newPassword as string, SALT_ROUNDS);
+      user.passwordHash = hashedPassword;
+      await user.save();
+      logger.info(`Password changed successfully for user: ${id}`);
+      res.json({ message: 'Password changed successfully' });
+    } catch (error) {
+      logger.error('Error changing password: %o', error);
+      res.status(500).json({ error: 'Failed to change password' });
+    }
+  }
+);
 
 /**
  * @swagger
@@ -375,7 +458,7 @@ router.delete('/:id', async (req: Request, res: Response) => {
  *             schema:
  *               $ref: '#/components/schemas/ErrorResponse'
  */
-router.get('/:id/roles', async (req: Request, res: Response) => {
+router.get('/:id/roles', requirePermissions(['user:read']), async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
     logger.info(`Fetching roles for user: ${id}`);
@@ -458,48 +541,52 @@ router.get('/:id/roles', async (req: Request, res: Response) => {
  *             schema:
  *               $ref: '#/components/schemas/ErrorResponse'
  */
-router.post('/:id/roles', async (req: Request, res: Response) => {
-  try {
-    const { id } = req.params;
-    const { roleId } = req.body as { roleId?: string };
+router.post(
+  '/:id/roles',
+  requirePermissions(['roles:write']),
+  async (req: Request, res: Response) => {
+    try {
+      const { id } = req.params;
+      const { roleId } = req.body as { roleId?: string };
 
-    logger.info(`Assigning role ${roleId} to user ${id}`);
+      logger.info(`Assigning role ${roleId} to user ${id}`);
 
-    if (!roleId) {
-      return res.status(400).json({ error: 'roleId is required' });
+      if (!roleId) {
+        return res.status(400).json({ error: 'roleId is required' });
+      }
+
+      // Check if user exists
+      const user = await User.findByPk(id);
+      if (!user) {
+        return res.status(404).json({ error: 'User not found' });
+      }
+
+      // Check if role exists
+      const role = await Role.findByPk(roleId);
+      if (!role) {
+        return res.status(404).json({ error: 'Role not found' });
+      }
+
+      // Check if user already has this role
+      const existingAssignment = await UserRoleXRef.findOne({
+        where: { userId: id, roleId: roleId },
+      });
+
+      if (existingAssignment) {
+        return res.status(400).json({ error: 'User already has this role' });
+      }
+
+      // Assign role
+      await UserRoleXRef.create({ userId: parseInt(id), roleId: parseInt(roleId) });
+
+      logger.info(`Role assigned successfully to user ${id}`);
+      res.status(201).json({ message: 'Role assigned successfully' });
+    } catch (error) {
+      logger.error('Error assigning role: %o', error);
+      res.status(500).json({ error: 'Failed to assign role' });
     }
-
-    // Check if user exists
-    const user = await User.findByPk(id);
-    if (!user) {
-      return res.status(404).json({ error: 'User not found' });
-    }
-
-    // Check if role exists
-    const role = await Role.findByPk(roleId);
-    if (!role) {
-      return res.status(404).json({ error: 'Role not found' });
-    }
-
-    // Check if user already has this role
-    const existingAssignment = await UserRoleXRef.findOne({
-      where: { userId: id, roleId: roleId },
-    });
-
-    if (existingAssignment) {
-      return res.status(400).json({ error: 'User already has this role' });
-    }
-
-    // Assign role
-    await UserRoleXRef.create({ userId: parseInt(id), roleId: parseInt(roleId) });
-
-    logger.info(`Role assigned successfully to user ${id}`);
-    res.status(201).json({ message: 'Role assigned successfully' });
-  } catch (error) {
-    logger.error('Error assigning role: %o', error);
-    res.status(500).json({ error: 'Failed to assign role' });
   }
-});
+);
 
 /**
  * @swagger
@@ -546,128 +633,31 @@ router.post('/:id/roles', async (req: Request, res: Response) => {
  *             schema:
  *               $ref: '#/components/schemas/ErrorResponse'
  */
-router.delete('/:id/roles/:roleId', async (req: Request, res: Response) => {
-  try {
-    const { id, roleId } = req.params;
-    logger.info(`Removing role ${roleId} from user ${id}`);
+router.delete(
+  '/:id/roles/:roleId',
+  requirePermissions(['roles:write']),
+  async (req: Request, res: Response) => {
+    try {
+      const { id, roleId } = req.params;
+      logger.info(`Removing role ${roleId} from user ${id}`);
 
-    const assignment = await UserRoleXRef.findOne({
-      where: { userId: id, roleId },
-    });
+      const assignment = await UserRoleXRef.findOne({
+        where: { userId: id, roleId },
+      });
 
-    if (!assignment) {
-      return res.status(404).json({ error: 'Role assignment not found' });
+      if (!assignment) {
+        return res.status(404).json({ error: 'Role assignment not found' });
+      }
+
+      await assignment.destroy();
+
+      logger.info(`Role removed successfully from user ${id}`);
+      res.json({ message: 'Role removed successfully' });
+    } catch (error) {
+      logger.error('Error removing role: %o', error);
+      res.status(500).json({ error: 'Failed to remove role' });
     }
-
-    await assignment.destroy();
-
-    logger.info(`Role removed successfully from user ${id}`);
-    res.json({ message: 'Role removed successfully' });
-  } catch (error) {
-    logger.error('Error removing role: %o', error);
-    res.status(500).json({ error: 'Failed to remove role' });
   }
-});
-
-/**
- * @swagger
- * /users/{id}/change-password:
- *   post:
- *     summary: Change user password
- *     description: Update a user's password (requires current password)
- *     tags:
- *       - Users
- *     parameters:
- *       - in: path
- *         name: id
- *         required: true
- *         schema:
- *           type: integer
- *         description: The user ID
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             type: object
- *             required:
- *               - currentPassword
- *               - newPassword
- *             properties:
- *               currentPassword:
- *                 type: string
- *                 format: password
- *               newPassword:
- *                 type: string
- *                 format: password
- *     responses:
- *       200:
- *         description: Password changed successfully
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 message:
- *                   type: string
- *                   example: Password changed successfully
- *       400:
- *         description: Invalid input or incorrect current password
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/ErrorResponse'
- *       404:
- *         description: User not found
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/ErrorResponse'
- *       500:
- *         description: Server error
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/ErrorResponse'
- */
-router.post('/:id/change-password', async (req: Request, res: Response) => {
-  try {
-    const { id } = req.params;
-    const { currentPassword, newPassword } = req.body as {
-      currentPassword?: string;
-      newPassword?: string;
-    };
-
-    logger.info(`Changing password for user: ${id}`);
-
-    if (!currentPassword || !newPassword) {
-      return res.status(400).json({ error: 'Current password and new password are required' });
-    }
-
-    const user = await User.findByPk(id);
-
-    if (!user) {
-      return res.status(404).json({ error: 'User not found' });
-    }
-
-    // Verify current password
-    const isPasswordValid = await bcrypt.compare(currentPassword, user.passwordHash);
-
-    if (!isPasswordValid) {
-      return res.status(400).json({ error: 'Current password is incorrect' });
-    }
-
-    // Hash and update new password
-    const newPasswordHash = await bcrypt.hash(newPassword, SALT_ROUNDS);
-    user.passwordHash = newPasswordHash;
-    await user.save();
-
-    logger.info(`Password changed successfully for user: ${id}`);
-    res.json({ message: 'Password changed successfully' });
-  } catch (error) {
-    logger.error('Error changing password: %o', error);
-    res.status(500).json({ error: 'Failed to change password' });
-  }
-});
+);
 
 export default router;

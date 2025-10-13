@@ -229,25 +229,101 @@ Admin (All 61)
     └── Moderator (34) - User + Content Moderation
 ```
 
-## Usage in Code
+## Middleware Implementation
 
-### Checking Permissions
+### Authentication & Authorization Flow
+
+The application uses a two-step middleware approach for securing endpoints:
+
+1. **JWT Authentication** (`authenticateJWT`) - Validates the JWT token and extracts user information
+2. **Permission Check** (`requirePermissions`) - Verifies the user has required permissions
+
+### authenticateJWT Middleware
+
+Located in: `api/middleware/authenticateJWT.ts`
+
+**Purpose:** Validates JWT tokens and attaches user information to the request object.
 
 ```typescript
-// Example middleware for checking permissions
-const requirePermission = (resource: string, action: string) => {
-  return async (req, res, next) => {
-    const user = req.user;
-    const requiredPermission = `${resource}:${action}`;
+import { authenticateJWT } from '../middleware/authenticateJWT';
 
-    // Check if user has permission through their roles
-    const hasPermission = await checkUserPermission(user.id, requiredPermission);
+// Protects endpoint with JWT authentication
+router.get('/protected', authenticateJWT, handler);
+```
 
-    if (!hasPermission) {
-      return res.status(403).json({ error: 'Insufficient permissions' });
-    }
+**Features:**
 
-    next();
+- Validates JWT token from `Authorization: Bearer <token>` header
+- Returns 401 if token is missing, invalid, or expired
+- Extracts user ID, email, and roles from token payload
+- Attaches user info to `req.user` for downstream middleware
+
+**Optional Authentication:**
+
+```typescript
+import { optionalAuthenticateJWT } from '../middleware/authenticateJWT';
+
+// Endpoint works with or without authentication
+router.get('/public', optionalAuthenticateJWT, handler);
+```
+
+### requirePermissions Middleware
+
+Located in: `api/middleware/checkPermissions.ts`
+
+**Purpose:** Checks if authenticated user has required permissions for the endpoint.
+
+**Important:** Must be used **after** `authenticateJWT` middleware!
+
+```typescript
+import { authenticateJWT } from '../middleware/authenticateJWT';
+import { requirePermissions } from '../middleware/checkPermissions';
+
+// Protect endpoint with both authentication AND permission check
+router.get('/comics', authenticateJWT, requirePermissions(['comics:list']), handler);
+```
+
+**Features:**
+
+- Queries user's roles and associated permissions
+- Returns 401 if user is not authenticated (authenticateJWT missing)
+- Returns 403 if user lacks required permissions
+- Supports multiple permission requirements (user must have ALL)
+
+### Usage Examples
+
+#### Single Permission
+
+```typescript
+router.post('/comics', authenticateJWT, requirePermissions(['comics:create']), createComicHandler);
+```
+
+#### Multiple Permissions (AND logic)
+
+```typescript
+router.delete(
+  '/comics/:id',
+  authenticateJWT,
+  requirePermissions(['comics:delete', 'comics:admin']),
+  deleteComicHandler
+);
+```
+
+#### Checking Permissions Manually
+
+```typescript
+// Inside a route handler
+const user = req.user; // Set by authenticateJWT
+const userRoles = user.roles; // Array of role IDs
+
+// Query permissions for user's roles
+const rolePermissions = await RolePermissionXRef.findAll({
+  where: { roleId: userRoles },
+  include: [{ model: Permission, attributes: ['name'] }]
+});
+
+const permissions = rolePermissions.map(rp => rp.Permission.name);
+const hasPermission = permissions.includes('comics:create');
   };
 };
 

@@ -1,6 +1,8 @@
 import { Router, Request, Response } from 'express';
 import Comic from '../models/Comic';
 import logger from '../utils/logger';
+import { authenticateJWT } from '../middleware/authenticateJWT';
+import { requirePermissions } from '../middleware/checkPermissions';
 
 const router = Router();
 
@@ -42,16 +44,21 @@ const router = Router();
  *       500:
  *         description: Server error
  */
-router.get('/', async (req: Request, res: Response) => {
-  try {
-    logger.info('Fetching all comics');
-    const comics = await Comic.findAll();
-    res.json(comics);
-  } catch (error) {
-    logger.error('Error fetching comics: %o', error);
-    res.status(500).json({ error: 'Failed to fetch comics' });
+router.get(
+  '/',
+  authenticateJWT,
+  requirePermissions(['comics:list']),
+  async (req: Request, res: Response) => {
+    try {
+      logger.info('Fetching all comics');
+      const comics = await Comic.findAll();
+      res.json(comics);
+    } catch (error) {
+      logger.error('Error fetching comics: %o', error);
+      res.status(500).json({ error: 'Failed to fetch comics' });
+    }
   }
-});
+);
 
 /**
  * @swagger
@@ -98,22 +105,27 @@ router.get('/', async (req: Request, res: Response) => {
  *       500:
  *         description: Server error
  */
-router.get('/:id', async (req: Request, res: Response) => {
-  try {
-    const { id } = req.params;
-    logger.info(`Fetching comic with id: ${id}`);
-    const comic = await Comic.findByPk(id);
+router.get(
+  '/:id',
+  authenticateJWT,
+  requirePermissions(['comics:read']),
+  async (req: Request, res: Response) => {
+    try {
+      const { id } = req.params;
+      logger.info(`Fetching comic with id: ${id}`);
+      const comic = await Comic.findByPk(id);
 
-    if (!comic) {
-      return res.status(404).json({ error: 'Comic not found' });
+      if (!comic) {
+        return res.status(404).json({ error: 'Comic not found' });
+      }
+
+      res.json(comic);
+    } catch (error) {
+      logger.error('Error fetching comic: %o', error);
+      res.status(500).json({ error: 'Failed to fetch comic' });
     }
-
-    res.json(comic);
-  } catch (error) {
-    logger.error('Error fetching comic: %o', error);
-    res.status(500).json({ error: 'Failed to fetch comic' });
   }
-});
+);
 
 /**
  * @swagger
@@ -156,39 +168,45 @@ router.get('/:id', async (req: Request, res: Response) => {
  *       500:
  *         description: Server error
  */
-router.post('/', async (req: Request, res: Response) => {
-  try {
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-    const { title, authorId, description, imageUrl, pages, publisherId, publishedDate } = req.body;
+router.post(
+  '/',
+  authenticateJWT,
+  requirePermissions(['comics:write']),
+  async (req: Request, res: Response) => {
+    try {
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+      const { title, authorId, description, imageUrl, pages, publisherId, publishedDate } =
+        req.body;
 
-    if (!title) {
-      return res.status(400).json({ error: 'Title is required' });
+      if (!title) {
+        return res.status(400).json({ error: 'Title is required' });
+      }
+
+      logger.info(`Creating new comic: ${title as string}`);
+      const comic = await Comic.create({
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+        title,
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+        authorId,
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+        description,
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+        imageUrl,
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+        pages,
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+        publisherId,
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+        publishedDate,
+      });
+
+      res.status(201).json(comic);
+    } catch (error) {
+      logger.error('Error creating comic: %o', error);
+      res.status(500).json({ error: 'Failed to create comic' });
     }
-
-    logger.info(`Creating new comic: ${title as string}`);
-    const comic = await Comic.create({
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-      title,
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-      authorId,
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-      description,
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-      imageUrl,
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-      pages,
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-      publisherId,
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-      publishedDate,
-    });
-
-    res.status(201).json(comic);
-  } catch (error) {
-    logger.error('Error creating comic: %o', error);
-    res.status(500).json({ error: 'Failed to create comic' });
   }
-});
+);
 
 /**
  * @swagger
@@ -235,42 +253,48 @@ router.post('/', async (req: Request, res: Response) => {
  *       500:
  *         description: Server error
  */
-router.put('/:id', async (req: Request, res: Response) => {
-  try {
-    const { id } = req.params;
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-    const { title, authorId, description, imageUrl, pages, publisherId, publishedDate } = req.body;
+router.put(
+  '/:id',
+  authenticateJWT,
+  requirePermissions(['comics:update']),
+  async (req: Request, res: Response) => {
+    try {
+      const { id } = req.params;
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+      const { title, authorId, description, imageUrl, pages, publisherId, publishedDate } =
+        req.body;
 
-    logger.info(`Updating comic with id: ${id}`);
-    const comic = await Comic.findByPk(id);
+      logger.info(`Updating comic with id: ${id}`);
+      const comic = await Comic.findByPk(id);
 
-    if (!comic) {
-      return res.status(404).json({ error: 'Comic not found' });
+      if (!comic) {
+        return res.status(404).json({ error: 'Comic not found' });
+      }
+
+      await comic.update({
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+        title,
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+        authorId,
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+        description,
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+        imageUrl,
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+        pages,
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+        publisherId,
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+        publishedDate,
+      });
+
+      res.json(comic);
+    } catch (error) {
+      logger.error('Error updating comic: %o', error);
+      res.status(500).json({ error: 'Failed to update comic' });
     }
-
-    await comic.update({
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-      title,
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-      authorId,
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-      description,
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-      imageUrl,
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-      pages,
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-      publisherId,
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-      publishedDate,
-    });
-
-    res.json(comic);
-  } catch (error) {
-    logger.error('Error updating comic: %o', error);
-    res.status(500).json({ error: 'Failed to update comic' });
   }
-});
+);
 
 /**
  * @swagger
@@ -295,22 +319,27 @@ router.put('/:id', async (req: Request, res: Response) => {
  *       500:
  *         description: Server error
  */
-router.delete('/:id', async (req: Request, res: Response) => {
-  try {
-    const { id } = req.params;
-    logger.info(`Deleting comic with id: ${id}`);
-    const comic = await Comic.findByPk(id);
+router.delete(
+  '/:id',
+  authenticateJWT,
+  requirePermissions(['comics:delete']),
+  async (req: Request, res: Response) => {
+    try {
+      const { id } = req.params;
+      logger.info(`Deleting comic with id: ${id}`);
+      const comic = await Comic.findByPk(id);
 
-    if (!comic) {
-      return res.status(404).json({ error: 'Comic not found' });
+      if (!comic) {
+        return res.status(404).json({ error: 'Comic not found' });
+      }
+
+      await comic.destroy();
+      res.json({ message: 'Comic deleted successfully' });
+    } catch (error) {
+      logger.error('Error deleting comic: %o', error);
+      res.status(500).json({ error: 'Failed to delete comic' });
     }
-
-    await comic.destroy();
-    res.json({ message: 'Comic deleted successfully' });
-  } catch (error) {
-    logger.error('Error deleting comic: %o', error);
-    res.status(500).json({ error: 'Failed to delete comic' });
   }
-});
+);
 
 export default router;
