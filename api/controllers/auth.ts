@@ -1,5 +1,6 @@
 import { Router, Request, Response } from 'express';
 import User from '../models/User';
+import UserRoleXRef from '../models/UserRoleXRef';
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
 import crypto from 'crypto';
@@ -104,7 +105,23 @@ router.post('/login', async (req: Request, res: Response) => {
       return res.status(401).json({ message: 'Authentication failed. Password is incorrect.' });
     }
 
-    const payload = { id: user.id, email: user.email };
+    // Find user's role objects with role IDs
+    const roleIds = await UserRoleXRef.findAll({
+      where: { userId: user.id },
+      attributes: ['roleId'],
+    });
+
+    // Seperate out the user role IDs from the objects
+    const userRoleIds = roleIds.map((r) => r.roleId);
+
+    // Setup JWT payload, including custom roles claim
+    const payload = {
+      id: user.id,
+      email: user.email,
+      roles: userRoleIds,
+    };
+
+    // Sign token with 30 day expiration
     const token = jwt.sign(payload, secret_key, { expiresIn: '30d' });
 
     res.cookie('access_token', token, {
