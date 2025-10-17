@@ -1,7 +1,7 @@
 import { Router, Request, Response } from 'express';
 import User from '../models/User';
 import UserRoleXRef from '../models/UserRoleXRef';
-import jwt from 'jsonwebtoken';
+import jwt, { JwtPayload } from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
 import crypto from 'crypto';
 import logger from '../utils/logger';
@@ -116,7 +116,7 @@ router.post('/login', async (req: Request, res: Response) => {
     const userRoleIds = roleIds.map((r) => r.roleId);
 
     // Setup JWT payload, including custom roles claim
-    const payload = {
+    const payload: JwtPayload = {
       id: user.id,
       email: user.email,
       roles: userRoleIds,
