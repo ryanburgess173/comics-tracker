@@ -2,7 +2,7 @@ import { Router, Request, Response } from 'express';
 import Comic from '../models/Comic';
 import logger from '../utils/logger';
 import { authenticateJWT } from '../middleware/authenticateJWT';
-import { requirePermissions } from '../middleware/checkPermissions';
+import { authorize } from '../middleware/checkPermissions';
 
 const router = Router();
 
@@ -11,9 +11,13 @@ const router = Router();
  * /comics:
  *   get:
  *     summary: Get all comics
- *     description: Retrieve a list of all comics in the database
+ *     description: |
+ *       Retrieve a list of all comics in the database.
+ *       Requires the 'comics:list' permission.
  *     tags:
  *       - Comics
+ *     security:
+ *       - bearerAuth: []
  *     responses:
  *       200:
  *         description: List of comics retrieved successfully
@@ -41,13 +45,17 @@ const router = Router();
  *                   publishedDate:
  *                     type: string
  *                     format: date
+ *       401:
+ *         description: Unauthorized - Authentication required
+ *       403:
+ *         description: Forbidden - Insufficient permissions (requires 'comics:list')
  *       500:
  *         description: Server error
  */
 router.get(
   '/',
   authenticateJWT,
-  requirePermissions(['comics:list']),
+  ...authorize(['comics:list']),
   async (req: Request, res: Response) => {
     try {
       logger.info('Fetching all comics');
@@ -65,9 +73,13 @@ router.get(
  * /comics/{id}:
  *   get:
  *     summary: Get a comic by ID
- *     description: Retrieve a specific comic by its ID
+ *     description: |
+ *       Retrieve a specific comic by its ID.
+ *       Requires the 'comics:read' permission.
  *     tags:
  *       - Comics
+ *     security:
+ *       - bearerAuth: []
  *     parameters:
  *       - in: path
  *         name: id
@@ -100,6 +112,10 @@ router.get(
  *                 publishedDate:
  *                   type: string
  *                   format: date
+ *       401:
+ *         description: Unauthorized - Authentication required
+ *       403:
+ *         description: Forbidden - Insufficient permissions (requires 'comics:read')
  *       404:
  *         description: Comic not found
  *       500:
@@ -108,7 +124,7 @@ router.get(
 router.get(
   '/:id',
   authenticateJWT,
-  requirePermissions(['comics:read']),
+  ...authorize(['comics:read']),
   async (req: Request, res: Response) => {
     try {
       const { id } = req.params;
@@ -132,9 +148,13 @@ router.get(
  * /comics:
  *   post:
  *     summary: Create a new comic
- *     description: Add a new comic to the database
+ *     description: |
+ *       Add a new comic to the database.
+ *       Requires the 'comics:write' permission.
  *     tags:
  *       - Comics
+ *     security:
+ *       - bearerAuth: []
  *     requestBody:
  *       required: true
  *       content:
@@ -165,13 +185,17 @@ router.get(
  *         description: Comic created successfully
  *       400:
  *         description: Invalid input
+ *       401:
+ *         description: Unauthorized - Authentication required
+ *       403:
+ *         description: Forbidden - Insufficient permissions (requires 'comics:write')
  *       500:
  *         description: Server error
  */
 router.post(
   '/',
   authenticateJWT,
-  requirePermissions(['comics:write']),
+  ...authorize(['comics:write']),
   async (req: Request, res: Response) => {
     try {
       // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
@@ -213,9 +237,13 @@ router.post(
  * /comics/{id}:
  *   put:
  *     summary: Update a comic
- *     description: Update an existing comic by ID
+ *     description: |
+ *       Update an existing comic by ID.
+ *       Requires the 'comics:update' permission.
  *     tags:
  *       - Comics
+ *     security:
+ *       - bearerAuth: []
  *     parameters:
  *       - in: path
  *         name: id
@@ -248,6 +276,10 @@ router.post(
  *     responses:
  *       200:
  *         description: Comic updated successfully
+ *       401:
+ *         description: Unauthorized - Authentication required
+ *       403:
+ *         description: Forbidden - Insufficient permissions (requires 'comics:update')
  *       404:
  *         description: Comic not found
  *       500:
@@ -256,7 +288,7 @@ router.post(
 router.put(
   '/:id',
   authenticateJWT,
-  requirePermissions(['comics:update']),
+  ...authorize(['comics:update']),
   async (req: Request, res: Response) => {
     try {
       const { id } = req.params;
@@ -301,9 +333,13 @@ router.put(
  * /comics/{id}:
  *   delete:
  *     summary: Delete a comic
- *     description: Delete a comic by ID
+ *     description: |
+ *       Delete a comic by ID.
+ *       Requires the 'comics:delete' permission.
  *     tags:
  *       - Comics
+ *     security:
+ *       - bearerAuth: []
  *     parameters:
  *       - in: path
  *         name: id
@@ -314,6 +350,10 @@ router.put(
  *     responses:
  *       200:
  *         description: Comic deleted successfully
+ *       401:
+ *         description: Unauthorized - Authentication required
+ *       403:
+ *         description: Forbidden - Insufficient permissions (requires 'comics:delete')
  *       404:
  *         description: Comic not found
  *       500:
@@ -322,7 +362,7 @@ router.put(
 router.delete(
   '/:id',
   authenticateJWT,
-  requirePermissions(['comics:delete']),
+  ...authorize(['comics:delete']),
   async (req: Request, res: Response) => {
     try {
       const { id } = req.params;

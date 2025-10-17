@@ -43,10 +43,12 @@ jest.mock('./middleware/checkPermissions', () => ({
     // User already set by authenticateJWT mock above
     next();
   }),
-  requireAnyPermission: jest.fn(() => (req: any, res: any, next: any) => {
-    // User already set by authenticateJWT mock above
-    next();
-  }),
+  authorize: jest.fn(() => [
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-return
+    jest.fn((req: any, res: any, next: any) => next()), // authenticateJWT mock
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-return
+    jest.fn((req: any, res: any, next: any) => next()), // requirePermissions mock
+  ]),
 }));
 /* eslint-enable @typescript-eslint/no-explicit-any, @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call */
 

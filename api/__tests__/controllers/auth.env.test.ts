@@ -1,3 +1,14 @@
+// Mock the checkPermissions module before it's imported
+/* eslint-disable @typescript-eslint/no-unsafe-return, @typescript-eslint/no-unsafe-call */
+jest.mock('../../middleware/checkPermissions', () => ({
+  authorize: jest.fn(() => [
+    jest.fn((req, res, next) => next()),
+    jest.fn((req, res, next) => next()),
+  ]),
+  requirePermissions: jest.fn(() => jest.fn((req, res, next) => next())),
+}));
+/* eslint-enable @typescript-eslint/no-unsafe-return, @typescript-eslint/no-unsafe-call */
+
 describe('Auth Controller Environment', () => {
   let originalEnv: NodeJS.ProcessEnv;
 

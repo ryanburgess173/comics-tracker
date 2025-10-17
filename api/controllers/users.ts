@@ -4,7 +4,7 @@ import Role from '../models/Role';
 import UserRoleXRef from '../models/UserRoleXRef';
 import bcrypt from 'bcrypt';
 import logger from '../utils/logger';
-import { requirePermissions } from '../middleware/checkPermissions';
+import { authorize } from '../middleware/checkPermissions';
 
 const router = Router();
 const SALT_ROUNDS = 10;
@@ -14,9 +14,13 @@ const SALT_ROUNDS = 10;
  * /users:
  *   get:
  *     summary: Get all users
- *     description: Retrieve a list of all users in the system
+ *     description: |
+ *       Retrieve a list of all users in the system.
+ *       Requires the 'users:list' permission.
  *     tags:
  *       - Users
+ *     security:
+ *       - bearerAuth: []
  *     responses:
  *       200:
  *         description: List of users retrieved successfully
@@ -26,6 +30,10 @@ const SALT_ROUNDS = 10;
  *               type: array
  *               items:
  *                 $ref: '#/components/schemas/User'
+ *       401:
+ *         description: Unauthorized - Authentication required
+ *       403:
+ *         description: Forbidden - Insufficient permissions (requires 'users:list')
  *       500:
  *         description: Server error
  *         content:
@@ -33,7 +41,7 @@ const SALT_ROUNDS = 10;
  *             schema:
  *               $ref: '#/components/schemas/ErrorResponse'
  */
-router.get('/', requirePermissions(['user:list']), async (req: Request, res: Response) => {
+router.get('/', ...authorize(['users:list']), async (req: Request, res: Response) => {
   try {
     logger.info('Fetching all users');
     const users = await User.findAll({
@@ -51,9 +59,13 @@ router.get('/', requirePermissions(['user:list']), async (req: Request, res: Res
  * /users/{id}:
  *   get:
  *     summary: Get a user by ID
- *     description: Retrieve a specific user by their ID
+ *     description: |
+ *       Retrieve a specific user by their ID.
+ *       Requires the 'user:read' permission.
  *     tags:
  *       - Users
+ *     security:
+ *       - bearerAuth: []
  *     parameters:
  *       - in: path
  *         name: id
@@ -68,6 +80,10 @@ router.get('/', requirePermissions(['user:list']), async (req: Request, res: Res
  *           application/json:
  *             schema:
  *               $ref: '#/components/schemas/User'
+ *       401:
+ *         description: Unauthorized - Authentication required
+ *       403:
+ *         description: Forbidden - Insufficient permissions (requires 'user:read')
  *       404:
  *         description: User not found
  *         content:
@@ -81,7 +97,7 @@ router.get('/', requirePermissions(['user:list']), async (req: Request, res: Res
  *             schema:
  *               $ref: '#/components/schemas/ErrorResponse'
  */
-router.get('/:id', requirePermissions(['user:read']), async (req: Request, res: Response) => {
+router.get('/:id', ...authorize(['user:read']), async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
     logger.info(`Fetching user with id: ${id}`);
@@ -106,9 +122,13 @@ router.get('/:id', requirePermissions(['user:read']), async (req: Request, res: 
  * /users:
  *   post:
  *     summary: Create a new user
- *     description: Add a new user to the system
+ *     description: |
+ *       Add a new user to the system.
+ *       Requires the 'user:create' permission.
  *     tags:
  *       - Users
+ *     security:
+ *       - bearerAuth: []
  *     requestBody:
  *       required: true
  *       content:
@@ -144,6 +164,10 @@ router.get('/:id', requirePermissions(['user:read']), async (req: Request, res: 
  *           application/json:
  *             schema:
  *               $ref: '#/components/schemas/ErrorResponse'
+ *       401:
+ *         description: Unauthorized - Authentication required
+ *       403:
+ *         description: Forbidden - Insufficient permissions (requires 'user:create')
  *       500:
  *         description: Server error
  *         content:
@@ -151,7 +175,7 @@ router.get('/:id', requirePermissions(['user:read']), async (req: Request, res: 
  *             schema:
  *               $ref: '#/components/schemas/ErrorResponse'
  */
-router.post('/', requirePermissions(['user:create']), async (req: Request, res: Response) => {
+router.post('/', ...authorize(['user:create']), async (req: Request, res: Response) => {
   try {
     const { username, email, password } = req.body as {
       username?: string;
@@ -204,9 +228,13 @@ router.post('/', requirePermissions(['user:create']), async (req: Request, res: 
  * /users/{id}:
  *   put:
  *     summary: Update a user
- *     description: Update an existing user's information
+ *     description: |
+ *       Update an existing user's information.
+ *       Requires the 'user:update' permission.
  *     tags:
  *       - Users
+ *     security:
+ *       - bearerAuth: []
  *     parameters:
  *       - in: path
  *         name: id
@@ -233,6 +261,10 @@ router.post('/', requirePermissions(['user:create']), async (req: Request, res: 
  *           application/json:
  *             schema:
  *               $ref: '#/components/schemas/User'
+ *       401:
+ *         description: Unauthorized - Authentication required
+ *       403:
+ *         description: Forbidden - Insufficient permissions (requires 'user:update')
  *       404:
  *         description: User not found
  *         content:
@@ -246,7 +278,7 @@ router.post('/', requirePermissions(['user:create']), async (req: Request, res: 
  *             schema:
  *               $ref: '#/components/schemas/ErrorResponse'
  */
-router.put('/:id', requirePermissions(['user:update']), async (req: Request, res: Response) => {
+router.put('/:id', ...authorize(['user:update']), async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
     const { username, email } = req.body as { username?: string; email?: string };
@@ -284,9 +316,13 @@ router.put('/:id', requirePermissions(['user:update']), async (req: Request, res
  * /users/{id}:
  *   delete:
  *     summary: Delete a user
- *     description: Remove a user from the system
+ *     description: |
+ *       Remove a user from the system.
+ *       Requires the 'user:delete' permission.
  *     tags:
  *       - Users
+ *     security:
+ *       - bearerAuth: []
  *     parameters:
  *       - in: path
  *         name: id
@@ -305,6 +341,10 @@ router.put('/:id', requirePermissions(['user:update']), async (req: Request, res
  *                 message:
  *                   type: string
  *                   example: User deleted successfully
+ *       401:
+ *         description: Unauthorized - Authentication required
+ *       403:
+ *         description: Forbidden - Insufficient permissions (requires 'user:delete')
  *       404:
  *         description: User not found
  *         content:
@@ -318,7 +358,7 @@ router.put('/:id', requirePermissions(['user:update']), async (req: Request, res
  *             schema:
  *               $ref: '#/components/schemas/ErrorResponse'
  */
-router.delete('/:id', requirePermissions(['user:delete']), async (req: Request, res: Response) => {
+router.delete('/:id', ...authorize(['user:delete']), async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
     logger.info(`Deleting user with id: ${id}`);
@@ -344,9 +384,13 @@ router.delete('/:id', requirePermissions(['user:delete']), async (req: Request, 
  * /users/{id}/change-password:
  *   post:
  *     summary: Change user password
- *     description: Change a user's password by verifying the current password
+ *     description: |
+ *       Change a user's password by verifying the current password.
+ *       Requires the 'user:update' permission.
  *     tags:
  *       - Users
+ *     security:
+ *       - bearerAuth: []
  *     parameters:
  *       - in: path
  *         name: id
@@ -373,6 +417,10 @@ router.delete('/:id', requirePermissions(['user:delete']), async (req: Request, 
  *         description: Password changed successfully
  *       400:
  *         description: Bad request - missing fields or incorrect current password
+ *       401:
+ *         description: Unauthorized - Authentication required
+ *       403:
+ *         description: Forbidden - Insufficient permissions (requires 'user:update')
  *       404:
  *         description: User not found
  *       500:
@@ -380,7 +428,7 @@ router.delete('/:id', requirePermissions(['user:delete']), async (req: Request, 
  */
 router.post(
   '/:id/change-password',
-  requirePermissions(['user:update']),
+  ...authorize(['user:update']),
   async (req: Request, res: Response) => {
     try {
       const { id } = req.params;
@@ -426,9 +474,13 @@ router.post(
  * /users/{id}/roles:
  *   get:
  *     summary: Get user's roles
- *     description: Retrieve all roles assigned to a specific user
+ *     description: |
+ *       Retrieve all roles assigned to a specific user.
+ *       Requires the 'user:read' permission.
  *     tags:
  *       - Users
+ *     security:
+ *       - bearerAuth: []
  *     parameters:
  *       - in: path
  *         name: id
@@ -445,6 +497,10 @@ router.post(
  *               type: array
  *               items:
  *                 $ref: '#/components/schemas/Role'
+ *       401:
+ *         description: Unauthorized - Authentication required
+ *       403:
+ *         description: Forbidden - Insufficient permissions (requires 'user:read')
  *       404:
  *         description: User not found
  *         content:
@@ -458,7 +514,7 @@ router.post(
  *             schema:
  *               $ref: '#/components/schemas/ErrorResponse'
  */
-router.get('/:id/roles', requirePermissions(['user:read']), async (req: Request, res: Response) => {
+router.get('/:id/roles', ...authorize(['user:read']), async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
     logger.info(`Fetching roles for user: ${id}`);
@@ -489,9 +545,13 @@ router.get('/:id/roles', requirePermissions(['user:read']), async (req: Request,
  * /users/{id}/roles:
  *   post:
  *     summary: Assign role to user
- *     description: Add a role to a user
+ *     description: |
+ *       Add a role to a user.
+ *       Requires the 'roles:write' permission.
  *     tags:
  *       - Users
+ *     security:
+ *       - bearerAuth: []
  *     parameters:
  *       - in: path
  *         name: id
@@ -528,6 +588,10 @@ router.get('/:id/roles', requirePermissions(['user:read']), async (req: Request,
  *           application/json:
  *             schema:
  *               $ref: '#/components/schemas/ErrorResponse'
+ *       401:
+ *         description: Unauthorized - Authentication required
+ *       403:
+ *         description: Forbidden - Insufficient permissions (requires 'roles:write')
  *       404:
  *         description: User or role not found
  *         content:
@@ -541,61 +605,61 @@ router.get('/:id/roles', requirePermissions(['user:read']), async (req: Request,
  *             schema:
  *               $ref: '#/components/schemas/ErrorResponse'
  */
-router.post(
-  '/:id/roles',
-  requirePermissions(['roles:write']),
-  async (req: Request, res: Response) => {
-    try {
-      const { id } = req.params;
-      const { roleId } = req.body as { roleId?: string };
+router.post('/:id/roles', ...authorize(['roles:write']), async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+    const { roleId } = req.body as { roleId?: string };
 
-      logger.info(`Assigning role ${roleId} to user ${id}`);
+    logger.info(`Assigning role ${roleId} to user ${id}`);
 
-      if (!roleId) {
-        return res.status(400).json({ error: 'roleId is required' });
-      }
-
-      // Check if user exists
-      const user = await User.findByPk(id);
-      if (!user) {
-        return res.status(404).json({ error: 'User not found' });
-      }
-
-      // Check if role exists
-      const role = await Role.findByPk(roleId);
-      if (!role) {
-        return res.status(404).json({ error: 'Role not found' });
-      }
-
-      // Check if user already has this role
-      const existingAssignment = await UserRoleXRef.findOne({
-        where: { userId: id, roleId: roleId },
-      });
-
-      if (existingAssignment) {
-        return res.status(400).json({ error: 'User already has this role' });
-      }
-
-      // Assign role
-      await UserRoleXRef.create({ userId: parseInt(id), roleId: parseInt(roleId) });
-
-      logger.info(`Role assigned successfully to user ${id}`);
-      res.status(201).json({ message: 'Role assigned successfully' });
-    } catch (error) {
-      logger.error('Error assigning role: %o', error);
-      res.status(500).json({ error: 'Failed to assign role' });
+    if (!roleId) {
+      return res.status(400).json({ error: 'roleId is required' });
     }
+
+    // Check if user exists
+    const user = await User.findByPk(id);
+    if (!user) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+
+    // Check if role exists
+    const role = await Role.findByPk(roleId);
+    if (!role) {
+      return res.status(404).json({ error: 'Role not found' });
+    }
+
+    // Check if user already has this role
+    const existingAssignment = await UserRoleXRef.findOne({
+      where: { userId: id, roleId: roleId },
+    });
+
+    if (existingAssignment) {
+      return res.status(400).json({ error: 'User already has this role' });
+    }
+
+    // Assign role
+    await UserRoleXRef.create({ userId: parseInt(id), roleId: parseInt(roleId) });
+
+    logger.info(`Role assigned successfully to user ${id}`);
+    res.status(201).json({ message: 'Role assigned successfully' });
+  } catch (error) {
+    logger.error('Error assigning role: %o', error);
+    res.status(500).json({ error: 'Failed to assign role' });
   }
-);
+});
 
 /**
  * @swagger
  * /users/{id}/roles/{roleId}:
  *   delete:
  *     summary: Remove role from user
- *     description: Remove a role assignment from a user
+ *     description: |
+ *       Remove a role assignment from a user.
+ *       Requires the 'roles:write' permission.
  *     tags:
  *       - Users
+ *     security:
+ *       - bearerAuth: []
  *     parameters:
  *       - in: path
  *         name: id
@@ -620,6 +684,10 @@ router.post(
  *                 message:
  *                   type: string
  *                   example: Role removed successfully
+ *       401:
+ *         description: Unauthorized - Authentication required
+ *       403:
+ *         description: Forbidden - Insufficient permissions (requires 'roles:write')
  *       404:
  *         description: User, role, or assignment not found
  *         content:
@@ -635,7 +703,7 @@ router.post(
  */
 router.delete(
   '/:id/roles/:roleId',
-  requirePermissions(['roles:write']),
+  ...authorize(['roles:write']),
   async (req: Request, res: Response) => {
     try {
       const { id, roleId } = req.params;

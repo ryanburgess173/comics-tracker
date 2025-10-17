@@ -6,7 +6,7 @@ import bcrypt from 'bcrypt';
 import crypto from 'crypto';
 import logger from '../utils/logger';
 import { sendPasswordResetEmail } from '../utils/email';
-import { requirePermissions } from '../middleware/checkPermissions';
+import { authorize } from '../middleware/checkPermissions';
 
 const router = Router();
 const secret_key = process.env.JWT_SECRET as string;
@@ -22,9 +22,13 @@ const SALT_ROUNDS = 10;
  * /auth/test:
  *   get:
  *     summary: Test auth endpoint
- *     description: Simple test endpoint to verify auth routes are working
+ *     description: |
+ *       Simple test endpoint to verify auth routes are working.
+ *       Requires the 'user:read' permission.
  *     tags:
  *       - Authentication
+ *     security:
+ *       - bearerAuth: []
  *     responses:
  *       200:
  *         description: Auth route is working
@@ -36,8 +40,12 @@ const SALT_ROUNDS = 10;
  *                 message:
  *                   type: string
  *                   example: Auth route works!
+ *       401:
+ *         description: Unauthorized - Authentication required
+ *       403:
+ *         description: Forbidden - Insufficient permissions (requires 'user:read')
  */
-router.get('/test', requirePermissions(['user:read']), (req: Request, res: Response) => {
+router.get('/test', ...authorize(['user:read']), (req: Request, res: Response) => {
   logger.info('Auth test endpoint accessed');
   res.json({ message: 'Auth route works!' });
 });

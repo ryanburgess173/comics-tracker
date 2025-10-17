@@ -10,8 +10,16 @@ jest.mock('../../models/RolePermissionXRef');
 jest.mock('../../models/Permission');
 jest.mock('../../utils/logger');
 
+// Mock authenticateJWT to set req.user
+jest.mock('../../middleware/authenticateJWT', () => ({
+  authenticateJWT: (req: Request, _res: Response, next: NextFunction) => {
+    // Mock JWT middleware - it will use the pre-set req.user from tests
+    next();
+  },
+}));
+
 // Import after unmocking
-import { requirePermissions } from '../../middleware/checkPermissions';
+import { authorize } from '../../middleware/checkPermissions';
 
 interface RequestWithUser extends Request {
   user?: {
@@ -21,7 +29,7 @@ interface RequestWithUser extends Request {
   };
 }
 
-describe('requirePermissions Middleware', () => {
+describe('authorize Middleware', () => {
   let mockRequest: Partial<RequestWithUser>;
   let mockResponse: Partial<Response>;
   let nextFunction: NextFunction;
@@ -37,6 +45,22 @@ describe('requirePermissions Middleware', () => {
     nextFunction = jest.fn();
     jest.clearAllMocks();
   });
+
+  // Helper function to execute middleware array returned by authorize
+  // Since authenticateJWT is mocked to just call next(), we only need to test requirePermissions
+  /* eslint-disable @typescript-eslint/no-explicit-any, @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call */
+  const executeMiddleware = async (
+    middlewareArray: Array<any>,
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ) => {
+    // Execute only the second middleware (requirePermissions) since JWT is mocked
+    // The first middleware (authenticateJWT) is mocked to just call next()
+    const requirePermissionsMiddleware = middlewareArray[1];
+    await requirePermissionsMiddleware(req, res, next);
+  };
+  /* eslint-enable @typescript-eslint/no-explicit-any, @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call */
 
   it('should call next() when user has all required permissions', async () => {
     // Setup
@@ -55,13 +79,18 @@ describe('requirePermissions Middleware', () => {
     (RolePermissionXRef.findAll as jest.Mock).mockResolvedValue(mockRolePermissions);
 
     // Execute
-    const middleware = requirePermissions(['comics:read', 'comics:write']);
-    await middleware(mockRequest as Request, mockResponse as Response, nextFunction);
+    const middlewareArray = authorize(['comics:read', 'comics:write']);
+    await executeMiddleware(
+      middlewareArray,
+      mockRequest as Request,
+      mockResponse as Response,
+      nextFunction
+    );
 
     // Assert
     expect(RolePermissionXRef.findAll).toHaveBeenCalledWith({
       where: { roleId: [1, 2] },
-      include: [{ model: Permission, attributes: ['name'] }],
+      include: [{ model: Permission, as: 'Permission', attributes: ['name'] }],
     });
     expect(nextFunction).toHaveBeenCalled();
     expect(mockResponse.status).not.toHaveBeenCalled();
@@ -76,8 +105,13 @@ describe('requirePermissions Middleware', () => {
     };
 
     // Execute
-    const middleware = requirePermissions(['comics:read']);
-    await middleware(mockRequest as Request, mockResponse as Response, nextFunction);
+    const middlewareArray = authorize(['comics:read']);
+    await executeMiddleware(
+      middlewareArray,
+      mockRequest as Request,
+      mockResponse as Response,
+      nextFunction
+    );
 
     // Assert
     expect(mockResponse.status).toHaveBeenCalledWith(403);
@@ -92,8 +126,13 @@ describe('requirePermissions Middleware', () => {
     mockRequest.user = undefined;
 
     // Execute
-    const middleware = requirePermissions(['comics:read']);
-    await middleware(mockRequest as Request, mockResponse as Response, nextFunction);
+    const middlewareArray = authorize(['comics:read']);
+    await executeMiddleware(
+      middlewareArray,
+      mockRequest as Request,
+      mockResponse as Response,
+      nextFunction
+    );
 
     // Assert
     expect(mockResponse.status).toHaveBeenCalledWith(401);
@@ -116,8 +155,13 @@ describe('requirePermissions Middleware', () => {
     (RolePermissionXRef.findAll as jest.Mock).mockResolvedValue(mockRolePermissions);
 
     // Execute
-    const middleware = requirePermissions(['comics:read', 'comics:write']);
-    await middleware(mockRequest as Request, mockResponse as Response, nextFunction);
+    const middlewareArray = authorize(['comics:read', 'comics:write']);
+    await executeMiddleware(
+      middlewareArray,
+      mockRequest as Request,
+      mockResponse as Response,
+      nextFunction
+    );
 
     // Assert
     expect(mockResponse.status).toHaveBeenCalledWith(403);
@@ -142,8 +186,13 @@ describe('requirePermissions Middleware', () => {
     (RolePermissionXRef.findAll as jest.Mock).mockResolvedValue(mockRolePermissions);
 
     // Execute
-    const middleware = requirePermissions(['comics:read']);
-    await middleware(mockRequest as Request, mockResponse as Response, nextFunction);
+    const middlewareArray = authorize(['comics:read']);
+    await executeMiddleware(
+      middlewareArray,
+      mockRequest as Request,
+      mockResponse as Response,
+      nextFunction
+    );
 
     // Assert
     expect(nextFunction).toHaveBeenCalled();
@@ -163,8 +212,13 @@ describe('requirePermissions Middleware', () => {
     );
 
     // Execute
-    const middleware = requirePermissions(['comics:read']);
-    await middleware(mockRequest as Request, mockResponse as Response, nextFunction);
+    const middlewareArray = authorize(['comics:read']);
+    await executeMiddleware(
+      middlewareArray,
+      mockRequest as Request,
+      mockResponse as Response,
+      nextFunction
+    );
 
     // Assert
     expect(mockResponse.status).toHaveBeenCalledWith(500);
@@ -187,8 +241,13 @@ describe('requirePermissions Middleware', () => {
     (RolePermissionXRef.findAll as jest.Mock).mockResolvedValue(mockRolePermissions);
 
     // Execute
-    const middleware = requirePermissions([]);
-    await middleware(mockRequest as Request, mockResponse as Response, nextFunction);
+    const middlewareArray = authorize([]);
+    await executeMiddleware(
+      middlewareArray,
+      mockRequest as Request,
+      mockResponse as Response,
+      nextFunction
+    );
 
     // Assert
     expect(nextFunction).toHaveBeenCalled();
@@ -213,8 +272,13 @@ describe('requirePermissions Middleware', () => {
     (RolePermissionXRef.findAll as jest.Mock).mockResolvedValue(mockRolePermissions);
 
     // Execute
-    const middleware = requirePermissions(['comics:read', 'comics:write']);
-    await middleware(mockRequest as Request, mockResponse as Response, nextFunction);
+    const middlewareArray = authorize(['comics:read', 'comics:write']);
+    await executeMiddleware(
+      middlewareArray,
+      mockRequest as Request,
+      mockResponse as Response,
+      nextFunction
+    );
 
     // Assert
     expect(nextFunction).toHaveBeenCalled();
@@ -234,13 +298,18 @@ describe('requirePermissions Middleware', () => {
     (RolePermissionXRef.findAll as jest.Mock).mockResolvedValue(mockRolePermissions);
 
     // Execute
-    const middleware = requirePermissions(['comics:read']);
-    await middleware(mockRequest as Request, mockResponse as Response, nextFunction);
+    const middlewareArray = authorize(['comics:read']);
+    await executeMiddleware(
+      middlewareArray,
+      mockRequest as Request,
+      mockResponse as Response,
+      nextFunction
+    );
 
     // Assert
     expect(RolePermissionXRef.findAll).toHaveBeenCalledWith({
       where: { roleId: [5, 10, 15] },
-      include: [{ model: Permission, attributes: ['name'] }],
+      include: [{ model: Permission, as: 'Permission', attributes: ['name'] }],
     });
   });
 
@@ -260,13 +329,18 @@ describe('requirePermissions Middleware', () => {
     (RolePermissionXRef.findAll as jest.Mock).mockResolvedValue(mockRolePermissions);
 
     // Execute
-    const middleware = requirePermissions(['comics:read']);
-    await middleware(mockRequest as Request, mockResponse as Response, nextFunction);
+    const middlewareArray = authorize(['comics:read']);
+    await executeMiddleware(
+      middlewareArray,
+      mockRequest as Request,
+      mockResponse as Response,
+      nextFunction
+    );
 
     // Assert
     expect(RolePermissionXRef.findAll).toHaveBeenCalledWith({
       where: { roleId: [1] },
-      include: [{ model: Permission, attributes: ['name'] }],
+      include: [{ model: Permission, as: 'Permission', attributes: ['name'] }],
     });
     expect(nextFunction).toHaveBeenCalled();
   });

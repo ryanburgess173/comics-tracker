@@ -2,6 +2,7 @@ import { Request, Response, NextFunction } from 'express';
 import RolePermissionXRef from '../models/RolePermissionXRef';
 import Permission from '../models/Permission';
 import logger from '../utils/logger';
+import { authenticateJWT } from './authenticateJWT';
 
 /**
  * Middleware factory to check if user has required permissions
@@ -12,7 +13,7 @@ import logger from '../utils/logger';
  * @returns Express middleware function
  *
  * @example
- * router.get('/', authenticateJWT, requirePermissions(['comics:read']), handler);
+ * router.get('/', authenticateJWT, ...authorize(['comics:read']), handler);
  */
 export const requirePermissions = (requiredPermissions: string[]) => {
   return async (req: Request, res: Response, next: NextFunction) => {
@@ -21,7 +22,7 @@ export const requirePermissions = (requiredPermissions: string[]) => {
 
       // Check if user is authenticated (should be set by authenticateJWT middleware)
       if (!user) {
-        logger.error('requirePermissions called without authenticateJWT middleware');
+        logger.error('...authorize called without authenticateJWT middleware');
         return res.status(401).json({
           message: 'Authentication required. No user information found.',
         });
@@ -37,7 +38,7 @@ export const requirePermissions = (requiredPermissions: string[]) => {
 
       const rolePermissions = await RolePermissionXRef.findAll({
         where: { roleId: userRoles },
-        include: [{ model: Permission, attributes: ['name'] }],
+        include: [{ model: Permission, as: 'Permission', attributes: ['name'] }],
       });
 
       // Extract permission names
@@ -69,3 +70,17 @@ export const requirePermissions = (requiredPermissions: string[]) => {
     }
   };
 };
+
+/**
+ * Helper middleware that combines authenticateJWT and requirePermissions
+ * Use this for convenience instead of applying both middlewares separately.
+ *
+ * @param requiredPermissions - Array of permission names required
+ * @returns Array of middleware functions [authenticateJWT, requirePermissions]
+ *
+ * @example
+ * router.get('/', ...authorize(['comics:read']), handler);
+ */
+export function authorize(requiredPermissions: string[]) {
+  return [authenticateJWT, requirePermissions(requiredPermissions)];
+}

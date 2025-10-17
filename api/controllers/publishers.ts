@@ -1,6 +1,7 @@
 import { Router, Request, Response } from 'express';
 import Publisher from '../models/Publisher';
 import logger from '../utils/logger';
+import { authorize } from '../middleware/checkPermissions';
 
 const router = Router();
 
@@ -9,9 +10,13 @@ const router = Router();
  * /publishers:
  *   get:
  *     summary: Get all publishers
- *     description: Retrieve a list of all publishers in the database
+ *     description: |
+ *       Retrieve a list of all publishers in the database.
+ *       Requires the 'publishers:list' permission.
  *     tags:
  *       - Publishers
+ *     security:
+ *       - bearerAuth: []
  *     responses:
  *       200:
  *         description: List of publishers retrieved successfully
@@ -32,10 +37,14 @@ const router = Router();
  *                     type: integer
  *                   website:
  *                     type: string
+ *       401:
+ *         description: Unauthorized - Authentication required
+ *       403:
+ *         description: Forbidden - Insufficient permissions (requires 'publishers:list')
  *       500:
  *         description: Server error
  */
-router.get('/', async (req: Request, res: Response) => {
+router.get('/', ...authorize(['publishers:list']), async (req: Request, res: Response) => {
   try {
     logger.info('Fetching all publishers');
     const publishers = await Publisher.findAll();
@@ -51,9 +60,13 @@ router.get('/', async (req: Request, res: Response) => {
  * /publishers/{id}:
  *   get:
  *     summary: Get a publisher by ID
- *     description: Retrieve a specific publisher by its ID
+ *     description: |
+ *       Retrieve a specific publisher by its ID.
+ *       Requires the 'publishers:read' permission.
  *     tags:
  *       - Publishers
+ *     security:
+ *       - bearerAuth: []
  *     parameters:
  *       - in: path
  *         name: id
@@ -79,12 +92,16 @@ router.get('/', async (req: Request, res: Response) => {
  *                   type: integer
  *                 website:
  *                   type: string
+ *       401:
+ *         description: Unauthorized - Authentication required
+ *       403:
+ *         description: Forbidden - Insufficient permissions (requires 'publishers:read')
  *       404:
  *         description: Publisher not found
  *       500:
  *         description: Server error
  */
-router.get('/:id', async (req: Request, res: Response) => {
+router.get('/:id', ...authorize(['publishers:read']), async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
     logger.info(`Fetching publisher with id: ${id}`);
@@ -106,9 +123,13 @@ router.get('/:id', async (req: Request, res: Response) => {
  * /publishers:
  *   post:
  *     summary: Create a new publisher
- *     description: Add a new publisher to the database
+ *     description: |
+ *       Add a new publisher to the database.
+ *       Requires the 'publishers:create' permission.
  *     tags:
  *       - Publishers
+ *     security:
+ *       - bearerAuth: []
  *     requestBody:
  *       required: true
  *       content:
@@ -131,10 +152,14 @@ router.get('/:id', async (req: Request, res: Response) => {
  *         description: Publisher created successfully
  *       400:
  *         description: Invalid input
+ *       401:
+ *         description: Unauthorized - Authentication required
+ *       403:
+ *         description: Forbidden - Insufficient permissions (requires 'publishers:create')
  *       500:
  *         description: Server error
  */
-router.post('/', async (req: Request, res: Response) => {
+router.post('/', ...authorize(['publishers:create']), async (req: Request, res: Response) => {
   try {
     // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     const { name, country, foundedYear, website } = req.body;
@@ -167,9 +192,13 @@ router.post('/', async (req: Request, res: Response) => {
  * /publishers/{id}:
  *   put:
  *     summary: Update a publisher
- *     description: Update an existing publisher by ID
+ *     description: |
+ *       Update an existing publisher by ID.
+ *       Requires the 'publishers:update' permission.
  *     tags:
  *       - Publishers
+ *     security:
+ *       - bearerAuth: []
  *     parameters:
  *       - in: path
  *         name: id
@@ -195,12 +224,16 @@ router.post('/', async (req: Request, res: Response) => {
  *     responses:
  *       200:
  *         description: Publisher updated successfully
+ *       401:
+ *         description: Unauthorized - Authentication required
+ *       403:
+ *         description: Forbidden - Insufficient permissions (requires 'publishers:update')
  *       404:
  *         description: Publisher not found
  *       500:
  *         description: Server error
  */
-router.put('/:id', async (req: Request, res: Response) => {
+router.put('/:id', ...authorize(['publishers:update']), async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
     // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
@@ -236,9 +269,13 @@ router.put('/:id', async (req: Request, res: Response) => {
  * /publishers/{id}:
  *   delete:
  *     summary: Delete a publisher
- *     description: Delete a publisher by ID
+ *     description: |
+ *       Delete a publisher by ID.
+ *       Requires the 'publishers:delete' permission.
  *     tags:
  *       - Publishers
+ *     security:
+ *       - bearerAuth: []
  *     parameters:
  *       - in: path
  *         name: id
@@ -249,12 +286,16 @@ router.put('/:id', async (req: Request, res: Response) => {
  *     responses:
  *       200:
  *         description: Publisher deleted successfully
+ *       401:
+ *         description: Unauthorized - Authentication required
+ *       403:
+ *         description: Forbidden - Insufficient permissions (requires 'publishers:delete')
  *       404:
  *         description: Publisher not found
  *       500:
  *         description: Server error
  */
-router.delete('/:id', async (req: Request, res: Response) => {
+router.delete('/:id', ...authorize(['publishers:delete']), async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
     logger.info(`Deleting publisher with id: ${id}`);

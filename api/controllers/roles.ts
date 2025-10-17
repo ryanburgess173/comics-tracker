@@ -3,6 +3,7 @@ import Role from '../models/Role';
 import Permission from '../models/Permission';
 import RolePermissionXRef from '../models/RolePermissionXRef';
 import logger from '../utils/logger';
+import { authorize } from '../middleware/checkPermissions';
 
 const router = Router();
 
@@ -14,6 +15,8 @@ const router = Router();
  *     description: Retrieve a list of all roles in the system
  *     tags:
  *       - Roles
+ *     security:
+ *       - bearerAuth: []
  *     responses:
  *       200:
  *         description: List of roles retrieved successfully
@@ -30,7 +33,7 @@ const router = Router();
  *             schema:
  *               $ref: '#/components/schemas/ErrorResponse'
  */
-router.get('/', async (req: Request, res: Response) => {
+router.get('/', ...authorize(['roles:list']), async (req: Request, res: Response) => {
   try {
     logger.info('Fetching all roles');
     const roles = await Role.findAll({
@@ -51,6 +54,8 @@ router.get('/', async (req: Request, res: Response) => {
  *     description: Retrieve a specific role by its ID
  *     tags:
  *       - Roles
+ *     security:
+ *       - bearerAuth: []
  *     parameters:
  *       - in: path
  *         name: id
@@ -78,7 +83,7 @@ router.get('/', async (req: Request, res: Response) => {
  *             schema:
  *               $ref: '#/components/schemas/ErrorResponse'
  */
-router.get('/:id', async (req: Request, res: Response) => {
+router.get('/:id', ...authorize(['roles:read']), async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
     logger.info(`Fetching role with id: ${id}`);
@@ -104,6 +109,8 @@ router.get('/:id', async (req: Request, res: Response) => {
  *     description: Add a new role to the system
  *     tags:
  *       - Roles
+ *     security:
+ *       - bearerAuth: []
  *     requestBody:
  *       required: true
  *       content:
@@ -139,7 +146,7 @@ router.get('/:id', async (req: Request, res: Response) => {
  *             schema:
  *               $ref: '#/components/schemas/ErrorResponse'
  */
-router.post('/', async (req: Request, res: Response) => {
+router.post('/', ...authorize(['roles:create']), async (req: Request, res: Response) => {
   try {
     const { name, description } = req.body as { name?: string; description?: string };
 
@@ -181,6 +188,8 @@ router.post('/', async (req: Request, res: Response) => {
  *     description: Update an existing role's information
  *     tags:
  *       - Roles
+ *     security:
+ *       - bearerAuth: []
  *     parameters:
  *       - in: path
  *         name: id
@@ -219,7 +228,7 @@ router.post('/', async (req: Request, res: Response) => {
  *             schema:
  *               $ref: '#/components/schemas/ErrorResponse'
  */
-router.put('/:id', async (req: Request, res: Response) => {
+router.put('/:id', ...authorize(['roles:update']), async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
     const { name, description } = req.body as { name?: string; description?: string };
@@ -254,6 +263,8 @@ router.put('/:id', async (req: Request, res: Response) => {
  *     description: Remove a role from the system
  *     tags:
  *       - Roles
+ *     security:
+ *       - bearerAuth: []
  *     parameters:
  *       - in: path
  *         name: id
@@ -285,7 +296,7 @@ router.put('/:id', async (req: Request, res: Response) => {
  *             schema:
  *               $ref: '#/components/schemas/ErrorResponse'
  */
-router.delete('/:id', async (req: Request, res: Response) => {
+router.delete('/:id', ...authorize(['roles:delete']), async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
     logger.info(`Deleting role with id: ${id}`);
@@ -314,6 +325,8 @@ router.delete('/:id', async (req: Request, res: Response) => {
  *     description: Retrieve all permissions assigned to a specific role
  *     tags:
  *       - Roles
+ *     security:
+ *       - bearerAuth: []
  *     parameters:
  *       - in: path
  *         name: id
@@ -343,33 +356,37 @@ router.delete('/:id', async (req: Request, res: Response) => {
  *             schema:
  *               $ref: '#/components/schemas/ErrorResponse'
  */
-router.get('/:id/permissions', async (req: Request, res: Response) => {
-  try {
-    const { id } = req.params;
-    logger.info(`Fetching permissions for role: ${id}`);
+router.get(
+  '/:id/permissions',
+  ...authorize(['roles:read']),
+  async (req: Request, res: Response) => {
+    try {
+      const { id } = req.params;
+      logger.info(`Fetching permissions for role: ${id}`);
 
-    const role = await Role.findByPk(id);
+      const role = await Role.findByPk(id, {
+        include: [
+          {
+            model: Permission,
+            as: 'permissions',
+            through: { attributes: [] }, // Exclude junction table attributes
+          },
+        ],
+      });
 
-    if (!role) {
-      return res.status(404).json({ error: 'Role not found' });
+      if (!role) {
+        return res.status(404).json({ error: 'Role not found' });
+      }
+
+      const permissions = (role as unknown as { permissions: unknown }).permissions;
+
+      res.json(permissions);
+    } catch (error) {
+      logger.error('Error fetching role permissions: %o', error);
+      res.status(500).json({ error: 'Failed to fetch role permissions' });
     }
-
-    // Get role's permissions through the junction table
-    const rolePermissions = await RolePermissionXRef.findAll({
-      where: { roleId: id },
-      include: [{ model: Permission }],
-    });
-
-    const permissions = rolePermissions.map(
-      (rp) => (rp as unknown as { Permission: unknown }).Permission
-    );
-
-    res.json(permissions);
-  } catch (error) {
-    logger.error('Error fetching role permissions: %o', error);
-    res.status(500).json({ error: 'Failed to fetch role permissions' });
   }
-});
+);
 
 /**
  * @swagger
@@ -379,6 +396,8 @@ router.get('/:id/permissions', async (req: Request, res: Response) => {
  *     description: Add a permission to a role
  *     tags:
  *       - Roles
+ *     security:
+ *       - bearerAuth: []
  *     parameters:
  *       - in: path
  *         name: id
@@ -428,51 +447,55 @@ router.get('/:id/permissions', async (req: Request, res: Response) => {
  *             schema:
  *               $ref: '#/components/schemas/ErrorResponse'
  */
-router.post('/:id/permissions', async (req: Request, res: Response) => {
-  try {
-    const { id } = req.params;
-    const { permissionId } = req.body as { permissionId?: string };
+router.post(
+  '/:id/permissions',
+  ...authorize(['roles:update']),
+  async (req: Request, res: Response) => {
+    try {
+      const { id } = req.params;
+      const { permissionId } = req.body as { permissionId?: string };
 
-    logger.info(`Assigning permission ${permissionId} to role ${id}`);
+      logger.info(`Assigning permission ${permissionId} to role ${id}`);
 
-    if (!permissionId) {
-      return res.status(400).json({ error: 'permissionId is required' });
+      if (!permissionId) {
+        return res.status(400).json({ error: 'permissionId is required' });
+      }
+
+      // Check if role exists
+      const role = await Role.findByPk(id);
+      if (!role) {
+        return res.status(404).json({ error: 'Role not found' });
+      }
+
+      // Check if permission exists
+      const permission = await Permission.findByPk(permissionId);
+      if (!permission) {
+        return res.status(404).json({ error: 'Permission not found' });
+      }
+
+      // Check if role already has this permission
+      const existingAssignment = await RolePermissionXRef.findOne({
+        where: { roleId: id, permissionId: permissionId },
+      });
+
+      if (existingAssignment) {
+        return res.status(400).json({ error: 'Role already has this permission' });
+      }
+
+      // Assign permission
+      await RolePermissionXRef.create({
+        roleId: parseInt(id),
+        permissionId: parseInt(permissionId),
+      });
+
+      logger.info(`Permission assigned successfully to role ${id}`);
+      res.status(201).json({ message: 'Permission assigned successfully' });
+    } catch (error) {
+      logger.error('Error assigning permission: %o', error);
+      res.status(500).json({ error: 'Failed to assign permission' });
     }
-
-    // Check if role exists
-    const role = await Role.findByPk(id);
-    if (!role) {
-      return res.status(404).json({ error: 'Role not found' });
-    }
-
-    // Check if permission exists
-    const permission = await Permission.findByPk(permissionId);
-    if (!permission) {
-      return res.status(404).json({ error: 'Permission not found' });
-    }
-
-    // Check if role already has this permission
-    const existingAssignment = await RolePermissionXRef.findOne({
-      where: { roleId: id, permissionId: permissionId },
-    });
-
-    if (existingAssignment) {
-      return res.status(400).json({ error: 'Role already has this permission' });
-    }
-
-    // Assign permission
-    await RolePermissionXRef.create({
-      roleId: parseInt(id),
-      permissionId: parseInt(permissionId),
-    });
-
-    logger.info(`Permission assigned successfully to role ${id}`);
-    res.status(201).json({ message: 'Permission assigned successfully' });
-  } catch (error) {
-    logger.error('Error assigning permission: %o', error);
-    res.status(500).json({ error: 'Failed to assign permission' });
   }
-});
+);
 
 /**
  * @swagger
@@ -482,6 +505,8 @@ router.post('/:id/permissions', async (req: Request, res: Response) => {
  *     description: Remove a permission assignment from a role
  *     tags:
  *       - Roles
+ *     security:
+ *       - bearerAuth: []
  *     parameters:
  *       - in: path
  *         name: id
@@ -519,28 +544,32 @@ router.post('/:id/permissions', async (req: Request, res: Response) => {
  *             schema:
  *               $ref: '#/components/schemas/ErrorResponse'
  */
-router.delete('/:id/permissions/:permissionId', async (req: Request, res: Response) => {
-  try {
-    const { id, permissionId } = req.params;
-    logger.info(`Removing permission ${permissionId} from role ${id}`);
+router.delete(
+  '/:id/permissions/:permissionId',
+  ...authorize(['roles:update']),
+  async (req: Request, res: Response) => {
+    try {
+      const { id, permissionId } = req.params;
+      logger.info(`Removing permission ${permissionId} from role ${id}`);
 
-    const assignment = await RolePermissionXRef.findOne({
-      where: { roleId: id, permissionId },
-    });
+      const assignment = await RolePermissionXRef.findOne({
+        where: { roleId: id, permissionId },
+      });
 
-    if (!assignment) {
-      return res.status(404).json({ error: 'Permission assignment not found' });
+      if (!assignment) {
+        return res.status(404).json({ error: 'Permission assignment not found' });
+      }
+
+      await assignment.destroy();
+
+      logger.info(`Permission removed successfully from role ${id}`);
+      res.json({ message: 'Permission removed successfully' });
+    } catch (error) {
+      logger.error('Error removing permission: %o', error);
+      res.status(500).json({ error: 'Failed to remove permission' });
     }
-
-    await assignment.destroy();
-
-    logger.info(`Permission removed successfully from role ${id}`);
-    res.json({ message: 'Permission removed successfully' });
-  } catch (error) {
-    logger.error('Error removing permission: %o', error);
-    res.status(500).json({ error: 'Failed to remove permission' });
   }
-});
+);
 
 /**
  * @swagger
@@ -550,6 +579,8 @@ router.delete('/:id/permissions/:permissionId', async (req: Request, res: Respon
  *     description: Add multiple permissions to a role at once
  *     tags:
  *       - Roles
+ *     security:
+ *       - bearerAuth: []
  *     parameters:
  *       - in: path
  *         name: id
@@ -607,62 +638,66 @@ router.delete('/:id/permissions/:permissionId', async (req: Request, res: Respon
  *             schema:
  *               $ref: '#/components/schemas/ErrorResponse'
  */
-router.post('/:id/permissions/bulk', async (req: Request, res: Response) => {
-  try {
-    const { id } = req.params;
-    const { permissionIds } = req.body as { permissionIds?: string[] };
+router.post(
+  '/:id/permissions/bulk',
+  ...authorize(['roles:update']),
+  async (req: Request, res: Response) => {
+    try {
+      const { id } = req.params;
+      const { permissionIds } = req.body as { permissionIds?: string[] };
 
-    logger.info(`Bulk assigning permissions to role ${id}`);
+      logger.info(`Bulk assigning permissions to role ${id}`);
 
-    if (!permissionIds || !Array.isArray(permissionIds)) {
-      return res.status(400).json({ error: 'permissionIds array is required' });
-    }
-
-    // Check if role exists
-    const role = await Role.findByPk(id);
-    if (!role) {
-      return res.status(404).json({ error: 'Role not found' });
-    }
-
-    let assigned = 0;
-    let skipped = 0;
-
-    for (const permissionId of permissionIds as unknown[]) {
-      // Check if permission exists
-      const permission = await Permission.findByPk(permissionId as string);
-      if (!permission) {
-        skipped++;
-        continue;
+      if (!permissionIds || !Array.isArray(permissionIds)) {
+        return res.status(400).json({ error: 'permissionIds array is required' });
       }
 
-      // Check if already assigned
-      const existingAssignment = await RolePermissionXRef.findOne({
-        where: { roleId: id, permissionId: permissionId as string },
-      });
-
-      if (existingAssignment) {
-        skipped++;
-        continue;
+      // Check if role exists
+      const role = await Role.findByPk(id);
+      if (!role) {
+        return res.status(404).json({ error: 'Role not found' });
       }
 
-      // Assign permission
-      await RolePermissionXRef.create({
-        roleId: parseInt(id),
-        permissionId: parseInt(permissionId as string),
-      });
-      assigned++;
-    }
+      let assigned = 0;
+      let skipped = 0;
 
-    logger.info(`Bulk assignment complete: ${assigned} assigned, ${skipped} skipped`);
-    res.status(201).json({
-      message: `${assigned} permissions assigned successfully`,
-      assigned,
-      skipped,
-    });
-  } catch (error) {
-    logger.error('Error bulk assigning permissions: %o', error);
-    res.status(500).json({ error: 'Failed to bulk assign permissions' });
+      for (const permissionId of permissionIds as unknown[]) {
+        // Check if permission exists
+        const permission = await Permission.findByPk(permissionId as string);
+        if (!permission) {
+          skipped++;
+          continue;
+        }
+
+        // Check if already assigned
+        const existingAssignment = await RolePermissionXRef.findOne({
+          where: { roleId: id, permissionId: permissionId as string },
+        });
+
+        if (existingAssignment) {
+          skipped++;
+          continue;
+        }
+
+        // Assign permission
+        await RolePermissionXRef.create({
+          roleId: parseInt(id),
+          permissionId: parseInt(permissionId as string),
+        });
+        assigned++;
+      }
+
+      logger.info(`Bulk assignment complete: ${assigned} assigned, ${skipped} skipped`);
+      res.status(201).json({
+        message: `${assigned} permissions assigned successfully`,
+        assigned,
+        skipped,
+      });
+    } catch (error) {
+      logger.error('Error bulk assigning permissions: %o', error);
+      res.status(500).json({ error: 'Failed to bulk assign permissions' });
+    }
   }
-});
+);
 
 export default router;

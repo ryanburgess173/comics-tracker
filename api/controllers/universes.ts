@@ -1,6 +1,7 @@
 import { Router, Request, Response } from 'express';
 import Universe from '../models/Universe';
 import logger from '../utils/logger';
+import { authorize } from '../middleware/checkPermissions';
 
 const router = Router();
 
@@ -12,6 +13,8 @@ const router = Router();
  *     description: Retrieve a list of all universes in the database
  *     tags:
  *       - Universes
+ *     security:
+ *       - bearerAuth: []
  *     responses:
  *       200:
  *         description: List of universes retrieved successfully
@@ -33,7 +36,7 @@ const router = Router();
  *       500:
  *         description: Server error
  */
-router.get('/', async (req: Request, res: Response) => {
+router.get('/', ...authorize(['universes:list']), async (req: Request, res: Response) => {
   try {
     logger.info('Fetching all universes');
     const universes = await Universe.findAll();
@@ -52,6 +55,8 @@ router.get('/', async (req: Request, res: Response) => {
  *     description: Retrieve a specific universe by its ID
  *     tags:
  *       - Universes
+ *     security:
+ *       - bearerAuth: []
  *     parameters:
  *       - in: path
  *         name: id
@@ -80,7 +85,7 @@ router.get('/', async (req: Request, res: Response) => {
  *       500:
  *         description: Server error
  */
-router.get('/:id', async (req: Request, res: Response) => {
+router.get('/:id', ...authorize(['universes:read']), async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
     logger.info(`Fetching universe with id: ${id}`);
@@ -105,6 +110,8 @@ router.get('/:id', async (req: Request, res: Response) => {
  *     description: Add a new universe to the database
  *     tags:
  *       - Universes
+ *     security:
+ *       - bearerAuth: []
  *     requestBody:
  *       required: true
  *       content:
@@ -128,7 +135,7 @@ router.get('/:id', async (req: Request, res: Response) => {
  *       500:
  *         description: Server error
  */
-router.post('/', async (req: Request, res: Response) => {
+router.post('/', ...authorize(['universes:create']), async (req: Request, res: Response) => {
   try {
     // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     const { name, description, publisherId } = req.body;
@@ -162,6 +169,8 @@ router.post('/', async (req: Request, res: Response) => {
  *     description: Update an existing universe by ID
  *     tags:
  *       - Universes
+ *     security:
+ *       - bearerAuth: []
  *     parameters:
  *       - in: path
  *         name: id
@@ -190,7 +199,7 @@ router.post('/', async (req: Request, res: Response) => {
  *       500:
  *         description: Server error
  */
-router.put('/:id', async (req: Request, res: Response) => {
+router.put('/:id', ...authorize(['universes:update']), async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
     // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
@@ -227,6 +236,8 @@ router.put('/:id', async (req: Request, res: Response) => {
  *     description: Delete a universe by ID
  *     tags:
  *       - Universes
+ *     security:
+ *       - bearerAuth: []
  *     parameters:
  *       - in: path
  *         name: id
@@ -242,7 +253,7 @@ router.put('/:id', async (req: Request, res: Response) => {
  *       500:
  *         description: Server error
  */
-router.delete('/:id', async (req: Request, res: Response) => {
+router.delete('/:id', ...authorize(['universes:delete']), async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
     logger.info(`Deleting universe with id: ${id}`);
