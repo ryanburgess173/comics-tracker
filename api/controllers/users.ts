@@ -4,6 +4,7 @@ import Role from '../models/Role';
 import UserRoleXRef from '../models/UserRoleXRef';
 import bcrypt from 'bcrypt';
 import logger from '../utils/logger';
+import { authorize } from '../middleware/checkPermissions';
 
 const router = Router();
 const SALT_ROUNDS = 10;
@@ -13,9 +14,13 @@ const SALT_ROUNDS = 10;
  * /users:
  *   get:
  *     summary: Get all users
- *     description: Retrieve a list of all users in the system
+ *     description: |
+ *       Retrieve a list of all users in the system.
+ *       Requires the 'users:list' permission.
  *     tags:
  *       - Users
+ *     security:
+ *       - bearerAuth: []
  *     responses:
  *       200:
  *         description: List of users retrieved successfully
@@ -25,6 +30,10 @@ const SALT_ROUNDS = 10;
  *               type: array
  *               items:
  *                 $ref: '#/components/schemas/User'
+ *       401:
+ *         description: Unauthorized - Authentication required
+ *       403:
+ *         description: Forbidden - Insufficient permissions (requires 'users:list')
  *       500:
  *         description: Server error
  *         content:
@@ -32,7 +41,7 @@ const SALT_ROUNDS = 10;
  *             schema:
  *               $ref: '#/components/schemas/ErrorResponse'
  */
-router.get('/', async (req: Request, res: Response) => {
+router.get('/', ...authorize(['users:list']), async (req: Request, res: Response) => {
   try {
     logger.info('Fetching all users');
     const users = await User.findAll({
@@ -50,9 +59,13 @@ router.get('/', async (req: Request, res: Response) => {
  * /users/{id}:
  *   get:
  *     summary: Get a user by ID
- *     description: Retrieve a specific user by their ID
+ *     description: |
+ *       Retrieve a specific user by their ID.
+ *       Requires the 'user:read' permission.
  *     tags:
  *       - Users
+ *     security:
+ *       - bearerAuth: []
  *     parameters:
  *       - in: path
  *         name: id
@@ -67,6 +80,10 @@ router.get('/', async (req: Request, res: Response) => {
  *           application/json:
  *             schema:
  *               $ref: '#/components/schemas/User'
+ *       401:
+ *         description: Unauthorized - Authentication required
+ *       403:
+ *         description: Forbidden - Insufficient permissions (requires 'user:read')
  *       404:
  *         description: User not found
  *         content:
@@ -80,7 +97,7 @@ router.get('/', async (req: Request, res: Response) => {
  *             schema:
  *               $ref: '#/components/schemas/ErrorResponse'
  */
-router.get('/:id', async (req: Request, res: Response) => {
+router.get('/:id', ...authorize(['user:read']), async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
     logger.info(`Fetching user with id: ${id}`);
@@ -105,9 +122,13 @@ router.get('/:id', async (req: Request, res: Response) => {
  * /users:
  *   post:
  *     summary: Create a new user
- *     description: Add a new user to the system
+ *     description: |
+ *       Add a new user to the system.
+ *       Requires the 'user:create' permission.
  *     tags:
  *       - Users
+ *     security:
+ *       - bearerAuth: []
  *     requestBody:
  *       required: true
  *       content:
@@ -143,6 +164,10 @@ router.get('/:id', async (req: Request, res: Response) => {
  *           application/json:
  *             schema:
  *               $ref: '#/components/schemas/ErrorResponse'
+ *       401:
+ *         description: Unauthorized - Authentication required
+ *       403:
+ *         description: Forbidden - Insufficient permissions (requires 'user:create')
  *       500:
  *         description: Server error
  *         content:
@@ -150,7 +175,7 @@ router.get('/:id', async (req: Request, res: Response) => {
  *             schema:
  *               $ref: '#/components/schemas/ErrorResponse'
  */
-router.post('/', async (req: Request, res: Response) => {
+router.post('/', ...authorize(['user:create']), async (req: Request, res: Response) => {
   try {
     const { username, email, password } = req.body as {
       username?: string;
@@ -203,9 +228,13 @@ router.post('/', async (req: Request, res: Response) => {
  * /users/{id}:
  *   put:
  *     summary: Update a user
- *     description: Update an existing user's information
+ *     description: |
+ *       Update an existing user's information.
+ *       Requires the 'user:update' permission.
  *     tags:
  *       - Users
+ *     security:
+ *       - bearerAuth: []
  *     parameters:
  *       - in: path
  *         name: id
@@ -232,6 +261,10 @@ router.post('/', async (req: Request, res: Response) => {
  *           application/json:
  *             schema:
  *               $ref: '#/components/schemas/User'
+ *       401:
+ *         description: Unauthorized - Authentication required
+ *       403:
+ *         description: Forbidden - Insufficient permissions (requires 'user:update')
  *       404:
  *         description: User not found
  *         content:
@@ -245,7 +278,7 @@ router.post('/', async (req: Request, res: Response) => {
  *             schema:
  *               $ref: '#/components/schemas/ErrorResponse'
  */
-router.put('/:id', async (req: Request, res: Response) => {
+router.put('/:id', ...authorize(['user:update']), async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
     const { username, email } = req.body as { username?: string; email?: string };
@@ -283,9 +316,13 @@ router.put('/:id', async (req: Request, res: Response) => {
  * /users/{id}:
  *   delete:
  *     summary: Delete a user
- *     description: Remove a user from the system
+ *     description: |
+ *       Remove a user from the system.
+ *       Requires the 'user:delete' permission.
  *     tags:
  *       - Users
+ *     security:
+ *       - bearerAuth: []
  *     parameters:
  *       - in: path
  *         name: id
@@ -304,6 +341,10 @@ router.put('/:id', async (req: Request, res: Response) => {
  *                 message:
  *                   type: string
  *                   example: User deleted successfully
+ *       401:
+ *         description: Unauthorized - Authentication required
+ *       403:
+ *         description: Forbidden - Insufficient permissions (requires 'user:delete')
  *       404:
  *         description: User not found
  *         content:
@@ -317,7 +358,7 @@ router.put('/:id', async (req: Request, res: Response) => {
  *             schema:
  *               $ref: '#/components/schemas/ErrorResponse'
  */
-router.delete('/:id', async (req: Request, res: Response) => {
+router.delete('/:id', ...authorize(['user:delete']), async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
     logger.info(`Deleting user with id: ${id}`);
@@ -340,12 +381,106 @@ router.delete('/:id', async (req: Request, res: Response) => {
 
 /**
  * @swagger
+ * /users/{id}/change-password:
+ *   post:
+ *     summary: Change user password
+ *     description: |
+ *       Change a user's password by verifying the current password.
+ *       Requires the 'user:update' permission.
+ *     tags:
+ *       - Users
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: integer
+ *         description: The user ID
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - currentPassword
+ *               - newPassword
+ *             properties:
+ *               currentPassword:
+ *                 type: string
+ *               newPassword:
+ *                 type: string
+ *     responses:
+ *       200:
+ *         description: Password changed successfully
+ *       400:
+ *         description: Bad request - missing fields or incorrect current password
+ *       401:
+ *         description: Unauthorized - Authentication required
+ *       403:
+ *         description: Forbidden - Insufficient permissions (requires 'user:update')
+ *       404:
+ *         description: User not found
+ *       500:
+ *         description: Server error
+ */
+router.post(
+  '/:id/change-password',
+  ...authorize(['user:update']),
+  async (req: Request, res: Response) => {
+    try {
+      const { id } = req.params;
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+      const { currentPassword, newPassword } = req.body;
+
+      // Validate required fields
+      if (!currentPassword || !newPassword) {
+        return res.status(400).json({
+          error: 'Current password and new password are required',
+        });
+      }
+
+      // Find user
+      const user = await User.findByPk(id);
+      if (!user) {
+        return res.status(404).json({ error: 'User not found' });
+      }
+
+      // Verify current password
+
+      const isValidPassword = await bcrypt.compare(currentPassword as string, user.passwordHash);
+      if (!isValidPassword) {
+        return res.status(400).json({ error: 'Current password is incorrect' });
+      }
+
+      // Hash new password and update
+
+      const hashedPassword = await bcrypt.hash(newPassword as string, SALT_ROUNDS);
+      user.passwordHash = hashedPassword;
+      await user.save();
+      logger.info(`Password changed successfully for user: ${id}`);
+      res.json({ message: 'Password changed successfully' });
+    } catch (error) {
+      logger.error('Error changing password: %o', error);
+      res.status(500).json({ error: 'Failed to change password' });
+    }
+  }
+);
+
+/**
+ * @swagger
  * /users/{id}/roles:
  *   get:
  *     summary: Get user's roles
- *     description: Retrieve all roles assigned to a specific user
+ *     description: |
+ *       Retrieve all roles assigned to a specific user.
+ *       Requires the 'user:read' permission.
  *     tags:
  *       - Users
+ *     security:
+ *       - bearerAuth: []
  *     parameters:
  *       - in: path
  *         name: id
@@ -362,6 +497,10 @@ router.delete('/:id', async (req: Request, res: Response) => {
  *               type: array
  *               items:
  *                 $ref: '#/components/schemas/Role'
+ *       401:
+ *         description: Unauthorized - Authentication required
+ *       403:
+ *         description: Forbidden - Insufficient permissions (requires 'user:read')
  *       404:
  *         description: User not found
  *         content:
@@ -375,7 +514,7 @@ router.delete('/:id', async (req: Request, res: Response) => {
  *             schema:
  *               $ref: '#/components/schemas/ErrorResponse'
  */
-router.get('/:id/roles', async (req: Request, res: Response) => {
+router.get('/:id/roles', ...authorize(['user:read']), async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
     logger.info(`Fetching roles for user: ${id}`);
@@ -406,9 +545,13 @@ router.get('/:id/roles', async (req: Request, res: Response) => {
  * /users/{id}/roles:
  *   post:
  *     summary: Assign role to user
- *     description: Add a role to a user
+ *     description: |
+ *       Add a role to a user.
+ *       Requires the 'roles:write' permission.
  *     tags:
  *       - Users
+ *     security:
+ *       - bearerAuth: []
  *     parameters:
  *       - in: path
  *         name: id
@@ -445,6 +588,10 @@ router.get('/:id/roles', async (req: Request, res: Response) => {
  *           application/json:
  *             schema:
  *               $ref: '#/components/schemas/ErrorResponse'
+ *       401:
+ *         description: Unauthorized - Authentication required
+ *       403:
+ *         description: Forbidden - Insufficient permissions (requires 'roles:write')
  *       404:
  *         description: User or role not found
  *         content:
@@ -458,7 +605,7 @@ router.get('/:id/roles', async (req: Request, res: Response) => {
  *             schema:
  *               $ref: '#/components/schemas/ErrorResponse'
  */
-router.post('/:id/roles', async (req: Request, res: Response) => {
+router.post('/:id/roles', ...authorize(['roles:write']), async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
     const { roleId } = req.body as { roleId?: string };
@@ -506,9 +653,13 @@ router.post('/:id/roles', async (req: Request, res: Response) => {
  * /users/{id}/roles/{roleId}:
  *   delete:
  *     summary: Remove role from user
- *     description: Remove a role assignment from a user
+ *     description: |
+ *       Remove a role assignment from a user.
+ *       Requires the 'roles:write' permission.
  *     tags:
  *       - Users
+ *     security:
+ *       - bearerAuth: []
  *     parameters:
  *       - in: path
  *         name: id
@@ -533,6 +684,10 @@ router.post('/:id/roles', async (req: Request, res: Response) => {
  *                 message:
  *                   type: string
  *                   example: Role removed successfully
+ *       401:
+ *         description: Unauthorized - Authentication required
+ *       403:
+ *         description: Forbidden - Insufficient permissions (requires 'roles:write')
  *       404:
  *         description: User, role, or assignment not found
  *         content:
@@ -546,128 +701,31 @@ router.post('/:id/roles', async (req: Request, res: Response) => {
  *             schema:
  *               $ref: '#/components/schemas/ErrorResponse'
  */
-router.delete('/:id/roles/:roleId', async (req: Request, res: Response) => {
-  try {
-    const { id, roleId } = req.params;
-    logger.info(`Removing role ${roleId} from user ${id}`);
+router.delete(
+  '/:id/roles/:roleId',
+  ...authorize(['roles:write']),
+  async (req: Request, res: Response) => {
+    try {
+      const { id, roleId } = req.params;
+      logger.info(`Removing role ${roleId} from user ${id}`);
 
-    const assignment = await UserRoleXRef.findOne({
-      where: { userId: id, roleId },
-    });
+      const assignment = await UserRoleXRef.findOne({
+        where: { userId: id, roleId },
+      });
 
-    if (!assignment) {
-      return res.status(404).json({ error: 'Role assignment not found' });
+      if (!assignment) {
+        return res.status(404).json({ error: 'Role assignment not found' });
+      }
+
+      await assignment.destroy();
+
+      logger.info(`Role removed successfully from user ${id}`);
+      res.json({ message: 'Role removed successfully' });
+    } catch (error) {
+      logger.error('Error removing role: %o', error);
+      res.status(500).json({ error: 'Failed to remove role' });
     }
-
-    await assignment.destroy();
-
-    logger.info(`Role removed successfully from user ${id}`);
-    res.json({ message: 'Role removed successfully' });
-  } catch (error) {
-    logger.error('Error removing role: %o', error);
-    res.status(500).json({ error: 'Failed to remove role' });
   }
-});
-
-/**
- * @swagger
- * /users/{id}/change-password:
- *   post:
- *     summary: Change user password
- *     description: Update a user's password (requires current password)
- *     tags:
- *       - Users
- *     parameters:
- *       - in: path
- *         name: id
- *         required: true
- *         schema:
- *           type: integer
- *         description: The user ID
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             type: object
- *             required:
- *               - currentPassword
- *               - newPassword
- *             properties:
- *               currentPassword:
- *                 type: string
- *                 format: password
- *               newPassword:
- *                 type: string
- *                 format: password
- *     responses:
- *       200:
- *         description: Password changed successfully
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 message:
- *                   type: string
- *                   example: Password changed successfully
- *       400:
- *         description: Invalid input or incorrect current password
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/ErrorResponse'
- *       404:
- *         description: User not found
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/ErrorResponse'
- *       500:
- *         description: Server error
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/ErrorResponse'
- */
-router.post('/:id/change-password', async (req: Request, res: Response) => {
-  try {
-    const { id } = req.params;
-    const { currentPassword, newPassword } = req.body as {
-      currentPassword?: string;
-      newPassword?: string;
-    };
-
-    logger.info(`Changing password for user: ${id}`);
-
-    if (!currentPassword || !newPassword) {
-      return res.status(400).json({ error: 'Current password and new password are required' });
-    }
-
-    const user = await User.findByPk(id);
-
-    if (!user) {
-      return res.status(404).json({ error: 'User not found' });
-    }
-
-    // Verify current password
-    const isPasswordValid = await bcrypt.compare(currentPassword, user.passwordHash);
-
-    if (!isPasswordValid) {
-      return res.status(400).json({ error: 'Current password is incorrect' });
-    }
-
-    // Hash and update new password
-    const newPasswordHash = await bcrypt.hash(newPassword, SALT_ROUNDS);
-    user.passwordHash = newPasswordHash;
-    await user.save();
-
-    logger.info(`Password changed successfully for user: ${id}`);
-    res.json({ message: 'Password changed successfully' });
-  } catch (error) {
-    logger.error('Error changing password: %o', error);
-    res.status(500).json({ error: 'Failed to change password' });
-  }
-});
+);
 
 export default router;

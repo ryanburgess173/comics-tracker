@@ -2,6 +2,7 @@ import 'dotenv/config';
 import express from 'express';
 import swaggerUi from 'swagger-ui-express';
 import sequelize from './db';
+import { setupAssociations } from './models/associations';
 import logger from './utils/logger';
 import authRouter from './controllers/auth';
 import comicsRouter from './controllers/comics';
@@ -16,10 +17,19 @@ import permissionsRouter from './controllers/permissions';
 import rolesRouter from './controllers/roles';
 import swaggerSpec from './swagger';
 
+// Initialize all model associations
+setupAssociations();
+
 const app: express.Application = express();
 
 // add middleware to parse JSON request bodies
 app.use(express.json());
+
+// custom middleware to log requests
+app.use((req, res, next) => {
+  logger.info('%s %s', req.method, req.url);
+  next();
+});
 
 // Swagger UI setup
 app.use(
@@ -29,6 +39,9 @@ app.use(
     explorer: true,
     customCss: '.swagger-ui .topbar { display: none }',
     customSiteTitle: 'Comics Tracker API Docs',
+    swaggerOptions: {
+      persistAuthorization: true, // Persist authorization data in browser storage
+    },
   })
 );
 

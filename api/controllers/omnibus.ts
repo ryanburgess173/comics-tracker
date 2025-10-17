@@ -1,6 +1,7 @@
 import { Router, Request, Response } from 'express';
 import Omnibus from '../models/Omnibus';
 import logger from '../utils/logger';
+import { authorize } from '../middleware/checkPermissions';
 
 const router = Router();
 
@@ -12,6 +13,8 @@ const router = Router();
  *     description: Retrieve a list of all omnibus editions in the database
  *     tags:
  *       - Omnibus
+ *     security:
+ *       - bearerAuth: []
  *     responses:
  *       200:
  *         description: List of omnibus editions retrieved successfully
@@ -44,7 +47,7 @@ const router = Router();
  *       500:
  *         description: Server error
  */
-router.get('/', async (req: Request, res: Response) => {
+router.get('/', ...authorize(['omnibus:list']), async (req: Request, res: Response) => {
   try {
     logger.info('Fetching all omnibus editions');
     const omnibus = await Omnibus.findAll();
@@ -63,6 +66,8 @@ router.get('/', async (req: Request, res: Response) => {
  *     description: Retrieve a specific omnibus edition by its ID
  *     tags:
  *       - Omnibus
+ *     security:
+ *       - bearerAuth: []
  *     parameters:
  *       - in: path
  *         name: id
@@ -102,7 +107,7 @@ router.get('/', async (req: Request, res: Response) => {
  *       500:
  *         description: Server error
  */
-router.get('/:id', async (req: Request, res: Response) => {
+router.get('/:id', ...authorize(['omnibus:read']), async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
     logger.info(`Fetching omnibus edition with id: ${id}`);
@@ -127,6 +132,8 @@ router.get('/:id', async (req: Request, res: Response) => {
  *     description: Add a new omnibus edition to the database
  *     tags:
  *       - Omnibus
+ *     security:
+ *       - bearerAuth: []
  *     requestBody:
  *       required: true
  *       content:
@@ -161,7 +168,7 @@ router.get('/:id', async (req: Request, res: Response) => {
  *       500:
  *         description: Server error
  */
-router.post('/', async (req: Request, res: Response) => {
+router.post('/', ...authorize(['omnibus:create']), async (req: Request, res: Response) => {
   try {
     // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     const {
@@ -214,6 +221,8 @@ router.post('/', async (req: Request, res: Response) => {
  *     description: Update an existing omnibus edition by ID
  *     tags:
  *       - Omnibus
+ *     security:
+ *       - bearerAuth: []
  *     parameters:
  *       - in: path
  *         name: id
@@ -253,7 +262,7 @@ router.post('/', async (req: Request, res: Response) => {
  *       500:
  *         description: Server error
  */
-router.put('/:id', async (req: Request, res: Response) => {
+router.put('/:id', ...authorize(['omnibus:update']), async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
     // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
@@ -309,6 +318,8 @@ router.put('/:id', async (req: Request, res: Response) => {
  *     description: Delete an omnibus edition by ID
  *     tags:
  *       - Omnibus
+ *     security:
+ *       - bearerAuth: []
  *     parameters:
  *       - in: path
  *         name: id
@@ -324,7 +335,7 @@ router.put('/:id', async (req: Request, res: Response) => {
  *       500:
  *         description: Server error
  */
-router.delete('/:id', async (req: Request, res: Response) => {
+router.delete('/:id', ...authorize(['omnibus:delete']), async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
     logger.info(`Deleting omnibus edition with id: ${id}`);

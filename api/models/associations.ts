@@ -96,6 +96,17 @@ export const setupAssociations = () => {
     otherKey: 'roleId',
     as: 'roles',
   });
+
+  // Direct associations for junction table queries
+  RolePermissionXRef.belongsTo(Role, {
+    foreignKey: 'roleId',
+    as: 'Role',
+  });
+
+  RolePermissionXRef.belongsTo(Permission, {
+    foreignKey: 'permissionId',
+    as: 'Permission',
+  });
 };
 
 export {

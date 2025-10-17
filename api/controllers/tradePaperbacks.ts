@@ -1,6 +1,7 @@
 import { Router, Request, Response } from 'express';
 import TradePaperback from '../models/TradePaperback';
 import logger from '../utils/logger';
+import { authorize } from '../middleware/checkPermissions';
 
 const router = Router();
 
@@ -12,6 +13,8 @@ const router = Router();
  *     description: Retrieve a list of all trade paperbacks in the database
  *     tags:
  *       - Trade Paperbacks
+ *     security:
+ *       - bearerAuth: []
  *     responses:
  *       200:
  *         description: List of trade paperbacks retrieved successfully
@@ -44,7 +47,7 @@ const router = Router();
  *       500:
  *         description: Server error
  */
-router.get('/', async (req: Request, res: Response) => {
+router.get('/', ...authorize(['tradePaperbacks:list']), async (req: Request, res: Response) => {
   try {
     logger.info('Fetching all trade paperbacks');
     const tradePaperbacks = await TradePaperback.findAll();
@@ -63,6 +66,8 @@ router.get('/', async (req: Request, res: Response) => {
  *     description: Retrieve a specific trade paperback by its ID
  *     tags:
  *       - Trade Paperbacks
+ *     security:
+ *       - bearerAuth: []
  *     parameters:
  *       - in: path
  *         name: id
@@ -102,7 +107,7 @@ router.get('/', async (req: Request, res: Response) => {
  *       500:
  *         description: Server error
  */
-router.get('/:id', async (req: Request, res: Response) => {
+router.get('/:id', ...authorize(['tradePaperbacks:read']), async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
     logger.info(`Fetching trade paperback with id: ${id}`);
@@ -127,6 +132,8 @@ router.get('/:id', async (req: Request, res: Response) => {
  *     description: Add a new trade paperback to the database
  *     tags:
  *       - Trade Paperbacks
+ *     security:
+ *       - bearerAuth: []
  *     requestBody:
  *       required: true
  *       content:
@@ -161,7 +168,7 @@ router.get('/:id', async (req: Request, res: Response) => {
  *       500:
  *         description: Server error
  */
-router.post('/', async (req: Request, res: Response) => {
+router.post('/', ...authorize(['tradePaperbacks:create']), async (req: Request, res: Response) => {
   try {
     // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     const {
@@ -214,6 +221,8 @@ router.post('/', async (req: Request, res: Response) => {
  *     description: Update an existing trade paperback by ID
  *     tags:
  *       - Trade Paperbacks
+ *     security:
+ *       - bearerAuth: []
  *     parameters:
  *       - in: path
  *         name: id
@@ -253,53 +262,57 @@ router.post('/', async (req: Request, res: Response) => {
  *       500:
  *         description: Server error
  */
-router.put('/:id', async (req: Request, res: Response) => {
-  try {
-    const { id } = req.params;
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-    const {
-      title,
-      coverImageUrl,
-      publicationDate,
-      isbn,
-      description,
-      pageCount,
-      publisherId,
-      volume,
-    } = req.body;
+router.put(
+  '/:id',
+  ...authorize(['tradePaperbacks:update']),
+  async (req: Request, res: Response) => {
+    try {
+      const { id } = req.params;
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+      const {
+        title,
+        coverImageUrl,
+        publicationDate,
+        isbn,
+        description,
+        pageCount,
+        publisherId,
+        volume,
+      } = req.body;
 
-    logger.info(`Updating trade paperback with id: ${id}`);
-    const tradePaperback = await TradePaperback.findByPk(id);
+      logger.info(`Updating trade paperback with id: ${id}`);
+      const tradePaperback = await TradePaperback.findByPk(id);
 
-    if (!tradePaperback) {
-      return res.status(404).json({ error: 'Trade paperback not found' });
+      if (!tradePaperback) {
+        return res.status(404).json({ error: 'Trade paperback not found' });
+      }
+
+      await tradePaperback.update({
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+        title,
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+        coverImageUrl,
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+        publicationDate,
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+        isbn,
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+        description,
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+        pageCount,
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+        publisherId,
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+        volume,
+      });
+
+      res.json(tradePaperback);
+    } catch (error) {
+      logger.error('Error updating trade paperback: %o', error);
+      res.status(500).json({ error: 'Failed to update trade paperback' });
     }
-
-    await tradePaperback.update({
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-      title,
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-      coverImageUrl,
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-      publicationDate,
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-      isbn,
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-      description,
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-      pageCount,
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-      publisherId,
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-      volume,
-    });
-
-    res.json(tradePaperback);
-  } catch (error) {
-    logger.error('Error updating trade paperback: %o', error);
-    res.status(500).json({ error: 'Failed to update trade paperback' });
   }
-});
+);
 
 /**
  * @swagger
@@ -309,6 +322,8 @@ router.put('/:id', async (req: Request, res: Response) => {
  *     description: Delete a trade paperback by ID
  *     tags:
  *       - Trade Paperbacks
+ *     security:
+ *       - bearerAuth: []
  *     parameters:
  *       - in: path
  *         name: id
@@ -324,22 +339,26 @@ router.put('/:id', async (req: Request, res: Response) => {
  *       500:
  *         description: Server error
  */
-router.delete('/:id', async (req: Request, res: Response) => {
-  try {
-    const { id } = req.params;
-    logger.info(`Deleting trade paperback with id: ${id}`);
-    const tradePaperback = await TradePaperback.findByPk(id);
+router.delete(
+  '/:id',
+  ...authorize(['tradePaperbacks:delete']),
+  async (req: Request, res: Response) => {
+    try {
+      const { id } = req.params;
+      logger.info(`Deleting trade paperback with id: ${id}`);
+      const tradePaperback = await TradePaperback.findByPk(id);
 
-    if (!tradePaperback) {
-      return res.status(404).json({ error: 'Trade paperback not found' });
+      if (!tradePaperback) {
+        return res.status(404).json({ error: 'Trade paperback not found' });
+      }
+
+      await tradePaperback.destroy();
+      res.json({ message: 'Trade paperback deleted successfully' });
+    } catch (error) {
+      logger.error('Error deleting trade paperback: %o', error);
+      res.status(500).json({ error: 'Failed to delete trade paperback' });
     }
-
-    await tradePaperback.destroy();
-    res.json({ message: 'Trade paperback deleted successfully' });
-  } catch (error) {
-    logger.error('Error deleting trade paperback: %o', error);
-    res.status(500).json({ error: 'Failed to delete trade paperback' });
   }
-});
+);
 
 export default router;

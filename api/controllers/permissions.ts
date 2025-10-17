@@ -1,6 +1,7 @@
 import { Router, Request, Response } from 'express';
 import Permission from '../models/Permission';
 import logger from '../utils/logger';
+import { authorize } from '../middleware/checkPermissions';
 
 const router = Router();
 
@@ -12,6 +13,8 @@ const router = Router();
  *     description: Retrieve a list of all permissions in the system
  *     tags:
  *       - Permissions
+ *     security:
+ *       - bearerAuth: []
  *     responses:
  *       200:
  *         description: List of permissions retrieved successfully
@@ -28,7 +31,7 @@ const router = Router();
  *             schema:
  *               $ref: '#/components/schemas/ErrorResponse'
  */
-router.get('/', async (req: Request, res: Response) => {
+router.get('/', ...authorize(['permissions:list']), async (req: Request, res: Response) => {
   try {
     logger.info('Fetching all permissions');
     const permissions = await Permission.findAll({
@@ -52,6 +55,8 @@ router.get('/', async (req: Request, res: Response) => {
  *     description: Retrieve all permissions organized by resource type
  *     tags:
  *       - Permissions
+ *     security:
+ *       - bearerAuth: []
  *     responses:
  *       200:
  *         description: Permissions grouped by resource
@@ -70,31 +75,35 @@ router.get('/', async (req: Request, res: Response) => {
  *             schema:
  *               $ref: '#/components/schemas/ErrorResponse'
  */
-router.get('/by-resource', async (req: Request, res: Response) => {
-  try {
-    logger.info('Fetching permissions grouped by resource');
-    const permissions = await Permission.findAll({
-      order: [
-        ['resource', 'ASC'],
-        ['action', 'ASC'],
-      ],
-    });
+router.get(
+  '/by-resource',
+  ...authorize(['permissions:list']),
+  async (req: Request, res: Response) => {
+    try {
+      logger.info('Fetching permissions grouped by resource');
+      const permissions = await Permission.findAll({
+        order: [
+          ['resource', 'ASC'],
+          ['action', 'ASC'],
+        ],
+      });
 
-    // Group permissions by resource
-    const groupedPermissions: Record<string, typeof permissions> = {};
-    permissions.forEach((permission) => {
-      if (!groupedPermissions[permission.resource]) {
-        groupedPermissions[permission.resource] = [];
-      }
-      groupedPermissions[permission.resource].push(permission);
-    });
+      // Group permissions by resource
+      const groupedPermissions: Record<string, typeof permissions> = {};
+      permissions.forEach((permission) => {
+        if (!groupedPermissions[permission.resource]) {
+          groupedPermissions[permission.resource] = [];
+        }
+        groupedPermissions[permission.resource].push(permission);
+      });
 
-    res.json(groupedPermissions);
-  } catch (error) {
-    logger.error('Error fetching grouped permissions: %o', error);
-    res.status(500).json({ error: 'Failed to fetch grouped permissions' });
+      res.json(groupedPermissions);
+    } catch (error) {
+      logger.error('Error fetching grouped permissions: %o', error);
+      res.status(500).json({ error: 'Failed to fetch grouped permissions' });
+    }
   }
-});
+);
 
 /**
  * @swagger
@@ -104,6 +113,8 @@ router.get('/by-resource', async (req: Request, res: Response) => {
  *     description: Retrieve a specific permission by its ID
  *     tags:
  *       - Permissions
+ *     security:
+ *       - bearerAuth: []
  *     parameters:
  *       - in: path
  *         name: id
@@ -131,7 +142,7 @@ router.get('/by-resource', async (req: Request, res: Response) => {
  *             schema:
  *               $ref: '#/components/schemas/ErrorResponse'
  */
-router.get('/:id', async (req: Request, res: Response) => {
+router.get('/:id', ...authorize(['permissions:read']), async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
     logger.info(`Fetching permission with id: ${id}`);
@@ -157,6 +168,8 @@ router.get('/:id', async (req: Request, res: Response) => {
  *     description: Add a new permission to the system
  *     tags:
  *       - Permissions
+ *     security:
+ *       - bearerAuth: []
  *     requestBody:
  *       required: true
  *       content:
@@ -200,7 +213,7 @@ router.get('/:id', async (req: Request, res: Response) => {
  *             schema:
  *               $ref: '#/components/schemas/ErrorResponse'
  */
-router.post('/', async (req: Request, res: Response) => {
+router.post('/', ...authorize(['permissions:create']), async (req: Request, res: Response) => {
   try {
     const { name, resource, action, description } = req.body as {
       name?: string;
@@ -249,6 +262,8 @@ router.post('/', async (req: Request, res: Response) => {
  *     description: Update an existing permission's information
  *     tags:
  *       - Permissions
+ *     security:
+ *       - bearerAuth: []
  *     parameters:
  *       - in: path
  *         name: id
@@ -291,7 +306,7 @@ router.post('/', async (req: Request, res: Response) => {
  *             schema:
  *               $ref: '#/components/schemas/ErrorResponse'
  */
-router.put('/:id', async (req: Request, res: Response) => {
+router.put('/:id', ...authorize(['permissions:update']), async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
     const { name, resource, action, description } = req.body as {
@@ -333,6 +348,8 @@ router.put('/:id', async (req: Request, res: Response) => {
  *     description: Remove a permission from the system
  *     tags:
  *       - Permissions
+ *     security:
+ *       - bearerAuth: []
  *     parameters:
  *       - in: path
  *         name: id
@@ -364,7 +381,7 @@ router.put('/:id', async (req: Request, res: Response) => {
  *             schema:
  *               $ref: '#/components/schemas/ErrorResponse'
  */
-router.delete('/:id', async (req: Request, res: Response) => {
+router.delete('/:id', ...authorize(['permissions:delete']), async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
     logger.info(`Deleting permission with id: ${id}`);

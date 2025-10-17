@@ -218,26 +218,31 @@ describe('Roles Controller', () => {
 
   describe('GET /roles/:id/permissions', () => {
     it('should return role permissions', async () => {
-      const mockRole = { id: 1, name: 'Admin' };
       const mockPermissions = [
         { id: 1, name: 'comics:create' },
         { id: 2, name: 'comics:read' },
       ];
-      const mockRolePermissions = [
-        { Permission: mockPermissions[0] },
-        { Permission: mockPermissions[1] },
-      ];
+      const mockRole = {
+        id: 1,
+        name: 'Admin',
+        permissions: mockPermissions,
+      };
 
       (Role.findByPk as jest.Mock).mockResolvedValue(mockRole);
-      (RolePermissionXRef.findAll as jest.Mock).mockResolvedValue(mockRolePermissions);
 
       const response = await request(app).get('/roles/1/permissions').expect(200);
 
-      expect(RolePermissionXRef.findAll).toHaveBeenCalledWith({
-        where: { roleId: '1' },
-        include: [{ model: Permission }],
+      expect(Role.findByPk).toHaveBeenCalledWith('1', {
+        include: [
+          {
+            model: Permission,
+            as: 'permissions',
+            through: { attributes: [] },
+          },
+        ],
       });
       expect(response.body).toHaveLength(2);
+      expect(response.body).toEqual(mockPermissions);
     });
 
     it('should return 404 when role not found', async () => {
@@ -246,6 +251,14 @@ describe('Roles Controller', () => {
       const response = await request(app).get('/roles/999/permissions').expect(404);
 
       expect(response.body).toHaveProperty('error', 'Role not found');
+    });
+
+    it('should handle errors gracefully', async () => {
+      (Role.findByPk as jest.Mock).mockRejectedValue(new Error('Database error'));
+
+      const response = await request(app).get('/roles/1/permissions').expect(500);
+
+      expect(response.body).toHaveProperty('error', 'Failed to fetch role permissions');
     });
   });
 

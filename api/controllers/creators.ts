@@ -1,6 +1,7 @@
 import { Router, Request, Response } from 'express';
 import Creator from '../models/Creator';
 import logger from '../utils/logger';
+import { authorize } from '../middleware/checkPermissions';
 
 const router = Router();
 
@@ -9,9 +10,13 @@ const router = Router();
  * /creators:
  *   get:
  *     summary: Get all creators
- *     description: Retrieve a list of all creators in the database
+ *     description: |
+ *       Retrieve a list of all creators in the database.
+ *       Requires the 'creators:list' permission.
  *     tags:
  *       - Creators
+ *     security:
+ *       - bearerAuth: []
  *     responses:
  *       200:
  *         description: List of creators retrieved successfully
@@ -37,10 +42,14 @@ const router = Router();
  *                   deathDate:
  *                     type: string
  *                     format: date
+ *       401:
+ *         description: Unauthorized - Authentication required
+ *       403:
+ *         description: Forbidden - Insufficient permissions (requires 'creators:list')
  *       500:
  *         description: Server error
  */
-router.get('/', async (req: Request, res: Response) => {
+router.get('/', ...authorize(['creators:list']), async (req: Request, res: Response) => {
   try {
     logger.info('Fetching all creators');
     const creators = await Creator.findAll();
@@ -56,9 +65,13 @@ router.get('/', async (req: Request, res: Response) => {
  * /creators/{id}:
  *   get:
  *     summary: Get a creator by ID
- *     description: Retrieve a specific creator by its ID
+ *     description: |
+ *       Retrieve a specific creator by its ID.
+ *       Requires the 'creators:read' permission.
  *     tags:
  *       - Creators
+ *     security:
+ *       - bearerAuth: []
  *     parameters:
  *       - in: path
  *         name: id
@@ -89,12 +102,16 @@ router.get('/', async (req: Request, res: Response) => {
  *                 deathDate:
  *                   type: string
  *                   format: date
+ *       401:
+ *         description: Unauthorized - Authentication required
+ *       403:
+ *         description: Forbidden - Insufficient permissions (requires 'creators:read')
  *       404:
  *         description: Creator not found
  *       500:
  *         description: Server error
  */
-router.get('/:id', async (req: Request, res: Response) => {
+router.get('/:id', ...authorize(['creators:read']), async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
     logger.info(`Fetching creator with id: ${id}`);
@@ -116,9 +133,13 @@ router.get('/:id', async (req: Request, res: Response) => {
  * /creators:
  *   post:
  *     summary: Create a new creator
- *     description: Add a new creator to the database
+ *     description: |
+ *       Add a new creator to the database.
+ *       Requires the 'creators:create' permission.
  *     tags:
  *       - Creators
+ *     security:
+ *       - bearerAuth: []
  *     requestBody:
  *       required: true
  *       content:
@@ -147,10 +168,14 @@ router.get('/:id', async (req: Request, res: Response) => {
  *         description: Creator created successfully
  *       400:
  *         description: Invalid input
+ *       401:
+ *         description: Unauthorized - Authentication required
+ *       403:
+ *         description: Forbidden - Insufficient permissions (requires 'creators:create')
  *       500:
  *         description: Server error
  */
-router.post('/', async (req: Request, res: Response) => {
+router.post('/', ...authorize(['creators:create']), async (req: Request, res: Response) => {
   try {
     // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     const { name, creatorType, bio, birthDate, deathDate } = req.body;
@@ -190,9 +215,13 @@ router.post('/', async (req: Request, res: Response) => {
  * /creators/{id}:
  *   put:
  *     summary: Update a creator
- *     description: Update an existing creator by ID
+ *     description: |
+ *       Update an existing creator by ID.
+ *       Requires the 'creators:update' permission.
  *     tags:
  *       - Creators
+ *     security:
+ *       - bearerAuth: []
  *     parameters:
  *       - in: path
  *         name: id
@@ -225,12 +254,16 @@ router.post('/', async (req: Request, res: Response) => {
  *         description: Creator updated successfully
  *       400:
  *         description: Invalid input
+ *       401:
+ *         description: Unauthorized - Authentication required
+ *       403:
+ *         description: Forbidden - Insufficient permissions (requires 'creators:update')
  *       404:
  *         description: Creator not found
  *       500:
  *         description: Server error
  */
-router.put('/:id', async (req: Request, res: Response) => {
+router.put('/:id', ...authorize(['creators:update']), async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
     // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
@@ -273,9 +306,13 @@ router.put('/:id', async (req: Request, res: Response) => {
  * /creators/{id}:
  *   delete:
  *     summary: Delete a creator
- *     description: Delete a creator by ID
+ *     description: |
+ *       Delete a creator by ID.
+ *       Requires the 'creators:delete' permission.
  *     tags:
  *       - Creators
+ *     security:
+ *       - bearerAuth: []
  *     parameters:
  *       - in: path
  *         name: id
@@ -286,12 +323,16 @@ router.put('/:id', async (req: Request, res: Response) => {
  *     responses:
  *       200:
  *         description: Creator deleted successfully
+ *       401:
+ *         description: Unauthorized - Authentication required
+ *       403:
+ *         description: Forbidden - Insufficient permissions (requires 'creators:delete')
  *       404:
  *         description: Creator not found
  *       500:
  *         description: Server error
  */
-router.delete('/:id', async (req: Request, res: Response) => {
+router.delete('/:id', ...authorize(['creators:delete']), async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
     logger.info(`Deleting creator with id: ${id}`);

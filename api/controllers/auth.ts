@@ -1,10 +1,12 @@
 import { Router, Request, Response } from 'express';
 import User from '../models/User';
-import jwt from 'jsonwebtoken';
+import UserRoleXRef from '../models/UserRoleXRef';
+import jwt, { JwtPayload } from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
 import crypto from 'crypto';
 import logger from '../utils/logger';
 import { sendPasswordResetEmail } from '../utils/email';
+import { authorize } from '../middleware/checkPermissions';
 
 const router = Router();
 const secret_key = process.env.JWT_SECRET as string;
@@ -20,9 +22,13 @@ const SALT_ROUNDS = 10;
  * /auth/test:
  *   get:
  *     summary: Test auth endpoint
- *     description: Simple test endpoint to verify auth routes are working
+ *     description: |
+ *       Simple test endpoint to verify auth routes are working.
+ *       Requires the 'user:read' permission.
  *     tags:
  *       - Authentication
+ *     security:
+ *       - bearerAuth: []
  *     responses:
  *       200:
  *         description: Auth route is working
@@ -34,8 +40,12 @@ const SALT_ROUNDS = 10;
  *                 message:
  *                   type: string
  *                   example: Auth route works!
+ *       401:
+ *         description: Unauthorized - Authentication required
+ *       403:
+ *         description: Forbidden - Insufficient permissions (requires 'user:read')
  */
-router.get('/test', (req: Request, res: Response) => {
+router.get('/test', ...authorize(['user:read']), (req: Request, res: Response) => {
   logger.info('Auth test endpoint accessed');
   res.json({ message: 'Auth route works!' });
 });
@@ -104,7 +114,23 @@ router.post('/login', async (req: Request, res: Response) => {
       return res.status(401).json({ message: 'Authentication failed. Password is incorrect.' });
     }
 
-    const payload = { id: user.id, email: user.email };
+    // Find user's role objects with role IDs
+    const roleIds = await UserRoleXRef.findAll({
+      where: { userId: user.id },
+      attributes: ['roleId'],
+    });
+
+    // Seperate out the user role IDs from the objects
+    const userRoleIds = roleIds.map((r) => r.roleId);
+
+    // Setup JWT payload, including custom roles claim
+    const payload: JwtPayload = {
+      id: user.id,
+      email: user.email,
+      roles: userRoleIds,
+    };
+
+    // Sign token with 30 day expiration
     const token = jwt.sign(payload, secret_key, { expiresIn: '30d' });
 
     res.cookie('access_token', token, {
