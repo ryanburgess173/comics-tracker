@@ -31,7 +31,10 @@ jobs:
       - name: Install API dependencies
         run: cd api && npm ci
 
-      - name: Run ESLint
+      - name: Install Frontend dependencies
+        run: cd frontend && npm ci
+
+      - name: Run ESLint (API & Frontend)
         run: npm run lint
 
       - name: Run Security Linting
@@ -39,6 +42,9 @@ jobs:
 
       - name: Run Prettier check
         run: npm run format:check
+
+      - name: Lint Frontend
+        run: cd frontend && npm run lint
 
       - name: Lint success
         if: success()
