@@ -7,9 +7,13 @@
     "doc": "docs"
   },
   "scripts": {
-    "test": "cd api && npm test",
+    "test": "npm run test:api && npm run test:frontend",
+    "test:api": "cd api && npm test",
+    "test:frontend": "cd frontend && npm test",
     "test:watch": "cd api && npm run test:watch",
-    "test:coverage": "cd api && npm run test:coverage",
+    "test:coverage": "npm run test:coverage:api && npm run test:coverage:frontend",
+    "test:coverage:api": "cd api && npm run test:coverage",
+    "test:coverage:frontend": "cd frontend && npm run test:coverage",
     "lint": "eslint . --ext .ts,.tsx",
     "lint:fix": "eslint . --ext .ts,.tsx --fix",
     "lint:security": "eslint . --ext .ts,.tsx",

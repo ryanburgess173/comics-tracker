@@ -75,8 +75,26 @@ Build artifacts will be stored in the `dist/` directory.
 ### Running Tests
 
 ```bash
+# Run tests in watch mode
 npm test
+
+# Run tests once with code coverage
+npm run test:coverage
+
+# Run tests in watch mode explicitly
+npm run test:watch
 ```
+
+### Test Coverage
+
+Unit tests are implemented for:
+
+- ✅ **AuthService** - Authentication, login, logout, token management
+- ✅ **ComicService** - CRUD operations, pagination, search
+- ✅ **authInterceptor** - JWT token injection, auth endpoint handling
+- ✅ **authGuard** - Route protection, redirect logic
+
+Coverage reports are generated in `coverage/` directory after running `npm run test:coverage`.
 
 ## Services
 

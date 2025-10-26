@@ -1,0 +1,118 @@
+body{
+    background-color: black;
+    font-family: "PT Serif", serif;
+    font-weight: 400;
+    font-style: normal;
+}
+main{
+    margin-left: 15%;
+    margin-right: 15%;
+    padding: 1%;
+    color: white;
+    background-color: rgb(40,40,40);
+    font-family: "PT Serif", serif; /* Serif for main content/reading */
+    border-radius: 10px;
+}
+nav{
+    font-family: "PT Serif", serif; /* PT Serif for navigation */
+}
+nav ul{
+    align-items: center;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+nav ul li{
+    padding-top: 1%;
+    padding-bottom: 1%;
+    display: inline-block;
+    margin: 0 10px;
+    color: white;
+}
+nav ul li a{
+    text-decoration: none;
+    color: white;
+    font-weight: bold;
+    letter-spacing: 0.5px; /* Better readability for sans-serif nav */
+}
+nav ul li a:hover{
+    color: silver;
+}
+header{
+    background: linear-gradient(to bottom, rgb(20,20,20), rgb(70,70,70));
+    color: white;
+    text-align: center;
+    padding: 1%;
+}
+header h1{
+    margin: 0;
+    font-family: "Michroma", sans-serif; /* Modern sans-serif for main title */
+    font-size: 2.5em;
+    letter-spacing: 1px;
+}
+header p{
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; /* Sans-serif for tagline */
+    font-size: 1em;
+    margin-top: 0.5em;
+    font-weight: 300;
+}
+footer{
+    background: linear-gradient(to bottom, rgb(70,70,70), rgb(20,20,20));
+    color: white;
+    text-align: center;
+    padding: 1%;
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; /* Sans-serif for footer */
+    align-items: left;
+}
+footer p{
+    margin: 0;
+    font-size: 0.8em;
+}
+footer p a{
+    color: lightblue;
+    text-decoration: none;
+}
+footer p a:hover{
+    color: silver;
+    text-decoration: underline;
+}
+
+/* PT Serif Font Styles */
+.pt-serif-regular {
+  font-family: "PT Serif", serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
+.pt-serif-bold {
+  font-family: "PT Serif", serif;
+  font-weight: 700;
+  font-style: normal;
+}
+
+.pt-serif-regular-italic {
+  font-family: "PT Serif", serif;
+  font-weight: 400;
+  font-style: italic;
+}
+
+.pt-serif-bold-italic {
+  font-family: "PT Serif", serif;
+  font-weight: 700;
+  font-style: italic;
+}
+
+/* Michroma Font Styles */
+.michroma-regular {
+  font-family: "Michroma", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+}
+.michroma-bold {
+  font-family: "Michroma", sans-serif;
+  font-weight: 700;
+  font-style: normal;
+}

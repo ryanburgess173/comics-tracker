@@ -12,10 +12,13 @@ comics-tracker/
 │       ├── 2025-10-11-ci-cd-testing-improvements.md
 │       └── README.md
 │
-└── api/docs/                     # API-specific documentation
-    ├── ci-cd.md                  # CI/CD setup (DUPLICATE)
-    ├── swagger.md                # Swagger/OpenAPI setup
-    └── testing.md                # Testing guide
+├── api/docs/                      # API-specific documentation
+│   ├── ci-cd.md                  # CI/CD setup (DUPLICATE)
+│   ├── swagger.md                # Swagger/OpenAPI setup
+│   └── testing.md                # Testing guide
+│
+└── frontend/                      # Angular frontend application
+    └── FRONTEND_README.md        # Frontend setup and documentation
 
 README.md                          # Main project documentation
 ```
