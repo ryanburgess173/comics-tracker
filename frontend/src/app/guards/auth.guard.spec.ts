@@ -22,6 +22,7 @@ describe('authGuard', () => {
     });
 
     authService = TestBed.inject(AuthService) as jasmine.SpyObj<AuthService>;
+
     router = TestBed.inject(Router) as jasmine.SpyObj<Router>;
 
     mockRoute = {} as ActivatedRouteSnapshot;
@@ -34,6 +35,7 @@ describe('authGuard', () => {
     const result = await TestBed.runInInjectionContext(() => authGuard(mockRoute, mockState));
 
     expect(result).toBe(true);
+    // eslint-disable-next-line @typescript-eslint/unbound-method
     expect(router.navigate).not.toHaveBeenCalled();
   });
 
@@ -43,6 +45,7 @@ describe('authGuard', () => {
     const result = await TestBed.runInInjectionContext(() => authGuard(mockRoute, mockState));
 
     expect(result).toBe(false);
+    // eslint-disable-next-line @typescript-eslint/unbound-method
     expect(router.navigate).toHaveBeenCalledWith(['/login'], {
       queryParams: { returnUrl: '/comics' },
     });
@@ -55,6 +58,7 @@ describe('authGuard', () => {
 
     await TestBed.runInInjectionContext(() => authGuard(mockRoute, mockState));
 
+    // eslint-disable-next-line @typescript-eslint/unbound-method
     expect(router.navigate).toHaveBeenCalledWith(['/login'], {
       queryParams: { returnUrl: protectedUrl },
     });

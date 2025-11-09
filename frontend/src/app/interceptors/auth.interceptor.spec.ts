@@ -22,6 +22,7 @@ describe('authInterceptor', () => {
 
     httpMock = TestBed.inject(HttpTestingController);
     httpClient = TestBed.inject(HttpClient);
+
     authService = TestBed.inject(AuthService) as jasmine.SpyObj<AuthService>;
 
     // Clear localStorage
