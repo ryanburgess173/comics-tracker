@@ -412,7 +412,7 @@ export default {
           title: 'Darth Vader #25',
           authorId: 13,
           description: 'End of Games, Part VI - Series finale',
-          imageUrl: null,
+          imageUrl: 'https://comics-tracker-2025.s3.us-east-1.amazonaws.com/darthvader-2025-25.jpg',
           pages: 40,
           publisherId: 1,
           publishedDate: new Date('2016-10-12'),

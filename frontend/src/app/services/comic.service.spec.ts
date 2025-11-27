@@ -16,7 +16,7 @@ describe('ComicService', () => {
     publisherId: 1,
     universeId: 1,
     description: 'Skywalker Strikes Part I',
-    coverImageUrl: 'https://example.com/cover.jpg',
+    imageUrl: 'https://example.com/cover.jpg',
   };
 
   const mockComics: Comic[] = [
@@ -59,7 +59,7 @@ describe('ComicService', () => {
         done();
       });
 
-      const req = httpMock.expectOne(`${environment.apiUrl}/comics?page=1&limit=10`);
+      const req = httpMock.expectOne(`${environment.apiUrl}?page=1&limit=10`);
       expect(req.request.method).toBe('GET');
       req.flush(mockResponse);
     });
@@ -72,7 +72,7 @@ describe('ComicService', () => {
         done();
       });
 
-      const req = httpMock.expectOne(`${environment.apiUrl}/comics?page=2&limit=5`);
+      const req = httpMock.expectOne(`${environment.apiUrl}?page=2&limit=5`);
       expect(req.request.method).toBe('GET');
       req.flush(mockResponse);
     });
@@ -87,7 +87,7 @@ describe('ComicService', () => {
         done();
       });
 
-      const req = httpMock.expectOne(`${environment.apiUrl}/comics/1`);
+      const req = httpMock.expectOne(`${environment.apiUrl}/1`);
       expect(req.request.method).toBe('GET');
       req.flush(mockComic);
     });
@@ -115,7 +115,7 @@ describe('ComicService', () => {
         done();
       });
 
-      const req = httpMock.expectOne(`${environment.apiUrl}/comics`);
+      const req = httpMock.expectOne(`${environment.apiUrl}`);
       expect(req.request.method).toBe('POST');
       expect(req.request.body).toEqual(newComic);
       req.flush(createdComic);
@@ -140,7 +140,7 @@ describe('ComicService', () => {
         done();
       });
 
-      const req = httpMock.expectOne(`${environment.apiUrl}/comics/1`);
+      const req = httpMock.expectOne(`${environment.apiUrl}/1`);
       expect(req.request.method).toBe('PUT');
       expect(req.request.body).toEqual(updateData);
       req.flush(updatedComic);
@@ -153,7 +153,7 @@ describe('ComicService', () => {
         done();
       });
 
-      const req = httpMock.expectOne(`${environment.apiUrl}/comics/1`);
+      const req = httpMock.expectOne(`${environment.apiUrl}/1`);
       expect(req.request.method).toBe('DELETE');
       req.flush(null);
     });
@@ -169,7 +169,7 @@ describe('ComicService', () => {
         done();
       });
 
-      const req = httpMock.expectOne(`${environment.apiUrl}/comics/search?search=Star%20Wars`);
+      const req = httpMock.expectOne(`${environment.apiUrl}/search?search=Star%20Wars`);
       expect(req.request.method).toBe('GET');
       req.flush(mockComics);
     });
@@ -181,7 +181,7 @@ describe('ComicService', () => {
         done();
       });
 
-      const req = httpMock.expectOne(`${environment.apiUrl}/comics/search?search=nonexistent`);
+      const req = httpMock.expectOne(`${environment.apiUrl}/search?search=nonexistent`);
       req.flush([]);
     });
   });

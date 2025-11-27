@@ -331,7 +331,7 @@ export default {
           title: 'Star Wars #19',
           authorId: 11, // Jason Aaron
           description: 'Rebel Jail, Part IV - Final confrontation',
-          imageUrl: null,
+          imageUrl: 'https://comics-tracker-2025.s3.us-east-1.amazonaws.com/starwars-2015-19.jpg',
           pages: 20,
           publisherId: 1, // Marvel Comics
           publishedDate: new Date('2016-05-25'),

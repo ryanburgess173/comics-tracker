@@ -1,0 +1,7 @@
+<h1>Recent Releases</h1>
+
+<div class="cards-grid">
+@for (comic of comics(); track comic.id) {
+    <app-card [comic]="comic" />
+}
+</div>

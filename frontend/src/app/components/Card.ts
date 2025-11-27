@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, input } from '@angular/core';
+import { Comic } from '../models/comic.model';
 
 @Component({
   selector: 'app-card',
@@ -6,6 +7,6 @@ import { Component } from '@angular/core';
   styleUrls: ['./card.scss'],
 })
 export class Card {
-  title: string = 'Comic Title';
   // This component can be used to display comic book information in a card format
+  comic = input.required<Comic>();
 }

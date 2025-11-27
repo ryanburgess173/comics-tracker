@@ -1,36 +1,22 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Comics Tracker</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Libertinus+Serif:ital,wght@0,400;0,600;0,700;1,400;1,600;1,700&family=PT+Serif:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="app.scss">
-    <link href="https://fonts.googleapis.com/css2?family=Libertinus+Serif:ital,wght@0,400;0,600;0,700;1,400;1,600;1,700&family=Michroma&family=PT+Serif:ital,wght@0,400;0,700;1,400;1,700&family=Uncial+Antiqua&display=swap" rel="stylesheet">
-  </head>
-  <body>
-    <header>
-      <h1>Comics Tracker</h1>
-      <p>Keep track of your comic book collection and reading progress.</p>
-    </header>
-    <nav>
-      <ul>
-        <li><a routerLink="/">Home</a></li>
-        <li><a routerLink="/starwars">Star Wars</a></li>
-        <li><a routerLink="/dune">Dune</a></li>
-        <li><a routerLink="/marvel">Marvel</a></li>
-        <li><a routerLink="/dc">DC</a></li>
-        <li><a routerLink="/alien">Alien</a></li>
-      </ul>
-    </nav>
-    <main>
-      <h1>Recent Releases</h1>
-    </main>
-    <footer>
-      <p>Comics Tracker - Your one-stop solution for tracking your comic book collection.</p>
-      <p>Created by Ryan Burgess - <a href="https://github.com/ryanburgess173">https://github.com/ryanburgess173</a></p>
-    </footer>
-  </body>
-</html>
+<header>
+  <h1>Comics Tracker</h1>
+  <p>Keep track of your comic book collection and reading progress.</p>
+</header>
+
+<nav>
+  <ul>
+    <li><a routerLink="/">Home</a></li>
+    <li><a routerLink="/my-comics">My Comics</a></li>
+    <li><a routerLink="/find-comics">Find Comics</a></li>
+    <li><a routerLink="/admin">Admin Dashboard</a></li>
+  </ul>
+</nav>
+
+<main>
+  <router-outlet />
+</main>
+
+<footer>
+  <p>Comics Tracker - Your one-stop solution for tracking your comic book collection.</p>
+  <p>Created by Ryan Burgess - <a href="https://github.com/ryanburgess173">https://github.com/ryanburgess173</a></p>
+</footer>

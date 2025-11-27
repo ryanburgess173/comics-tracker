@@ -245,7 +245,7 @@ export const up = async (queryInterface: QueryInterface): Promise<void> => {
       authorId: 19,
       description:
         "The epic conclusion as the foundations are laid for the events of Frank Herbert's Dune.",
-      imageUrl: null,
+      imageUrl: 'https://comics-tracker-2025.s3.us-east-1.amazonaws.com/dune-houseatreides-12.jpg',
       pages: null,
       publisherId: 6,
       publishedDate: new Date('2021-12-01'),

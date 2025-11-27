@@ -10,68 +10,6 @@ const router = Router();
 
 /**
  * @swagger
- * /comics:
- *   get:
- *     summary: Get all comics
- *     description: |
- *       Retrieve a list of all comics in the database.
- *       Requires the 'comics:list' permission.
- *     tags:
- *       - Comics
- *     security:
- *       - bearerAuth: []
- *     responses:
- *       200:
- *         description: List of comics retrieved successfully
- *         content:
- *           application/json:
- *             schema:
- *               type: array
- *               items:
- *                 type: object
- *                 properties:
- *                   id:
- *                     type: integer
- *                   title:
- *                     type: string
- *                   author:
- *                     type: string
- *                   description:
- *                     type: string
- *                   imageUrl:
- *                     type: string
- *                   pages:
- *                     type: integer
- *                   publisher:
- *                     type: string
- *                   publishedDate:
- *                     type: string
- *                     format: date
- *       401:
- *         description: Unauthorized - Authentication required
- *       403:
- *         description: Forbidden - Insufficient permissions (requires 'comics:list')
- *       500:
- *         description: Server error
- */
-router.get(
-  '/',
-  authenticateJWT,
-  ...authorize(['comics:list']),
-  async (req: Request, res: Response) => {
-    try {
-      logger.info('Fetching all comics');
-      const comics = await Comic.findAll();
-      res.json(comics);
-    } catch (error) {
-      logger.error('Error fetching comics: %o', error);
-      res.status(500).json({ error: 'Failed to fetch comics' });
-    }
-  }
-);
-
-/**
- * @swagger
  * /comics/recentReleases:
  *   get:
  *     summary: Get recent comic releases
@@ -140,6 +78,68 @@ router.get('/recentReleases', async (req: Request, res: Response) => {
     res.status(500).json({ error: 'Failed to fetch recent releases' });
   }
 });
+
+/**
+ * @swagger
+ * /comics:
+ *   get:
+ *     summary: Get all comics
+ *     description: |
+ *       Retrieve a list of all comics in the database.
+ *       Requires the 'comics:list' permission.
+ *     tags:
+ *       - Comics
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: List of comics retrieved successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 type: object
+ *                 properties:
+ *                   id:
+ *                     type: integer
+ *                   title:
+ *                     type: string
+ *                   author:
+ *                     type: string
+ *                   description:
+ *                     type: string
+ *                   imageUrl:
+ *                     type: string
+ *                   pages:
+ *                     type: integer
+ *                   publisher:
+ *                     type: string
+ *                   publishedDate:
+ *                     type: string
+ *                     format: date
+ *       401:
+ *         description: Unauthorized - Authentication required
+ *       403:
+ *         description: Forbidden - Insufficient permissions (requires 'comics:list')
+ *       500:
+ *         description: Server error
+ */
+router.get(
+  '/',
+  authenticateJWT,
+  ...authorize(['comics:list']),
+  async (req: Request, res: Response) => {
+    try {
+      logger.info('Fetching all comics');
+      const comics = await Comic.findAll();
+      res.json(comics);
+    } catch (error) {
+      logger.error('Error fetching comics: %o', error);
+      res.status(500).json({ error: 'Failed to fetch comics' });
+    }
+  }
+);
 
 /**
  * @swagger

@@ -123,7 +123,7 @@ export default {
           authorId: 23,
           description:
             'ONE LAST CHANCE TO ESCAPE THE THAW! With secrets revealed, loved ones lost and Xenomorphs engulfing the base – for a moment, Zasha thought all hope was gone. However, when a familiar face arrives in the form of a savior, the two set off for one last-ditch effort to escape the moon.',
-          imageUrl: null,
+          imageUrl: 'https://comics-tracker-2025.s3.us-east-1.amazonaws.com/alien-thaw-5.jpg',
           pages: null,
           publisherId: 1,
           publishedDate: new Date('2023-08-30'),
