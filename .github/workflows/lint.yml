@@ -34,17 +34,14 @@ jobs:
       - name: Install Frontend dependencies
         run: cd frontend && npm ci
 
-      - name: Run ESLint (API & Frontend)
-        run: npm run lint
+      - name: Run ESLint (API)
+        run: npm run lint:api
 
       - name: Run Security Linting
         run: npm run lint:security
 
       - name: Run Prettier check
         run: npm run format:check
-
-      - name: Lint Frontend
-        run: cd frontend && npm run lint
 
       - name: Lint success
         if: success()

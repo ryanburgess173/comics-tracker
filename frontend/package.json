@@ -10,8 +10,8 @@
     "test:coverage": "ng test --code-coverage --watch=false --browsers=ChromeHeadless",
     "test:watch": "ng test --watch=true",
     "serve:ssr:comics-tracker-frontend": "node dist/comics-tracker-frontend/server/server.mjs",
-    "lint": "eslint . --ext .ts,.tsx",
-    "lint:fix": "eslint . --ext .ts,.tsx --fix"
+    "lint": "ng lint",
+    "lint:fix": "ng lint --fix"
   },
   "prettier": {
     "printWidth": 100,
