@@ -6,5 +6,5 @@ import { LoginPageComponent } from './pages/login/login.component';
 export const routes: Routes = [
   { path: '', component: HomeComponent },
   { path: 'my-comics', component: MyComicsComponent },
-  { path: 'login', component: LoginPageComponent }
+  { path: 'login', component: LoginPageComponent },
 ];
