@@ -14,7 +14,7 @@ export class ComicService {
   /**
    * Get all comics with optional pagination
    */
-  getComics(page: number = 1, limit: number = 10): Observable<{ comics: Comic[]; total: number }> {
+  getComics(page = 1, limit = 10): Observable<{ comics: Comic[]; total: number }> {
     const params = new HttpParams().set('page', page.toString()).set('limit', limit.toString());
 
     return this.http.get<{ comics: Comic[]; total: number }>(this.apiUrl, { params });

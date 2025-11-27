@@ -37,6 +37,9 @@ jobs:
       - name: Run ESLint (API)
         run: npm run lint:api
 
+      - name: Run ESLint (Frontend)
+        run: npm run lint:frontend
+
       - name: Run Security Linting
         run: npm run lint:security
 
