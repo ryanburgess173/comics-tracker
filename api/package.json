@@ -11,9 +11,9 @@
     "build": "tsc --outDir out",
     "start": "node out/index.js",
     "dev": "ts-node index.ts",
-    "lint": "cd .. && npm run lint",
-    "lint:fix": "cd .. && npm run lint:fix",
-    "lint:security": "cd .. && npm run lint:security",
+    "lint": "eslint . --ext .ts",
+    "lint:fix": "eslint . --ext .ts --fix",
+    "lint:security": "eslint . --ext .ts",
     "migrate": "sequelize-cli db:migrate",
     "migrate:undo": "sequelize-cli db:migrate:undo",
     "migrate:undo:all": "sequelize-cli db:migrate:undo:all",
@@ -30,6 +30,7 @@
   "license": "ISC",
   "dependencies": {
     "bcrypt": "^6.0.0",
+    "cors": "^2.8.5",
     "dotenv": "^17.2.3",
     "expres": "^0.0.5",
     "express": "^5.1.0",
@@ -43,6 +44,7 @@
   },
   "devDependencies": {
     "@types/bcrypt": "^6.0.0",
+    "@types/cors": "^2.8.19",
     "@types/express": "^5.0.3",
     "@types/jest": "^30.0.0",
     "@types/jsonwebtoken": "^9.0.10",

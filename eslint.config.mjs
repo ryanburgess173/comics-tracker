@@ -29,6 +29,8 @@ export default tseslint.config(
       '**/yarn.lock',
       '**/*.sqlite',
       '**/*.db',
+      '**/*.spec.ts',
+      '**/*.spec.tsx',
     ],
   },
 

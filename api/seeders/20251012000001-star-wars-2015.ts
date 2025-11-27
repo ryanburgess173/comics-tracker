@@ -242,6 +242,104 @@ export default {
           createdAt: new Date(),
           updatedAt: new Date(),
         },
+        {
+          id: 25,
+          title: 'Star Wars #13',
+          authorId: 11, // Jason Aaron
+          description: 'Vader Down, Part III - The Dark Lord crashes',
+          imageUrl: null,
+          pages: 20,
+          publisherId: 1, // Marvel Comics
+          publishedDate: new Date('2015-12-02'),
+          runId: 6,
+          variant: 1,
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        },
+        {
+          id: 26,
+          title: 'Star Wars #14',
+          authorId: 11, // Jason Aaron
+          description: 'Vader Down, Part V - Facing overwhelming odds',
+          imageUrl: null,
+          pages: 20,
+          publisherId: 1, // Marvel Comics
+          publishedDate: new Date('2016-01-06'),
+          runId: 6,
+          variant: 1,
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        },
+        {
+          id: 27,
+          title: 'Star Wars #15',
+          authorId: 11, // Jason Aaron
+          description: 'From the Journals of Old Ben Kenobi: The Last of His Breed',
+          imageUrl: null,
+          pages: 20,
+          publisherId: 1, // Marvel Comics
+          publishedDate: new Date('2016-01-20'),
+          runId: 6,
+          variant: 1,
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        },
+        {
+          id: 28,
+          title: 'Star Wars #16',
+          authorId: 11, // Jason Aaron
+          description: 'Rebel Jail, Part I - A mysterious prison',
+          imageUrl: null,
+          pages: 20,
+          publisherId: 1, // Marvel Comics
+          publishedDate: new Date('2016-02-17'),
+          runId: 6,
+          variant: 1,
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        },
+        {
+          id: 29,
+          title: 'Star Wars #17',
+          authorId: 11, // Jason Aaron
+          description: 'Rebel Jail, Part II - Secrets revealed',
+          imageUrl: null,
+          pages: 20,
+          publisherId: 1, // Marvel Comics
+          publishedDate: new Date('2016-03-23'),
+          runId: 6,
+          variant: 1,
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        },
+        {
+          id: 30,
+          title: 'Star Wars #18',
+          authorId: 11, // Jason Aaron
+          description: 'Rebel Jail, Part III - Escape attempt',
+          imageUrl: null,
+          pages: 20,
+          publisherId: 1, // Marvel Comics
+          publishedDate: new Date('2016-04-27'),
+          runId: 6,
+          variant: 1,
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        },
+        {
+          id: 31,
+          title: 'Star Wars #19',
+          authorId: 11, // Jason Aaron
+          description: 'Rebel Jail, Part IV - Final confrontation',
+          imageUrl: 'https://comics-tracker-2025.s3.us-east-1.amazonaws.com/starwars-2015-19.jpg',
+          pages: 20,
+          publisherId: 1, // Marvel Comics
+          publishedDate: new Date('2016-05-25'),
+          runId: 6,
+          variant: 1,
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        },
       ],
       {}
     );
@@ -267,7 +365,7 @@ export default {
           id: 2,
           title: "Star Wars Vol. 2: Showdown on the Smuggler's Moon",
           coverImageUrl: null,
-          publicationDate: new Date('2016-04-05'),
+          publicationDate: new Date('2016-01-26'),
           isbn: '9780785192169',
           description: 'Collects Star Wars #7-12',
           pageCount: 152,
@@ -277,11 +375,11 @@ export default {
           updatedAt: new Date(),
         },
         {
-          id: 3,
+          id: 4,
           title: 'Star Wars Vol. 3: Rebel Jail',
           coverImageUrl: null,
-          publicationDate: new Date('2016-10-18'),
-          isbn: '9781302901547',
+          publicationDate: new Date('2016-08-16'),
+          isbn: '9780785199830',
           description: 'Collects Star Wars #15-19, Star Wars Annual #1',
           pageCount: 136,
           publisherId: 1, // Marvel Comics
@@ -417,6 +515,42 @@ export default {
           createdAt: new Date(),
           updatedAt: new Date(),
         },
+        // Vol. 3: Rebel Jail (Issues #15-19)
+        {
+          tradePaperbackId: 4,
+          comicId: 27,
+          orderInCollection: 1,
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        },
+        {
+          tradePaperbackId: 4,
+          comicId: 28,
+          orderInCollection: 2,
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        },
+        {
+          tradePaperbackId: 4,
+          comicId: 29,
+          orderInCollection: 3,
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        },
+        {
+          tradePaperbackId: 4,
+          comicId: 30,
+          orderInCollection: 4,
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        },
+        {
+          tradePaperbackId: 4,
+          comicId: 31,
+          orderInCollection: 5,
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        },
       ],
       {}
     );
@@ -510,6 +644,55 @@ export default {
           createdAt: new Date(),
           updatedAt: new Date(),
         },
+        {
+          omnibusId: 1,
+          comicId: 25,
+          orderInCollection: 13,
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        },
+        {
+          omnibusId: 1,
+          comicId: 26,
+          orderInCollection: 14,
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        },
+        {
+          omnibusId: 1,
+          comicId: 27,
+          orderInCollection: 15,
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        },
+        {
+          omnibusId: 1,
+          comicId: 28,
+          orderInCollection: 16,
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        },
+        {
+          omnibusId: 1,
+          comicId: 29,
+          orderInCollection: 17,
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        },
+        {
+          omnibusId: 1,
+          comicId: 30,
+          orderInCollection: 18,
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        },
+        {
+          omnibusId: 1,
+          comicId: 31,
+          orderInCollection: 19,
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        },
       ],
       {}
     );
@@ -528,7 +711,7 @@ export default {
     await queryInterface.bulkDelete(
       'TradePaperbackComicXRefs',
       {
-        tradePaperbackId: [1, 2, 3],
+        tradePaperbackId: [1, 2, 4],
       },
       {}
     );
@@ -544,7 +727,7 @@ export default {
     await queryInterface.bulkDelete(
       'TradePaperbacks',
       {
-        id: [1, 2, 3],
+        id: [1, 2, 4],
       },
       {}
     );
@@ -552,7 +735,7 @@ export default {
     await queryInterface.bulkDelete(
       'Comics',
       {
-        id: [13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24],
+        id: [13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31],
       },
       {}
     );

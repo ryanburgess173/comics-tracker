@@ -3,8 +3,81 @@ import Comic from '../models/Comic';
 import logger from '../utils/logger';
 import { authenticateJWT } from '../middleware/authenticateJWT';
 import { authorize } from '../middleware/checkPermissions';
+import sequelize from '../db';
+import { QueryTypes } from 'sequelize';
 
 const router = Router();
+
+/**
+ * @swagger
+ * /comics/recentReleases:
+ *   get:
+ *     summary: Get recent comic releases
+ *     description: |
+ *       Retrieve the most recently published comic from each run.
+ *       This endpoint does not require authentication.
+ *     tags:
+ *       - Comics
+ *     responses:
+ *       200:
+ *         description: List of recent comics retrieved successfully (one per run)
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 type: object
+ *                 properties:
+ *                   id:
+ *                     type: integer
+ *                   title:
+ *                     type: string
+ *                   author:
+ *                     type: string
+ *                   description:
+ *                     type: string
+ *                   imageUrl:
+ *                     type: string
+ *                   pages:
+ *                     type: integer
+ *                   publisher:
+ *                     type: string
+ *                   publishedDate:
+ *                     type: string
+ *                     format: date
+ *       500:
+ *         description: Server error
+ */
+router.get('/recentReleases', async (req: Request, res: Response) => {
+  try {
+    // Get the most recent comic for each run
+    const comics = await sequelize.query(
+      `
+        SELECT c.*
+        FROM Comics c
+        INNER JOIN (
+          SELECT runId, MAX(publishedDate) as maxDate
+          FROM Comics
+          WHERE runId IS NOT NULL
+            AND publishedDate >= date('now', '-10 years')
+          GROUP BY runId
+        ) latest ON c.runId = latest.runId 
+                AND c.publishedDate = latest.maxDate
+        ORDER BY c.publishedDate DESC
+        `,
+      {
+        type: QueryTypes.SELECT,
+        model: Comic,
+        mapToModel: true,
+      }
+    );
+
+    res.json(comics);
+  } catch (error) {
+    logger.error('Error fetching recent releases: %o', error);
+    res.status(500).json({ error: 'Failed to fetch recent releases' });
+  }
+});
 
 /**
  * @swagger

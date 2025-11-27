@@ -29,6 +29,16 @@ comics-tracker/
 │   ├── index.ts           # Express app entry point
 │   ├── swagger.ts         # Swagger/OpenAPI config
 │   └── package.json       # API dependencies
+├── frontend/              # Angular frontend application
+│   ├── src/
+│   │   ├── app/          # Angular app components
+│   │   │   ├── components/   # UI components
+│   │   │   ├── services/     # API services
+│   │   │   ├── models/       # TypeScript models
+│   │   │   ├── guards/       # Route guards
+│   │   │   └── interceptors/ # HTTP interceptors
+│   │   └── environments/ # Environment configs
+│   └── package.json      # Frontend dependencies
 ├── docs/                  # Documentation
 │   ├── api/              # API documentation
 │   ├── development/      # Development workflow docs
@@ -52,6 +62,14 @@ comics-tracker/
 - **Swagger/OpenAPI** - API documentation
 - **Winston** - Logging library
 
+### Frontend
+
+- **Angular 20** - Modern web framework
+- **TypeScript** - Type-safe development
+- **RxJS** - Reactive programming
+- **SCSS** - Advanced styling
+- **Server-Side Rendering (SSR)** - Improved performance and SEO
+
 ## 📦 Getting Started
 
 ### Prerequisites
@@ -68,11 +86,21 @@ comics-tracker/
    cd comics-tracker
    ```
 
-2. **Install API dependencies**
+2. **Install dependencies**
 
    ```bash
+   # Install root dependencies
+   npm install
+
+   # Install API dependencies
    cd api
    npm install
+   cd ..
+
+   # Install frontend dependencies
+   cd frontend
+   npm install
+   cd ..
    ```
 
 3. **Set up environment variables**
@@ -115,6 +143,14 @@ comics-tracker/
    ```
 
 The API will be running at `http://localhost:3000`
+
+8. **Start the frontend (in a new terminal)**
+   ```bash
+   cd frontend
+   npm start
+   ```
+
+The frontend will be running at `http://localhost:4200`
 
 ## 📖 API Documentation
 
@@ -204,7 +240,7 @@ Complete guide to the documentation structure and organization.
 
 **Root directory:**
 
-- `npm run lint` - Run ESLint on all code
+- `npm run lint` - Run ESLint on API and Frontend
 - `npm run lint:fix` - Auto-fix linting issues
 - `npm run lint:security` - Run security-focused linting
 - `npm run format` - Format code with Prettier
@@ -216,6 +252,14 @@ Complete guide to the documentation structure and organization.
 - `npm run build` - Compile TypeScript to JavaScript
 - `npm start` - Run the compiled application
 - `npm test` - Run test suite with coverage
+
+**In the `frontend` directory:**
+
+- `npm start` - Start Angular dev server (http://localhost:4200)
+- `npm run build` - Build for production
+- `npm test` - Run Angular tests
+- `npm run lint` - Lint frontend code
+- `npm run lint:fix` - Auto-fix frontend linting issues
 
 ### Project Conventions
 
@@ -236,10 +280,10 @@ This project is licensed under the terms in the [LICENSE](./LICENSE) file.
 
 ## 🗺️ Roadmap
 
-- [ ] Add comic book models and endpoints
-- [ ] Implement comic collection management
+- [x] Add comic book models and endpoints
+- [x] Create frontend application (Angular 20)
+- [ ] Implement comic collection management UI
 - [ ] Add search and filter capabilities
-- [ ] Create frontend application
 - [ ] Add user profile management
 - [ ] Implement image upload for comic covers
 - [ ] Add wishlist functionality

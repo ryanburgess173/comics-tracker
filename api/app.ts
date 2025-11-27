@@ -1,5 +1,6 @@
 import 'dotenv/config';
 import express from 'express';
+import cors from 'cors';
 import swaggerUi from 'swagger-ui-express';
 import sequelize from './db';
 import { setupAssociations } from './models/associations';
@@ -21,6 +22,14 @@ import swaggerSpec from './swagger';
 setupAssociations();
 
 const app: express.Application = express();
+
+// Enable CORS for frontend
+app.use(
+  cors({
+    origin: 'http://localhost:4200',
+    credentials: true,
+  })
+);
 
 // add middleware to parse JSON request bodies
 app.use(express.json());

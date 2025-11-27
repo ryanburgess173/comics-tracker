@@ -9,15 +9,20 @@ import { Comic, ComicCreateRequest, ComicUpdateRequest } from '../models/comic.m
 })
 export class ComicService {
   private readonly http = inject(HttpClient);
-  private readonly apiUrl = `${environment.apiUrl}/comics`;
+  private readonly apiUrl = `${environment.apiUrl}`;
 
   /**
    * Get all comics with optional pagination
    */
-  getComics(page: number = 1, limit: number = 10): Observable<{ comics: Comic[]; total: number }> {
+  getComics(page = 1, limit = 10): Observable<{ comics: Comic[]; total: number }> {
     const params = new HttpParams().set('page', page.toString()).set('limit', limit.toString());
 
     return this.http.get<{ comics: Comic[]; total: number }>(this.apiUrl, { params });
+  }
+
+  // Get recent releases
+  getRecentReleases(): Observable<{ comics: Comic[] }> {
+    return this.http.get<{ comics: Comic[] }>(`${this.apiUrl}/comics/recentReleases`);
   }
 
   /**

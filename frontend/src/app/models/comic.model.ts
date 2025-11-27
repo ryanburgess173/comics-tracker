@@ -7,7 +7,7 @@ export interface Comic {
   universeId: number;
   runId?: number;
   description?: string;
-  coverImageUrl?: string;
+  imageUrl?: string;
   createdAt?: Date;
   updatedAt?: Date;
 }
