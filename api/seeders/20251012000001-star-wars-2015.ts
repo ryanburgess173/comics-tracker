@@ -79,7 +79,7 @@ export default {
           authorId: 11, // Jason Aaron
           description:
             'Skywalker Strikes Part 1 - Luke, Leia, and Han raid an Imperial weapons factory',
-          imageUrl: null,
+          imageUrl: 'https://comics-tracker-2025.s3.us-east-1.amazonaws.com/starwars-2015-1.jpg',
           pages: 36,
           publisherId: 1, // Marvel Comics
           publishedDate: new Date('2015-01-14'),
@@ -93,7 +93,7 @@ export default {
           title: 'Star Wars #2',
           authorId: 11, // Jason Aaron
           description: 'Skywalker Strikes Part 2 - The mission goes sideways',
-          imageUrl: null,
+          imageUrl: 'https://comics-tracker-2025.s3.us-east-1.amazonaws.com/starwars-2015-2.jpg',
           pages: 20,
           publisherId: 1, // Marvel Comics
           publishedDate: new Date('2015-02-11'),
@@ -107,7 +107,7 @@ export default {
           title: 'Star Wars #3',
           authorId: 11, // Jason Aaron
           description: 'Skywalker Strikes Part 3 - Luke duels Darth Vader',
-          imageUrl: null,
+          imageUrl: 'https://comics-tracker-2025.s3.us-east-1.amazonaws.com/starwars-2015-3.jpg',
           pages: 20,
           publisherId: 1, // Marvel Comics
           publishedDate: new Date('2015-03-11'),
@@ -121,7 +121,7 @@ export default {
           title: 'Star Wars #4',
           authorId: 11, // Jason Aaron
           description: 'Skywalker Strikes Part 4 - Escape from Cymoon 1',
-          imageUrl: null,
+          imageUrl: 'https://comics-tracker-2025.s3.us-east-1.amazonaws.com/starwars-2015-4.jpg',
           pages: 20,
           publisherId: 1, // Marvel Comics
           publishedDate: new Date('2015-04-08'),
@@ -135,7 +135,7 @@ export default {
           title: 'Star Wars #5',
           authorId: 11, // Jason Aaron
           description: 'Skywalker Strikes Part 5 - A plan falls apart',
-          imageUrl: null,
+          imageUrl: 'https://comics-tracker-2025.s3.us-east-1.amazonaws.com/starwars-2015-5.jpg',
           pages: 20,
           publisherId: 1, // Marvel Comics
           publishedDate: new Date('2015-05-13'),

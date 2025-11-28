@@ -3,19 +3,25 @@ import jwt from 'jsonwebtoken';
 import logger from '../utils/logger';
 
 /**
- * Middleware to authenticate JWT token and attach user info to request
- * This should be used before checkPermissions middleware
+ * Middleware to authenticate JWT token from header or cookie
  */
 export const authenticateJWT = (req: Request, res: Response, next: NextFunction) => {
-  // Get token from Authorization header
+  // Try to get token from Authorization header
   const authHeader = req.headers.authorization;
+  let token: string | undefined;
 
-  if (!authHeader || !authHeader.startsWith('Bearer ')) {
+  if (authHeader && authHeader.startsWith('Bearer ')) {
+    token = authHeader.substring(7); // Remove 'Bearer ' prefix
+  } else if (req.cookies?.access_token) {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+    token = req.cookies.access_token; // ✅ Support cookie-based auth
+  }
+
+  if (!token) {
     logger.warn('No token provided for %s %s', req.method, req.url);
     return res.status(401).json({ message: 'No token provided' });
   }
 
-  const token = authHeader.substring(7); // Remove 'Bearer ' prefix
   const secret_key = process.env.JWT_SECRET || 'your-secret-key';
 
   try {
@@ -25,7 +31,6 @@ export const authenticateJWT = (req: Request, res: Response, next: NextFunction)
       roles: number[];
     };
 
-    // Attach user info to request object
     req.user = {
       id: decoded.id,
       email: decoded.email,

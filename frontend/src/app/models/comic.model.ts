@@ -12,6 +12,17 @@ export interface Comic {
   updatedAt?: Date;
 }
 
+export interface OwnedComic extends Comic {
+  userComicData: {
+    status: 'WISHLIST' | 'OWNED' | 'READING' | 'READ';
+    dateAdded: Date;
+    dateStartedReading?: Date;
+    dateFinished?: Date;
+    rating?: number;
+    notes?: string;
+  };
+}
+
 export interface ComicCreateRequest {
   title: string;
   issueNumber: number;

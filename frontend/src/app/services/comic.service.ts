@@ -2,7 +2,7 @@ import { Injectable, inject } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
-import { Comic, ComicCreateRequest, ComicUpdateRequest } from '../models/comic.model';
+import { Comic, ComicCreateRequest, ComicUpdateRequest, OwnedComic } from '../models/comic.model';
 
 @Injectable({
   providedIn: 'root',
@@ -18,6 +18,13 @@ export class ComicService {
     const params = new HttpParams().set('page', page.toString()).set('limit', limit.toString());
 
     return this.http.get<{ comics: Comic[]; total: number }>(this.apiUrl, { params });
+  }
+
+  // get a user's comics
+  getMyComics(): Observable<OwnedComic[]> {
+    return this.http.get<OwnedComic[]>(`${this.apiUrl}/comics/my-comics`, {
+      withCredentials: true,
+    });
   }
 
   // Get recent releases
