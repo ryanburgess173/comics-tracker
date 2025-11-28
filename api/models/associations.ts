@@ -10,6 +10,7 @@ import Role from './Role';
 import Permission from './Permission';
 import UserRoleXRef from './UserRoleXRef';
 import RolePermissionXRef from './RolePermissionXRef';
+import UserComicXRef from './UserComicXRef';
 
 // Define associations
 export const setupAssociations = () => {
@@ -97,6 +98,21 @@ export const setupAssociations = () => {
     as: 'roles',
   });
 
+  // Many-to-Many: User <-> Comic (user's collection)
+  User.belongsToMany(Comic, {
+    through: UserComicXRef,
+    foreignKey: 'userId',
+    otherKey: 'comicId',
+    as: 'comics',
+  });
+
+  Comic.belongsToMany(User, {
+    through: UserComicXRef,
+    foreignKey: 'comicId',
+    otherKey: 'userId',
+    as: 'users',
+  });
+
   // Direct associations for junction table queries
   RolePermissionXRef.belongsTo(Role, {
     foreignKey: 'roleId',
@@ -106,6 +122,27 @@ export const setupAssociations = () => {
   RolePermissionXRef.belongsTo(Permission, {
     foreignKey: 'permissionId',
     as: 'Permission',
+  });
+
+  // Direct associations for UserComicXRef
+  UserComicXRef.belongsTo(User, {
+    foreignKey: 'userId',
+    as: 'user',
+  });
+
+  UserComicXRef.belongsTo(Comic, {
+    foreignKey: 'comicId',
+    as: 'comic',
+  });
+
+  User.hasMany(UserComicXRef, {
+    foreignKey: 'userId',
+    as: 'userComics',
+  });
+
+  Comic.hasMany(UserComicXRef, {
+    foreignKey: 'comicId',
+    as: 'userComics',
   });
 };
 
@@ -122,4 +159,5 @@ export {
   Permission,
   UserRoleXRef,
   RolePermissionXRef,
+  UserComicXRef,
 };

@@ -17,6 +17,7 @@ import usersRouter from './controllers/users';
 import permissionsRouter from './controllers/permissions';
 import rolesRouter from './controllers/roles';
 import swaggerSpec from './swagger';
+import cookieParser from 'cookie-parser';
 
 // Initialize all model associations
 setupAssociations();
@@ -33,6 +34,9 @@ app.use(
 
 // add middleware to parse JSON request bodies
 app.use(express.json());
+
+// add middleware for parsing cookies
+app.use(cookieParser());
 
 // custom middleware to log requests
 app.use((req, res, next) => {

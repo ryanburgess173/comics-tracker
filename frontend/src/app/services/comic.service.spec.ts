@@ -1,7 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { ComicService } from './comic.service';
-import { Comic, ComicCreateRequest, ComicUpdateRequest } from '../models/comic.model';
+import { Comic, ComicCreateRequest, ComicUpdateRequest, OwnedComic } from '../models/comic.model';
 import { environment } from '../../environments/environment';
 
 describe('ComicService', () => {
@@ -28,6 +28,34 @@ describe('ComicService', () => {
       releaseDate: new Date('2015-02-11'),
       publisherId: 1,
       universeId: 1,
+    },
+  ];
+
+  const mockOwnedComic: OwnedComic = {
+    ...mockComic,
+    userComicData: {
+      status: 'OWNED',
+      dateAdded: new Date('2025-11-28'),
+      rating: 5,
+      notes: 'Great comic!',
+    },
+  };
+
+  const mockOwnedComics: OwnedComic[] = [
+    mockOwnedComic,
+    {
+      id: 2,
+      title: 'Star Wars #2',
+      issueNumber: 2,
+      releaseDate: new Date('2015-02-11'),
+      publisherId: 1,
+      universeId: 1,
+      userComicData: {
+        status: 'READ',
+        dateAdded: new Date('2025-11-27'),
+        dateFinished: new Date('2025-11-28'),
+        rating: 4,
+      },
     },
   ];
 
@@ -74,6 +102,64 @@ describe('ComicService', () => {
 
       const req = httpMock.expectOne(`${environment.apiUrl}?page=2&limit=5`);
       expect(req.request.method).toBe('GET');
+      req.flush(mockResponse);
+    });
+  });
+
+  describe('getMyComics', () => {
+    it("should retrieve user's owned comics", (done) => {
+      service.getMyComics().subscribe((comics) => {
+        expect(comics).toEqual(mockOwnedComics);
+        expect(comics.length).toBe(2);
+        expect(comics[0].userComicData.status).toBe('OWNED');
+        expect(comics[1].userComicData.status).toBe('READ');
+        done();
+      });
+
+      const req = httpMock.expectOne(`${environment.apiUrl}/comics/my-comics`);
+      expect(req.request.method).toBe('GET');
+      expect(req.request.withCredentials).toBe(true);
+      req.flush(mockOwnedComics);
+    });
+
+    it('should handle empty owned comics list', (done) => {
+      service.getMyComics().subscribe((comics) => {
+        expect(comics).toEqual([]);
+        expect(comics.length).toBe(0);
+        done();
+      });
+
+      const req = httpMock.expectOne(`${environment.apiUrl}/comics/my-comics`);
+      expect(req.request.withCredentials).toBe(true);
+      req.flush([]);
+    });
+  });
+
+  describe('getRecentReleases', () => {
+    it('should retrieve recent comic releases', (done) => {
+      const mockResponse = { comics: mockComics };
+
+      service.getRecentReleases().subscribe((response) => {
+        expect(response).toEqual(mockResponse);
+        expect(response.comics.length).toBe(2);
+        done();
+      });
+
+      const req = httpMock.expectOne(`${environment.apiUrl}/comics/recentReleases`);
+      expect(req.request.method).toBe('GET');
+      req.flush(mockResponse);
+    });
+
+    it('should handle empty recent releases', (done) => {
+      const mockResponse = { comics: [] };
+
+      service.getRecentReleases().subscribe((response) => {
+        expect(response.comics).toEqual([]);
+        expect(response.comics.length).toBe(0);
+        done();
+      });
+
+      const req = httpMock.expectOne(`${environment.apiUrl}/comics/recentReleases`);
       req.flush(mockResponse);
     });
   });
