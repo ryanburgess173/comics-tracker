@@ -107,7 +107,7 @@ describe('ComicService', () => {
   });
 
   describe('getMyComics', () => {
-    it('should retrieve user\'s owned comics', (done) => {
+    it("should retrieve user's owned comics", (done) => {
       service.getMyComics().subscribe((comics) => {
         expect(comics).toEqual(mockOwnedComics);
         expect(comics.length).toBe(2);
