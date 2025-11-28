@@ -232,6 +232,85 @@ describe('Permissions Controller', () => {
       expect(mockPermission.description).toBe('New description');
     });
 
+    it('should update permission name', async () => {
+      const mockPermission = {
+        id: 1,
+        name: 'comics:create',
+        resource: 'comics',
+        action: 'create',
+        description: 'Description',
+        save: jest.fn(),
+      };
+      (Permission.findByPk as jest.Mock).mockResolvedValue(mockPermission);
+
+      await request(app).put('/permissions/1').send({ name: 'comics:update' }).expect(200);
+
+      expect(mockPermission.save).toHaveBeenCalled();
+      expect(mockPermission.name).toBe('comics:update');
+    });
+
+    it('should update permission resource', async () => {
+      const mockPermission = {
+        id: 1,
+        name: 'comics:create',
+        resource: 'comics',
+        action: 'create',
+        description: 'Description',
+        save: jest.fn(),
+      };
+      (Permission.findByPk as jest.Mock).mockResolvedValue(mockPermission);
+
+      await request(app).put('/permissions/1').send({ resource: 'books' }).expect(200);
+
+      expect(mockPermission.save).toHaveBeenCalled();
+      expect(mockPermission.resource).toBe('books');
+    });
+
+    it('should update permission action', async () => {
+      const mockPermission = {
+        id: 1,
+        name: 'comics:create',
+        resource: 'comics',
+        action: 'create',
+        description: 'Description',
+        save: jest.fn(),
+      };
+      (Permission.findByPk as jest.Mock).mockResolvedValue(mockPermission);
+
+      await request(app).put('/permissions/1').send({ action: 'delete' }).expect(200);
+
+      expect(mockPermission.save).toHaveBeenCalled();
+      expect(mockPermission.action).toBe('delete');
+    });
+
+    it('should update multiple fields at once', async () => {
+      const mockPermission = {
+        id: 1,
+        name: 'comics:create',
+        resource: 'comics',
+        action: 'create',
+        description: 'Old description',
+        save: jest.fn(),
+      };
+      (Permission.findByPk as jest.Mock).mockResolvedValue(mockPermission);
+
+      await request(app)
+        .put('/permissions/1')
+        .send({
+          name: 'books:create',
+          resource: 'books',
+          action: 'create',
+          description: 'New description',
+        })
+        .expect(200);
+
+      expect(mockPermission.save).toHaveBeenCalled();
+      expect(mockPermission.name).toBe('books:create');
+      expect(mockPermission.resource).toBe('books');
+      expect(mockPermission.action).toBe('create');
+      expect(mockPermission.description).toBe('New description');
+    });
+
     it('should return 404 when permission not found', async () => {
       (Permission.findByPk as jest.Mock).mockResolvedValue(null);
 

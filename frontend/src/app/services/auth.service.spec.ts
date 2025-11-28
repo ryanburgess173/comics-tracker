@@ -1,5 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
+import { PLATFORM_ID } from '@angular/core';
 import { AuthService } from './auth.service';
 import { LoginRequest, RegisterRequest, LoginResponse, User } from '../models/user.model';
 import { environment } from '../../environments/environment';
@@ -155,6 +156,23 @@ describe('AuthService', () => {
 
     it('should return null if no token exists', () => {
       expect(service.getToken()).toBeNull();
+    });
+  });
+
+  describe('getToken (SSR)', () => {
+    let ssrService: AuthService;
+
+    beforeEach(() => {
+      TestBed.resetTestingModule();
+      TestBed.configureTestingModule({
+        imports: [HttpClientTestingModule],
+        providers: [AuthService, { provide: PLATFORM_ID, useValue: 'server' }],
+      });
+      ssrService = TestBed.inject(AuthService);
+    });
+
+    it('should return null when not in browser platform (SSR)', () => {
+      expect(ssrService.getToken()).toBeNull();
     });
   });
 
