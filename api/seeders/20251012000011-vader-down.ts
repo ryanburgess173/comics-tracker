@@ -28,7 +28,7 @@ export default {
       'Comics',
       [
         {
-          id: 170,
+          id: 76,
           title: 'Vader Down #1',
           authorId: 11, // Jason Aaron
           description:
@@ -53,44 +53,44 @@ export default {
         // Vader Down #1
         {
           tradePaperbackId: 3,
-          comicId: 170, // Vader Down #1
+          comicId: 76, // Vader Down #1
           orderInCollection: 1,
           createdAt: new Date(),
           updatedAt: new Date(),
         },
-        // Star Wars #13-14 (comicIds 25-26)
+        // Star Wars #13-14 (comicIds 13-14)
         {
           tradePaperbackId: 3,
-          comicId: 25, // Star Wars #13
+          comicId: 13, // Star Wars #13
           orderInCollection: 2,
           createdAt: new Date(),
           updatedAt: new Date(),
         },
         {
           tradePaperbackId: 3,
-          comicId: 26, // Star Wars #14
+          comicId: 14, // Star Wars #14
           orderInCollection: 4,
           createdAt: new Date(),
           updatedAt: new Date(),
         },
-        // Darth Vader #13-15 (comicIds 44-46)
+        // Darth Vader #13-15 (comicIds 113-115)
         {
           tradePaperbackId: 3,
-          comicId: 44, // Darth Vader #13
+          comicId: 113, // Darth Vader #13
           orderInCollection: 3,
           createdAt: new Date(),
           updatedAt: new Date(),
         },
         {
           tradePaperbackId: 3,
-          comicId: 45, // Darth Vader #14
+          comicId: 114, // Darth Vader #14
           orderInCollection: 5,
           createdAt: new Date(),
           updatedAt: new Date(),
         },
         {
           tradePaperbackId: 3,
-          comicId: 46, // Darth Vader #15
+          comicId: 115, // Darth Vader #15
           orderInCollection: 6,
           createdAt: new Date(),
           updatedAt: new Date(),
@@ -121,7 +121,7 @@ export default {
     await queryInterface.bulkDelete(
       'Comics',
       {
-        id: 170, // Vader Down #1
+        id: 76, // Vader Down #1
       },
       {}
     );

@@ -58,7 +58,7 @@ export default {
       'Comics',
       [
         {
-          id: 171,
+          id: 4001,
           title: 'Alien #1',
           authorId: 23, // Declan Shalvey
           description:
@@ -73,7 +73,7 @@ export default {
           updatedAt: new Date(),
         },
         {
-          id: 172,
+          id: 4002,
           title: 'Alien #2',
           authorId: 23,
           description:
@@ -88,7 +88,7 @@ export default {
           updatedAt: new Date(),
         },
         {
-          id: 173,
+          id: 4003,
           title: 'Alien #3',
           authorId: 23,
           description:
@@ -103,7 +103,7 @@ export default {
           updatedAt: new Date(),
         },
         {
-          id: 174,
+          id: 4004,
           title: 'Alien #4',
           authorId: 23,
           description:
@@ -118,7 +118,7 @@ export default {
           updatedAt: new Date(),
         },
         {
-          id: 175,
+          id: 4005,
           title: 'Alien #5',
           authorId: 23,
           description:
@@ -163,35 +163,35 @@ export default {
       [
         {
           tradePaperbackId: 23,
-          comicId: 171,
+          comicId: 4002,
           orderInCollection: 1,
           createdAt: new Date(),
           updatedAt: new Date(),
         },
         {
           tradePaperbackId: 23,
-          comicId: 172,
+          comicId: 4003,
           orderInCollection: 2,
           createdAt: new Date(),
           updatedAt: new Date(),
         },
         {
           tradePaperbackId: 23,
-          comicId: 173,
+          comicId: 4004,
           orderInCollection: 3,
           createdAt: new Date(),
           updatedAt: new Date(),
         },
         {
           tradePaperbackId: 23,
-          comicId: 174,
+          comicId: 4005,
           orderInCollection: 4,
           createdAt: new Date(),
           updatedAt: new Date(),
         },
         {
           tradePaperbackId: 23,
-          comicId: 175,
+          comicId: 4001,
           orderInCollection: 5,
           createdAt: new Date(),
           updatedAt: new Date(),

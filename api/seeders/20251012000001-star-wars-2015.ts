@@ -74,7 +74,7 @@ export default {
       'Comics',
       [
         {
-          id: 13,
+          id: 1,
           title: 'Star Wars #1',
           authorId: 11, // Jason Aaron
           description:
@@ -89,7 +89,7 @@ export default {
           updatedAt: new Date(),
         },
         {
-          id: 14,
+          id: 2,
           title: 'Star Wars #2',
           authorId: 11, // Jason Aaron
           description: 'Skywalker Strikes Part 2 - The mission goes sideways',
@@ -103,7 +103,7 @@ export default {
           updatedAt: new Date(),
         },
         {
-          id: 15,
+          id: 3,
           title: 'Star Wars #3',
           authorId: 11, // Jason Aaron
           description: 'Skywalker Strikes Part 3 - Luke duels Darth Vader',
@@ -117,7 +117,7 @@ export default {
           updatedAt: new Date(),
         },
         {
-          id: 16,
+          id: 4,
           title: 'Star Wars #4',
           authorId: 11, // Jason Aaron
           description: 'Skywalker Strikes Part 4 - Escape from Cymoon 1',
@@ -131,7 +131,7 @@ export default {
           updatedAt: new Date(),
         },
         {
-          id: 17,
+          id: 5,
           title: 'Star Wars #5',
           authorId: 11, // Jason Aaron
           description: 'Skywalker Strikes Part 5 - A plan falls apart',
@@ -145,11 +145,11 @@ export default {
           updatedAt: new Date(),
         },
         {
-          id: 18,
+          id: 6,
           title: 'Star Wars #6',
           authorId: 11, // Jason Aaron
           description: 'Skywalker Strikes Conclusion - Final confrontation',
-          imageUrl: null,
+          imageUrl: 'https://comics-tracker-2025.s3.us-east-1.amazonaws.com/starwars-2015-6.jpg',
           pages: 20,
           publisherId: 1, // Marvel Comics
           publishedDate: new Date('2015-06-10'),
@@ -159,11 +159,11 @@ export default {
           updatedAt: new Date(),
         },
         {
-          id: 19,
+          id: 7,
           title: 'Star Wars #7',
           authorId: 11, // Jason Aaron
           description: 'From the Journals of Old Ben Kenobi - Obi-Wan on Tatooine',
-          imageUrl: null,
+          imageUrl: 'https://comics-tracker-2025.s3.us-east-1.amazonaws.com/starwars-2015-7.jpg',
           pages: 20,
           publisherId: 1, // Marvel Comics
           publishedDate: new Date('2015-07-08'),
@@ -173,11 +173,11 @@ export default {
           updatedAt: new Date(),
         },
         {
-          id: 20,
+          id: 8,
           title: 'Star Wars #8',
           authorId: 11, // Jason Aaron
           description: "Showdown on the Smuggler's Moon Part 1",
-          imageUrl: null,
+          imageUrl: 'https://comics-tracker-2025.s3.us-east-1.amazonaws.com/starwars-2015-8.jpg',
           pages: 20,
           publisherId: 1, // Marvel Comics
           publishedDate: new Date('2015-08-12'),
@@ -187,11 +187,11 @@ export default {
           updatedAt: new Date(),
         },
         {
-          id: 21,
+          id: 9,
           title: 'Star Wars #9',
           authorId: 11, // Jason Aaron
           description: "Showdown on the Smuggler's Moon Part 2",
-          imageUrl: null,
+          imageUrl: 'https://comics-tracker-2025.s3.us-east-1.amazonaws.com/starwars-2015-9.jpg',
           pages: 20,
           publisherId: 1, // Marvel Comics
           publishedDate: new Date('2015-09-09'),
@@ -201,11 +201,11 @@ export default {
           updatedAt: new Date(),
         },
         {
-          id: 22,
+          id: 10,
           title: 'Star Wars #10',
           authorId: 11, // Jason Aaron
           description: "Showdown on the Smuggler's Moon Part 3",
-          imageUrl: null,
+          imageUrl: 'https://comics-tracker-2025.s3.us-east-1.amazonaws.com/starwars-2015-10.jpg',
           pages: 20,
           publisherId: 1, // Marvel Comics
           publishedDate: new Date('2015-10-14'),
@@ -215,11 +215,11 @@ export default {
           updatedAt: new Date(),
         },
         {
-          id: 23,
+          id: 11,
           title: 'Star Wars #11',
           authorId: 11, // Jason Aaron
           description: "Showdown on the Smuggler's Moon Part 4",
-          imageUrl: null,
+          imageUrl: 'https://comics-tracker-2025.s3.us-east-1.amazonaws.com/starwars-2015-11.jpg',
           pages: 20,
           publisherId: 1, // Marvel Comics
           publishedDate: new Date('2015-11-11'),
@@ -229,11 +229,11 @@ export default {
           updatedAt: new Date(),
         },
         {
-          id: 24,
+          id: 12,
           title: 'Star Wars #12',
           authorId: 11, // Jason Aaron
           description: "Showdown on the Smuggler's Moon Conclusion",
-          imageUrl: null,
+          imageUrl: 'https://comics-tracker-2025.s3.us-east-1.amazonaws.com/starwars-2015-12.jpg',
           pages: 20,
           publisherId: 1, // Marvel Comics
           publishedDate: new Date('2015-12-09'),
@@ -243,11 +243,11 @@ export default {
           updatedAt: new Date(),
         },
         {
-          id: 25,
+          id: 13,
           title: 'Star Wars #13',
           authorId: 11, // Jason Aaron
           description: 'Vader Down, Part III - The Dark Lord crashes',
-          imageUrl: null,
+          imageUrl: 'https://comics-tracker-2025.s3.us-east-1.amazonaws.com/starwars-2015-13.jpg',
           pages: 20,
           publisherId: 1, // Marvel Comics
           publishedDate: new Date('2015-12-02'),
@@ -257,11 +257,11 @@ export default {
           updatedAt: new Date(),
         },
         {
-          id: 26,
+          id: 14,
           title: 'Star Wars #14',
           authorId: 11, // Jason Aaron
           description: 'Vader Down, Part V - Facing overwhelming odds',
-          imageUrl: null,
+          imageUrl: 'https://comics-tracker-2025.s3.us-east-1.amazonaws.com/starwars-2015-14.jpg',
           pages: 20,
           publisherId: 1, // Marvel Comics
           publishedDate: new Date('2016-01-06'),
@@ -271,11 +271,11 @@ export default {
           updatedAt: new Date(),
         },
         {
-          id: 27,
+          id: 15,
           title: 'Star Wars #15',
           authorId: 11, // Jason Aaron
           description: 'From the Journals of Old Ben Kenobi: The Last of His Breed',
-          imageUrl: null,
+          imageUrl: 'https://comics-tracker-2025.s3.us-east-1.amazonaws.com/starwars-2015-15.jpg',
           pages: 20,
           publisherId: 1, // Marvel Comics
           publishedDate: new Date('2016-01-20'),
@@ -285,11 +285,11 @@ export default {
           updatedAt: new Date(),
         },
         {
-          id: 28,
+          id: 16,
           title: 'Star Wars #16',
           authorId: 11, // Jason Aaron
           description: 'Rebel Jail, Part I - A mysterious prison',
-          imageUrl: null,
+          imageUrl: 'https://comics-tracker-2025.s3.us-east-1.amazonaws.com/starwars-2015-16.jpg',
           pages: 20,
           publisherId: 1, // Marvel Comics
           publishedDate: new Date('2016-02-17'),
@@ -299,11 +299,11 @@ export default {
           updatedAt: new Date(),
         },
         {
-          id: 29,
+          id: 17,
           title: 'Star Wars #17',
           authorId: 11, // Jason Aaron
           description: 'Rebel Jail, Part II - Secrets revealed',
-          imageUrl: null,
+          imageUrl: 'https://comics-tracker-2025.s3.us-east-1.amazonaws.com/starwars-2015-17.jpg',
           pages: 20,
           publisherId: 1, // Marvel Comics
           publishedDate: new Date('2016-03-23'),
@@ -313,11 +313,11 @@ export default {
           updatedAt: new Date(),
         },
         {
-          id: 30,
+          id: 18,
           title: 'Star Wars #18',
           authorId: 11, // Jason Aaron
           description: 'Rebel Jail, Part III - Escape attempt',
-          imageUrl: null,
+          imageUrl: 'https://comics-tracker-2025.s3.us-east-1.amazonaws.com/starwars-2015-18.jpg',
           pages: 20,
           publisherId: 1, // Marvel Comics
           publishedDate: new Date('2016-04-27'),
@@ -327,7 +327,7 @@ export default {
           updatedAt: new Date(),
         },
         {
-          id: 31,
+          id: 19,
           title: 'Star Wars #19',
           authorId: 11, // Jason Aaron
           description: 'Rebel Jail, Part IV - Final confrontation',
@@ -335,6 +335,90 @@ export default {
           pages: 20,
           publisherId: 1, // Marvel Comics
           publishedDate: new Date('2016-05-25'),
+          runId: 6,
+          variant: 1,
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        },
+        {
+          id: 20,
+          title: 'Star Wars #20',
+          authorId: 11, // Jason Aaron
+          description: 'From the Journals of Old Ben Kenobi: The Last of His Breed, Part II',
+          imageUrl: 'https://comics-tracker-2025.s3.us-east-1.amazonaws.com/starwars-2015-20.jpg',
+          pages: 20,
+          publisherId: 1, // Marvel Comics
+          publishedDate: new Date('2016-06-22'),
+          runId: 6,
+          variant: 1,
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        },
+        {
+          id: 21,
+          title: 'Star Wars #21',
+          authorId: 11, // Jason Aaron
+          description: 'The Last Flight of the Harbinger, Part I',
+          imageUrl: 'https://comics-tracker-2025.s3.us-east-1.amazonaws.com/starwars-2015-21.jpg',
+          pages: 20,
+          publisherId: 1, // Marvel Comics
+          publishedDate: new Date('2016-07-27'),
+          runId: 6,
+          variant: 1,
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        },
+        {
+          id: 22,
+          title: 'Star Wars #22',
+          authorId: 11, // Jason Aaron
+          description: 'The Last Flight of the Harbinger, Part II',
+          imageUrl: 'https://comics-tracker-2025.s3.us-east-1.amazonaws.com/starwars-2015-22.jpg',
+          pages: 20,
+          publisherId: 1, // Marvel Comics
+          publishedDate: new Date('2016-08-24'),
+          runId: 6,
+          variant: 1,
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        },
+        {
+          id: 23,
+          title: 'Star Wars #23',
+          authorId: 11, // Jason Aaron
+          description: 'The Last Flight of the Harbinger, Part III',
+          imageUrl: 'https://comics-tracker-2025.s3.us-east-1.amazonaws.com/starwars-2015-23.jpg',
+          pages: 20,
+          publisherId: 1, // Marvel Comics
+          publishedDate: new Date('2016-09-21'),
+          runId: 6,
+          variant: 1,
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        },
+        {
+          id: 24,
+          title: 'Star Wars #24',
+          authorId: 11, // Jason Aaron
+          description: 'The Last Flight of the Harbinger, Part IV',
+          imageUrl: 'https://comics-tracker-2025.s3.us-east-1.amazonaws.com/starwars-2015-24.jpg',
+          pages: 20,
+          publisherId: 1, // Marvel Comics
+          publishedDate: new Date('2016-10-19'),
+          runId: 6,
+          variant: 1,
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        },
+        {
+          id: 25,
+          title: 'Star Wars #25',
+          authorId: 11, // Jason Aaron
+          description: 'The Last Flight of the Harbinger, Part V',
+          imageUrl: 'https://comics-tracker-2025.s3.us-east-1.amazonaws.com/starwars-2015-25.jpg',
+          pages: 20,
+          publisherId: 1, // Marvel Comics
+          publishedDate: new Date('2016-11-23'),
           runId: 6,
           variant: 1,
           createdAt: new Date(),
@@ -432,42 +516,42 @@ export default {
         // Vol. 1: Skywalker Strikes (Issues #1-6)
         {
           tradePaperbackId: 1,
-          comicId: 13,
+          comicId: 1,
           orderInCollection: 1,
           createdAt: new Date(),
           updatedAt: new Date(),
         },
         {
           tradePaperbackId: 1,
-          comicId: 14,
+          comicId: 2,
           orderInCollection: 2,
           createdAt: new Date(),
           updatedAt: new Date(),
         },
         {
           tradePaperbackId: 1,
-          comicId: 15,
+          comicId: 3,
           orderInCollection: 3,
           createdAt: new Date(),
           updatedAt: new Date(),
         },
         {
           tradePaperbackId: 1,
-          comicId: 16,
+          comicId: 4,
           orderInCollection: 4,
           createdAt: new Date(),
           updatedAt: new Date(),
         },
         {
           tradePaperbackId: 1,
-          comicId: 17,
+          comicId: 5,
           orderInCollection: 5,
           createdAt: new Date(),
           updatedAt: new Date(),
         },
         {
           tradePaperbackId: 1,
-          comicId: 18,
+          comicId: 6,
           orderInCollection: 6,
           createdAt: new Date(),
           updatedAt: new Date(),
@@ -475,42 +559,42 @@ export default {
         // Vol. 2: Showdown on Smuggler's Moon (Issues #7-12)
         {
           tradePaperbackId: 2,
-          comicId: 19,
+          comicId: 7,
           orderInCollection: 1,
           createdAt: new Date(),
           updatedAt: new Date(),
         },
         {
           tradePaperbackId: 2,
-          comicId: 20,
+          comicId: 8,
           orderInCollection: 2,
           createdAt: new Date(),
           updatedAt: new Date(),
         },
         {
           tradePaperbackId: 2,
-          comicId: 21,
+          comicId: 9,
           orderInCollection: 3,
           createdAt: new Date(),
           updatedAt: new Date(),
         },
         {
           tradePaperbackId: 2,
-          comicId: 22,
+          comicId: 10,
           orderInCollection: 4,
           createdAt: new Date(),
           updatedAt: new Date(),
         },
         {
           tradePaperbackId: 2,
-          comicId: 23,
+          comicId: 11,
           orderInCollection: 5,
           createdAt: new Date(),
           updatedAt: new Date(),
         },
         {
           tradePaperbackId: 2,
-          comicId: 24,
+          comicId: 12,
           orderInCollection: 6,
           createdAt: new Date(),
           updatedAt: new Date(),
@@ -518,35 +602,35 @@ export default {
         // Vol. 3: Rebel Jail (Issues #15-19)
         {
           tradePaperbackId: 4,
-          comicId: 27,
+          comicId: 15,
           orderInCollection: 1,
           createdAt: new Date(),
           updatedAt: new Date(),
         },
         {
           tradePaperbackId: 4,
-          comicId: 28,
+          comicId: 16,
           orderInCollection: 2,
           createdAt: new Date(),
           updatedAt: new Date(),
         },
         {
           tradePaperbackId: 4,
-          comicId: 29,
+          comicId: 17,
           orderInCollection: 3,
           createdAt: new Date(),
           updatedAt: new Date(),
         },
         {
           tradePaperbackId: 4,
-          comicId: 30,
+          comicId: 18,
           orderInCollection: 4,
           createdAt: new Date(),
           updatedAt: new Date(),
         },
         {
           tradePaperbackId: 4,
-          comicId: 31,
+          comicId: 19,
           orderInCollection: 5,
           createdAt: new Date(),
           updatedAt: new Date(),
@@ -559,137 +643,179 @@ export default {
     await queryInterface.bulkInsert(
       'OmnibusComicXRefs',
       [
-        // Star Wars by Jason Aaron Omnibus includes issues #1-12 (and more, but we'll just add what we have)
+        // Star Wars by Jason Aaron Omnibus includes issues #1-25
         {
           omnibusId: 1,
-          comicId: 13,
+          comicId: 1,
           orderInCollection: 1,
           createdAt: new Date(),
           updatedAt: new Date(),
         },
         {
           omnibusId: 1,
-          comicId: 14,
+          comicId: 2,
           orderInCollection: 2,
           createdAt: new Date(),
           updatedAt: new Date(),
         },
         {
           omnibusId: 1,
-          comicId: 15,
+          comicId: 3,
           orderInCollection: 3,
           createdAt: new Date(),
           updatedAt: new Date(),
         },
         {
           omnibusId: 1,
-          comicId: 16,
+          comicId: 4,
           orderInCollection: 4,
           createdAt: new Date(),
           updatedAt: new Date(),
         },
         {
           omnibusId: 1,
-          comicId: 17,
+          comicId: 5,
           orderInCollection: 5,
           createdAt: new Date(),
           updatedAt: new Date(),
         },
         {
           omnibusId: 1,
-          comicId: 18,
+          comicId: 6,
           orderInCollection: 6,
           createdAt: new Date(),
           updatedAt: new Date(),
         },
         {
           omnibusId: 1,
-          comicId: 19,
+          comicId: 7,
           orderInCollection: 7,
           createdAt: new Date(),
           updatedAt: new Date(),
         },
         {
           omnibusId: 1,
-          comicId: 20,
+          comicId: 8,
           orderInCollection: 8,
           createdAt: new Date(),
           updatedAt: new Date(),
         },
         {
           omnibusId: 1,
-          comicId: 21,
+          comicId: 9,
           orderInCollection: 9,
           createdAt: new Date(),
           updatedAt: new Date(),
         },
         {
           omnibusId: 1,
-          comicId: 22,
+          comicId: 10,
           orderInCollection: 10,
           createdAt: new Date(),
           updatedAt: new Date(),
         },
         {
           omnibusId: 1,
-          comicId: 23,
+          comicId: 11,
           orderInCollection: 11,
           createdAt: new Date(),
           updatedAt: new Date(),
         },
         {
           omnibusId: 1,
-          comicId: 24,
+          comicId: 12,
           orderInCollection: 12,
           createdAt: new Date(),
           updatedAt: new Date(),
         },
         {
           omnibusId: 1,
-          comicId: 25,
+          comicId: 13,
           orderInCollection: 13,
           createdAt: new Date(),
           updatedAt: new Date(),
         },
         {
           omnibusId: 1,
-          comicId: 26,
+          comicId: 14,
           orderInCollection: 14,
           createdAt: new Date(),
           updatedAt: new Date(),
         },
         {
           omnibusId: 1,
-          comicId: 27,
+          comicId: 15,
           orderInCollection: 15,
           createdAt: new Date(),
           updatedAt: new Date(),
         },
         {
           omnibusId: 1,
-          comicId: 28,
+          comicId: 16,
           orderInCollection: 16,
           createdAt: new Date(),
           updatedAt: new Date(),
         },
         {
           omnibusId: 1,
-          comicId: 29,
+          comicId: 17,
           orderInCollection: 17,
           createdAt: new Date(),
           updatedAt: new Date(),
         },
         {
           omnibusId: 1,
-          comicId: 30,
+          comicId: 18,
           orderInCollection: 18,
           createdAt: new Date(),
           updatedAt: new Date(),
         },
         {
           omnibusId: 1,
-          comicId: 31,
+          comicId: 19,
           orderInCollection: 19,
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        },
+        {
+          omnibusId: 1,
+          comicId: 20,
+          orderInCollection: 20,
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        },
+        {
+          omnibusId: 1,
+          comicId: 21,
+          orderInCollection: 21,
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        },
+        {
+          omnibusId: 1,
+          comicId: 22,
+          orderInCollection: 22,
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        },
+        {
+          omnibusId: 1,
+          comicId: 23,
+          orderInCollection: 23,
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        },
+        {
+          omnibusId: 1,
+          comicId: 24,
+          orderInCollection: 24,
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        },
+        {
+          omnibusId: 1,
+          comicId: 25,
+          orderInCollection: 25,
           createdAt: new Date(),
           updatedAt: new Date(),
         },
@@ -735,7 +861,9 @@ export default {
     await queryInterface.bulkDelete(
       'Comics',
       {
-        id: [13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31],
+        id: [
+          1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25,
+        ],
       },
       {}
     );
