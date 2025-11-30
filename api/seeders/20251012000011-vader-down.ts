@@ -33,7 +33,7 @@ export default {
           authorId: 11, // Jason Aaron
           description:
             'The opening chapter of the Vader Down crossover event. Darth Vader crashes on a planet and faces the entire Rebel Fleet alone.',
-          imageUrl: null,
+          imageUrl: 'https://comics-tracker-2025.s3.us-east-1.amazonaws.com/vaderdown-1.jpg',
           pages: null,
           publisherId: 1, // Marvel Comics
           publishedDate: new Date('2015-11-18'),

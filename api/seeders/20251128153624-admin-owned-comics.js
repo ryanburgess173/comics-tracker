@@ -24,7 +24,7 @@ module.exports = {
 
     // All comic ranges to own (using new ID ranges)
     const comicRanges = [
-      [1, 25],         // Star Wars 1-25
+      [1, 15],         // Star Wars 1-25
       [76, 76],        // Vader Down 76
       [101, 126],      // Darth Vader 101-126
       [1001, 1010],    // Spider-Man 1001-1010
