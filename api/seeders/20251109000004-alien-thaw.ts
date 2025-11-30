@@ -63,7 +63,7 @@ export default {
           authorId: 23, // Declan Shalvey
           description:
             "Scientist Batya Zahn will do just about anything to get her family off the icy moon where they've been conducting research on water conservation. But there's more than glacial springs to find in this forgotten corner of the galaxy. When they discover an extraordinary organism buried in the ice, it won't take long for tensions to heat up.",
-          imageUrl: null,
+          imageUrl: 'https://comics-tracker-2025.s3.us-east-1.amazonaws.com/alien-thaw-1.jpg',
           pages: null,
           publisherId: 1, // Marvel Comics
           publishedDate: new Date('2023-04-26'),
@@ -78,7 +78,7 @@ export default {
           authorId: 23,
           description:
             "BETTER OFF BURIED! Talbot Engineering Inc. is under new management, but the organization's brilliant chief scientist, Batya Zhan, is not willing to give up her coded work to this unexpected threat without a fight. Over at Zhan's dig site, the intruders drill into the ice of the moon colony's surface only to discover hundreds of dark, black, frozen bodies.",
-          imageUrl: null,
+          imageUrl: 'https://comics-tracker-2025.s3.us-east-1.amazonaws.com/alien-thaw-2.jpeg',
           pages: null,
           publisherId: 1,
           publishedDate: new Date('2023-05-24'),
@@ -93,7 +93,7 @@ export default {
           authorId: 23,
           description:
             'SOMETHING WICKED IS COMING THEIR WAY... The USCSS Boreas has been infiltrated! A chestburster is wreaking havoc on base, leaving a trail of gore and eviscerated bodies in its wake. With their numbers dwindling, will the Weyland-Yutani security team be able to track the alien down before it becomes something even more deadly?',
-          imageUrl: null,
+          imageUrl: 'https://comics-tracker-2025.s3.us-east-1.amazonaws.com/alien-thaw-3.jpeg',
           pages: null,
           publisherId: 1,
           publishedDate: new Date('2023-06-28'),
@@ -108,7 +108,7 @@ export default {
           authorId: 23,
           description:
             'HOW FAR WOULD YOU SINK, TO SURVIVE? All hell has broken loose on base. As Xenomorphs swarm the rig - massacring any Weyland-Yutani personnel in sight - Batya makes a plan for an escape. With her research and family at risk, Batya must take a gamble and pursue her last option for salvation.',
-          imageUrl: null,
+          imageUrl: 'https://comics-tracker-2025.s3.us-east-1.amazonaws.com/alien-thaw-4.jpeg',
           pages: null,
           publisherId: 1,
           publishedDate: new Date('2023-07-26'),
