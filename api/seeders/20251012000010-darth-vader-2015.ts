@@ -58,7 +58,7 @@ export default {
       'Comics',
       [
         {
-          id: 32,
+          id: 101,
           title: 'Darth Vader #1',
           authorId: 13, // Kieron Gillen
           description: 'Vader - After the destruction of the Death Star, Vader investigates',
@@ -72,7 +72,7 @@ export default {
           updatedAt: new Date(),
         },
         {
-          id: 33,
+          id: 102,
           title: 'Darth Vader #2',
           authorId: 13,
           description: 'Vader, Part II - Meeting with the Emperor',
@@ -86,7 +86,7 @@ export default {
           updatedAt: new Date(),
         },
         {
-          id: 34,
+          id: 103,
           title: 'Darth Vader #3',
           authorId: 13,
           description: 'Vader, Part III - Recruiting allies',
@@ -100,7 +100,7 @@ export default {
           updatedAt: new Date(),
         },
         {
-          id: 35,
+          id: 104,
           title: 'Darth Vader #4',
           authorId: 13,
           description: 'Vader, Part IV - Enter Doctor Aphra',
@@ -114,7 +114,7 @@ export default {
           updatedAt: new Date(),
         },
         {
-          id: 36,
+          id: 105,
           title: 'Darth Vader #5',
           authorId: 13,
           description: 'Vader, Part V - Building a secret army',
@@ -128,7 +128,7 @@ export default {
           updatedAt: new Date(),
         },
         {
-          id: 37,
+          id: 106,
           title: 'Darth Vader #6',
           authorId: 13,
           description: 'Vader, Part VI - Conclusion of first arc',
@@ -142,7 +142,7 @@ export default {
           updatedAt: new Date(),
         },
         {
-          id: 38,
+          id: 107,
           title: 'Darth Vader #7',
           authorId: 13,
           description: 'Shadows and Secrets, Part I - New threats emerge',
@@ -156,7 +156,7 @@ export default {
           updatedAt: new Date(),
         },
         {
-          id: 39,
+          id: 108,
           title: 'Darth Vader #8',
           authorId: 13,
           description: 'Shadows and Secrets, Part II - Corporate intrigue',
@@ -170,7 +170,7 @@ export default {
           updatedAt: new Date(),
         },
         {
-          id: 40,
+          id: 109,
           title: 'Darth Vader #9',
           authorId: 13,
           description: 'Shadows and Secrets, Part III - Deeper conspiracies',
@@ -184,7 +184,7 @@ export default {
           updatedAt: new Date(),
         },
         {
-          id: 41,
+          id: 110,
           title: 'Darth Vader #10',
           authorId: 13,
           description: 'Shadows and Secrets, Part IV - Dangerous missions',
@@ -198,7 +198,7 @@ export default {
           updatedAt: new Date(),
         },
         {
-          id: 42,
+          id: 111,
           title: 'Darth Vader #11',
           authorId: 13,
           description: 'Shadows and Secrets, Part V - Imperial politics',
@@ -212,7 +212,7 @@ export default {
           updatedAt: new Date(),
         },
         {
-          id: 43,
+          id: 112,
           title: 'Darth Vader #12',
           authorId: 13,
           description: 'Shadows and Secrets, Part VI - Arc conclusion',
@@ -226,7 +226,7 @@ export default {
           updatedAt: new Date(),
         },
         {
-          id: 44,
+          id: 113,
           title: 'Darth Vader #13',
           authorId: 13,
           description: 'Vader Down, Part II - Vader surrounded by rebels',
@@ -240,7 +240,7 @@ export default {
           updatedAt: new Date(),
         },
         {
-          id: 45,
+          id: 114,
           title: 'Darth Vader #14',
           authorId: 13,
           description: 'Vader Down, Part IV - The battle intensifies',
@@ -254,7 +254,7 @@ export default {
           updatedAt: new Date(),
         },
         {
-          id: 46,
+          id: 115,
           title: 'Darth Vader #15',
           authorId: 13,
           description: 'Vader Down, Part VI - Conclusion of the crossover',
@@ -268,7 +268,7 @@ export default {
           updatedAt: new Date(),
         },
         {
-          id: 47,
+          id: 116,
           title: 'Darth Vader Annual #1',
           authorId: 13,
           description: 'Annual: Exploring Vader and the Tusken Raiders',
@@ -282,7 +282,7 @@ export default {
           updatedAt: new Date(),
         },
         {
-          id: 48,
+          id: 117,
           title: 'Darth Vader #16',
           authorId: 13,
           description: 'The Shu-Torun War, Part I - Mining planet conflict',
@@ -296,7 +296,7 @@ export default {
           updatedAt: new Date(),
         },
         {
-          id: 49,
+          id: 118,
           title: 'Darth Vader #17',
           authorId: 13,
           description: 'The Shu-Torun War, Part II - Escalating tensions',
@@ -310,7 +310,7 @@ export default {
           updatedAt: new Date(),
         },
         {
-          id: 50,
+          id: 119,
           title: 'Darth Vader #18',
           authorId: 13,
           description: 'The Shu-Torun War, Part III - Full-scale war',
@@ -324,7 +324,7 @@ export default {
           updatedAt: new Date(),
         },
         {
-          id: 51,
+          id: 120,
           title: 'Darth Vader #19',
           authorId: 13,
           description: 'The Shu-Torun War, Part IV - War conclusion',
@@ -338,7 +338,7 @@ export default {
           updatedAt: new Date(),
         },
         {
-          id: 52,
+          id: 121,
           title: 'Darth Vader #20',
           authorId: 13,
           description: 'End of Games, Part I - The endgame begins',
@@ -352,7 +352,7 @@ export default {
           updatedAt: new Date(),
         },
         {
-          id: 53,
+          id: 122,
           title: 'Darth Vader #21',
           authorId: 13,
           description: 'End of Games, Part II - Secrets revealed',
@@ -366,7 +366,7 @@ export default {
           updatedAt: new Date(),
         },
         {
-          id: 54,
+          id: 123,
           title: 'Darth Vader #22',
           authorId: 13,
           description: 'End of Games, Part III - Betrayals',
@@ -380,7 +380,7 @@ export default {
           updatedAt: new Date(),
         },
         {
-          id: 55,
+          id: 124,
           title: 'Darth Vader #23',
           authorId: 13,
           description: 'End of Games, Part IV - Final confrontations',
@@ -394,7 +394,7 @@ export default {
           updatedAt: new Date(),
         },
         {
-          id: 56,
+          id: 125,
           title: 'Darth Vader #24',
           authorId: 13,
           description: 'End of Games, Part V - Penultimate chapter',
@@ -408,7 +408,7 @@ export default {
           updatedAt: new Date(),
         },
         {
-          id: 57,
+          id: 126,
           title: 'Darth Vader #25',
           authorId: 13,
           description: 'End of Games, Part VI - Series finale',
@@ -513,42 +513,42 @@ export default {
         // Vol. 1: Vader (Issues #1-6)
         {
           tradePaperbackId: 5,
-          comicId: 32,
+          comicId: 101,
           orderInCollection: 1,
           createdAt: new Date(),
           updatedAt: new Date(),
         },
         {
           tradePaperbackId: 5,
-          comicId: 33,
+          comicId: 102,
           orderInCollection: 2,
           createdAt: new Date(),
           updatedAt: new Date(),
         },
         {
           tradePaperbackId: 5,
-          comicId: 34,
+          comicId: 103,
           orderInCollection: 3,
           createdAt: new Date(),
           updatedAt: new Date(),
         },
         {
           tradePaperbackId: 5,
-          comicId: 35,
+          comicId: 104,
           orderInCollection: 4,
           createdAt: new Date(),
           updatedAt: new Date(),
         },
         {
           tradePaperbackId: 5,
-          comicId: 36,
+          comicId: 105,
           orderInCollection: 5,
           createdAt: new Date(),
           updatedAt: new Date(),
         },
         {
           tradePaperbackId: 5,
-          comicId: 37,
+          comicId: 106,
           orderInCollection: 6,
           createdAt: new Date(),
           updatedAt: new Date(),
@@ -556,42 +556,42 @@ export default {
         // Vol. 2: Shadows and Secrets (Issues #7-12)
         {
           tradePaperbackId: 6,
-          comicId: 38,
+          comicId: 107,
           orderInCollection: 1,
           createdAt: new Date(),
           updatedAt: new Date(),
         },
         {
           tradePaperbackId: 6,
-          comicId: 39,
+          comicId: 108,
           orderInCollection: 2,
           createdAt: new Date(),
           updatedAt: new Date(),
         },
         {
           tradePaperbackId: 6,
-          comicId: 40,
+          comicId: 109,
           orderInCollection: 3,
           createdAt: new Date(),
           updatedAt: new Date(),
         },
         {
           tradePaperbackId: 6,
-          comicId: 41,
+          comicId: 110,
           orderInCollection: 4,
           createdAt: new Date(),
           updatedAt: new Date(),
         },
         {
           tradePaperbackId: 6,
-          comicId: 42,
+          comicId: 111,
           orderInCollection: 5,
           createdAt: new Date(),
           updatedAt: new Date(),
         },
         {
           tradePaperbackId: 6,
-          comicId: 43,
+          comicId: 112,
           orderInCollection: 6,
           createdAt: new Date(),
           updatedAt: new Date(),
@@ -599,35 +599,35 @@ export default {
         // Vol. 3: The Shu-Torun War (Annual #1, Issues #16-19)
         {
           tradePaperbackId: 7,
-          comicId: 47,
+          comicId: 116,
           orderInCollection: 1,
           createdAt: new Date(),
           updatedAt: new Date(),
         },
         {
           tradePaperbackId: 7,
-          comicId: 48,
+          comicId: 117,
           orderInCollection: 2,
           createdAt: new Date(),
           updatedAt: new Date(),
         },
         {
           tradePaperbackId: 7,
-          comicId: 49,
+          comicId: 118,
           orderInCollection: 3,
           createdAt: new Date(),
           updatedAt: new Date(),
         },
         {
           tradePaperbackId: 7,
-          comicId: 50,
+          comicId: 119,
           orderInCollection: 4,
           createdAt: new Date(),
           updatedAt: new Date(),
         },
         {
           tradePaperbackId: 7,
-          comicId: 51,
+          comicId: 120,
           orderInCollection: 5,
           createdAt: new Date(),
           updatedAt: new Date(),
@@ -635,42 +635,42 @@ export default {
         // Vol. 4: End of Games (Issues #20-25)
         {
           tradePaperbackId: 8,
-          comicId: 52,
+          comicId: 121,
           orderInCollection: 1,
           createdAt: new Date(),
           updatedAt: new Date(),
         },
         {
           tradePaperbackId: 8,
-          comicId: 53,
+          comicId: 122,
           orderInCollection: 2,
           createdAt: new Date(),
           updatedAt: new Date(),
         },
         {
           tradePaperbackId: 8,
-          comicId: 54,
+          comicId: 123,
           orderInCollection: 3,
           createdAt: new Date(),
           updatedAt: new Date(),
         },
         {
           tradePaperbackId: 8,
-          comicId: 55,
+          comicId: 124,
           orderInCollection: 4,
           createdAt: new Date(),
           updatedAt: new Date(),
         },
         {
           tradePaperbackId: 8,
-          comicId: 56,
+          comicId: 125,
           orderInCollection: 5,
           createdAt: new Date(),
           updatedAt: new Date(),
         },
         {
           tradePaperbackId: 8,
-          comicId: 57,
+          comicId: 126,
           orderInCollection: 6,
           createdAt: new Date(),
           updatedAt: new Date(),
@@ -681,8 +681,8 @@ export default {
 
     // Create relationships between Omnibus and Comics
     const vaderOmnibusComics = [
-      32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54,
-      55, 56, 57,
+      101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111, 112, 113, 114, 115, 116, 117, 118, 119,
+      120, 121, 122, 123, 124, 125, 126,
     ];
     await queryInterface.bulkInsert(
       'OmnibusComicXRefs',
@@ -711,8 +711,8 @@ export default {
       'Comics',
       {
         id: [
-          32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53,
-          54, 55, 56, 57,
+          101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111, 112, 113, 114, 115, 116, 117, 118,
+          119, 120, 121, 122, 123, 124, 125, 126,
         ],
       },
       {}
