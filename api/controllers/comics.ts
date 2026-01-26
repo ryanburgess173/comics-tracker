@@ -1,11 +1,13 @@
 import { Router, Request, Response } from 'express';
 import Comic from '../models/Comic';
+import Creator from '../models/Creator';
 import UserComicXRef from '../models/UserComicXRef';
 import logger from '../utils/logger';
 import { authenticateJWT } from '../middleware/authenticateJWT';
 import { authorize } from '../middleware/checkPermissions';
 import sequelize from '../db';
 import { QueryTypes } from 'sequelize';
+import { CreatorInstance } from '../types/CreatorAttributes';
 
 const router = Router();
 
@@ -527,6 +529,118 @@ router.get(
     } catch (error) {
       logger.error('Error fetching comic: %o', error);
       res.status(500).json({ error: 'Failed to fetch comic' });
+    }
+  }
+);
+
+/**
+ * @swagger
+ * /comics/search:
+ *   get:
+ *     summary: Search for comics by author or title
+ *     description: |
+ *       Search for comics using different search types.
+ *       - Author: Find all comics by a specific creator name
+ *       - Title: Find all comics matching a specific title
+ *       Requires the 'comics:read' permission.
+ *     tags:
+ *       - Comics
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: query
+ *         name: searchType
+ *         required: true
+ *         schema:
+ *           type: string
+ *           enum: [Author, Title]
+ *         description: The type of search to perform
+ *       - in: query
+ *         name: searchTerm
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: The search term (author name or comic title)
+ *     responses:
+ *       200:
+ *         description: List of matching comics retrieved successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 type: object
+ *                 properties:
+ *                   id:
+ *                     type: integer
+ *                   title:
+ *                     type: string
+ *                   authorId:
+ *                     type: integer
+ *                   description:
+ *                     type: string
+ *                   imageUrl:
+ *                     type: string
+ *                   pages:
+ *                     type: integer
+ *                   publisherId:
+ *                     type: integer
+ *                   publishedDate:
+ *                     type: string
+ *                     format: date
+ *       400:
+ *         description: Invalid search type (must be 'Author' or 'Title')
+ *       401:
+ *         description: Unauthorized - Authentication required
+ *       403:
+ *         description: Forbidden - Insufficient permissions (requires 'comics:read')
+ *       404:
+ *         description: No comics found or author not found
+ *       500:
+ *         description: Server error
+ */
+router.get('/search', 
+  authenticateJWT, 
+  ...authorize(['comics:read']),
+  async (req: Request, res: Response) => {
+    try {
+      const {searchType, searchTerm} = req.params;
+      logger.info(`Searching comics - type: ${searchType}, term: ${searchTerm}`);
+      
+      if(searchType=='Author'){
+        const author = await Creator.findOne({ where : { name: searchTerm }});
+        if(author !== null){
+          logger.info(`Found author: ${author.name} (id: ${author.id ?? 'undefined'})`);
+          const comics = (await Comic.findAll()).filter((comic) => comic.authorId === author.id);
+          if(comics && comics.length > 0){
+            logger.info(`Found ${comics.length} comic(s) by author: ${searchTerm}`);
+            return res.status(200).json(comics);
+          }else{
+            logger.warn(`No comics found for author: ${searchTerm}`);
+            return res.status(404).json({ error: 'No comics by that author were found.' });
+          }
+        }else{
+          logger.warn(`Author not found: ${searchTerm}`);
+          return res.status(404).json({ error: 'No author with that name found.' });
+        }
+      }
+      else if(searchType == 'Title'){
+        const comics = await Comic.findAll({ where: { title: searchTerm }});
+        if(comics && comics.length > 0){
+          logger.info(`Found ${comics.length} comic(s) with title: ${searchTerm}`);
+          return res.status(200).json(comics);
+        }else{
+          logger.warn(`No comics found with title: ${searchTerm}`);
+          return res.status(404).json({ error: 'No comics by that title were found. '});
+        }
+      }
+      else{
+        logger.warn(`Invalid search type provided: ${searchType}`);
+        return res.status(400).json({ error: 'Invalid search type. '});
+      }
+    } catch (error) {
+      logger.error('Error searching comics: %o', error);
+      return res.status(500).json({ error: 'Failed to search comics' });
     }
   }
 );
