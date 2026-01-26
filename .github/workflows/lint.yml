@@ -34,6 +34,18 @@ jobs:
       - name: Install Frontend dependencies
         run: cd frontend && npm ci
 
+      - name: Auto-fix linting issues (API)
+        run: npm run lint:fix:api
+        continue-on-error: true
+
+      - name: Auto-fix linting issues (Frontend)
+        run: npm run lint:fix:frontend
+        continue-on-error: true
+
+      - name: Auto-format code with Prettier
+        run: npm run format
+        continue-on-error: true
+
       - name: Run ESLint (API)
         run: npm run lint:api
 
