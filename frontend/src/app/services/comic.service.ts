@@ -63,8 +63,10 @@ export class ComicService {
   /**
    * Search comics by title
    */
-  searchComics(query: string): Observable<Comic[]> {
-    const params = new HttpParams().set('search', query);
-    return this.http.get<Comic[]>(`${this.apiUrl}/search`, { params });
+  searchComics(searchType: string, searchTerm: string): Observable<Comic[]> {
+    const params = new HttpParams()
+      .set('searchType', searchType)
+      .set('searchTerm', searchTerm);
+    return this.http.get<Comic[]>(`${this.apiUrl}/comics/search`, { params });
   }
 }

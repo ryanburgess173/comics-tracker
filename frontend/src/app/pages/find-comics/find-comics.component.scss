@@ -21,3 +21,9 @@
     background-color: white;
     height: 2em;
 }
+.cards-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.5rem;
+  padding: 1rem;
+}

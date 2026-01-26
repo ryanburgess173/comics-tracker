@@ -246,28 +246,138 @@ describe('ComicService', () => {
   });
 
   describe('searchComics', () => {
-    it('should search comics by query', (done) => {
-      const searchQuery = 'Star Wars';
+    it('should search comics by author name', (done) => {
+      const mockSearchResults = [
+        {
+          id: 1,
+          title: 'Thor #1',
+          issueNumber: 1,
+          releaseDate: new Date('2014-11-12'),
+          publisherId: 1,
+          universeId: 1,
+          authorId: 1,
+        },
+        {
+          id: 2,
+          title: 'Avengers #1',
+          issueNumber: 1,
+          releaseDate: new Date('2013-01-01'),
+          publisherId: 1,
+          universeId: 1,
+          authorId: 1,
+        },
+      ];
 
-      service.searchComics(searchQuery).subscribe((comics) => {
-        expect(comics).toEqual(mockComics);
+      service.searchComics('Author', 'Jason Aaron').subscribe((comics) => {
+        expect(comics).toEqual(mockSearchResults);
         expect(comics.length).toBe(2);
         done();
       });
 
-      const req = httpMock.expectOne(`${environment.apiUrl}/search?search=Star%20Wars`);
+      const req = httpMock.expectOne(
+        `${environment.apiUrl}/comics/search?searchType=Author&searchTerm=Jason%20Aaron`
+      );
       expect(req.request.method).toBe('GET');
-      req.flush(mockComics);
+      expect(req.request.params.get('searchType')).toBe('Author');
+      expect(req.request.params.get('searchTerm')).toBe('Jason Aaron');
+      req.flush(mockSearchResults);
     });
 
-    it('should handle empty search results', (done) => {
-      service.searchComics('nonexistent').subscribe((comics) => {
+    it('should search comics by title', (done) => {
+      const mockSearchResults = [
+        {
+          id: 10,
+          title: 'Spider-Man #1',
+          issueNumber: 1,
+          releaseDate: new Date('2016-01-01'),
+          publisherId: 1,
+          universeId: 2,
+          authorId: 5,
+        },
+        {
+          id: 11,
+          title: 'Amazing Spider-Man #1',
+          issueNumber: 1,
+          releaseDate: new Date('2014-04-02'),
+          publisherId: 1,
+          universeId: 2,
+          authorId: 6,
+        },
+      ];
+
+      service.searchComics('Title', 'Spider-Man').subscribe((comics) => {
+        expect(comics).toEqual(mockSearchResults);
+        expect(comics.length).toBe(2);
+        done();
+      });
+
+      const req = httpMock.expectOne(
+        `${environment.apiUrl}/comics/search?searchType=Title&searchTerm=Spider-Man`
+      );
+      expect(req.request.method).toBe('GET');
+      expect(req.request.params.get('searchType')).toBe('Title');
+      expect(req.request.params.get('searchTerm')).toBe('Spider-Man');
+      req.flush(mockSearchResults);
+    });
+
+    it('should return empty array when no comics match', (done) => {
+      service.searchComics('Title', 'NonExistentComic').subscribe((comics) => {
         expect(comics).toEqual([]);
         expect(comics.length).toBe(0);
         done();
       });
 
-      const req = httpMock.expectOne(`${environment.apiUrl}/search?search=nonexistent`);
+      const req = httpMock.expectOne(
+        `${environment.apiUrl}/comics/search?searchType=Title&searchTerm=NonExistentComic`
+      );
+      req.flush([]);
+    });
+
+    it('should handle special characters in search term', (done) => {
+      const mockSearchResults = [mockComic];
+
+      service.searchComics('Title', "Spider-Man: It's Complicated").subscribe((comics) => {
+        expect(comics).toEqual(mockSearchResults);
+        done();
+      });
+
+      const req = httpMock.expectOne((request) => {
+        return (
+          request.url === `${environment.apiUrl}/comics/search` &&
+          request.params.get('searchType') === 'Title' &&
+          request.params.get('searchTerm') === "Spider-Man: It's Complicated"
+        );
+      });
+      expect(req.request.method).toBe('GET');
+      req.flush(mockSearchResults);
+    });
+
+    it('should construct correct HttpParams for both parameters', (done) => {
+      service.searchComics('Author', 'test').subscribe(() => {
+        done();
+      });
+
+      const req = httpMock.expectOne((request) => {
+        const hasSearchType = request.params.has('searchType');
+        const hasSearchTerm = request.params.has('searchTerm');
+        return hasSearchType && hasSearchTerm;
+      });
+
+      expect(req.request.params.get('searchType')).toBe('Author');
+      expect(req.request.params.get('searchTerm')).toBe('test');
+      req.flush([]);
+    });
+
+    it('should handle empty search term', (done) => {
+      service.searchComics('Title', '').subscribe((comics) => {
+        expect(comics).toEqual([]);
+        done();
+      });
+
+      const req = httpMock.expectOne(
+        `${environment.apiUrl}/comics/search?searchType=Title&searchTerm=`
+      );
+      expect(req.request.params.get('searchTerm')).toBe('');
       req.flush([]);
     });
   });

@@ -1,4 +1,4 @@
-import { DataTypes, Model, Optional } from 'sequelize';
+import { DataTypes } from 'sequelize';
 import sequelize from '../db';
 import { CreatorInstance } from '../types/CreatorAttributes';
 
