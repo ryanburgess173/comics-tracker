@@ -10,7 +10,7 @@
     "test:ci": "jest --coverage --ci --maxWorkers=2",
     "build": "tsc --outDir out",
     "start": "node out/index.js",
-    "dev": "ts-node index.ts",
+    "dev": "npx ts-node --files index.ts",
     "lint": "eslint . --ext .ts",
     "lint:fix": "eslint . --ext .ts --fix",
     "lint:security": "eslint . --ext .ts",
@@ -50,6 +50,7 @@
     "@types/express": "^5.0.3",
     "@types/jest": "^30.0.0",
     "@types/jsonwebtoken": "^9.0.10",
+    "@types/node": "^25.0.10",
     "@types/nodemailer": "^7.0.2",
     "@types/supertest": "^6.0.3",
     "@types/swagger-jsdoc": "^6.0.4",
@@ -58,6 +59,7 @@
     "sequelize-cli": "^6.6.3",
     "supertest": "^7.1.4",
     "ts-jest": "^29.4.5",
+    "ts-node": "^10.9.2",
     "typescript": "^5.9.2"
   }
 }

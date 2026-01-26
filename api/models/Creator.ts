@@ -1,14 +1,8 @@
-import { DataTypes, Model, Optional } from 'sequelize';
+import { DataTypes } from 'sequelize';
 import sequelize from '../db';
-import { CreatorAttributes } from '../types/CreatorAttributes';
+import { CreatorInstance } from '../types/CreatorAttributes';
 
-// Define creation attributes for fields that are optional during creation
-type CreatorCreationAttributes = Optional<
-  CreatorAttributes,
-  'id' | 'bio' | 'birthDate' | 'deathDate'
->;
-
-const Creator = sequelize.define<Model<CreatorAttributes, CreatorCreationAttributes>>(
+const Creator = sequelize.define<CreatorInstance>(
   'Creator',
   {
     id: {

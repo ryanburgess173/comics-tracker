@@ -24,13 +24,11 @@ module.exports = {
 
     // All comic ranges to own (using new ID ranges)
     const comicRanges = [
-      [1, 25],         // Star Wars 1-25
+      [1, 13],         // Star Wars 1-13
       [76, 76],        // Vader Down 76
-      [101, 126],      // Darth Vader 101-126
-      [1001, 1010],    // Spider-Man 1001-1010
-      [2001, 2010],    // Fantastic Four 2001-2010
-      [3001, 3012],    // Dune House Atreides 3001-3012
-      [4001, 4005],    // Alien Thaw 4001-4005
+      [101, 109],      // Darth Vader 101-109
+      [1001, 1006],    // Spider-Man 1001-1006
+      [2001, 2008],    // Fantastic Four 2001-2008
     ];
 
     const userComicXRefs = [];

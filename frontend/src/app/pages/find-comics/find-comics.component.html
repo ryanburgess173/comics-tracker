@@ -1,0 +1,21 @@
+<h1>Discover New Comics</h1>
+<h3>&nbsp;&nbsp;&nbsp;Brought to you by our editor</h3>
+<br/>
+<div id="formContainerDiv">
+    <form id="SearchBar" (ngSubmit)="onSubmit()">
+        <h3>Search by </h3>&nbsp;
+        <select id="searchBy" name="searchType" [(ngModel)]="searchType">
+            <option value="Title">Title</option>
+            <option value="Author">Author</option>
+            <option value="Universe">Universe</option>
+        </select>
+        <input type="text" name="search" [(ngModel)]="searchTerm" id="search"/>
+        <input id="submitBtn" type="submit" value="Search"/>
+    </form>
+</div>
+<hr/>
+<div class="cards-grid">
+    @for(comic of comics(); track comic.id) {
+        <app-card [comic]="comic" />
+    }
+</div>
