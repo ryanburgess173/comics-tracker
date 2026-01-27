@@ -1,5 +1,6 @@
 import { Component, input } from '@angular/core';
 import { Comic } from '../models/comic.model';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-card',
@@ -7,6 +8,13 @@ import { Comic } from '../models/comic.model';
   styleUrls: ['./card.scss'],
 })
 export class Card {
-  // This component can be used to display comic book information in a card format
+  constructor(private router: Router) {}
   comic = input.required<Comic>();
+
+  clickHandler() {
+    this.router.navigate(
+      ['/comic-detais'], 
+      {queryParams: {id: this.comic.id}}
+    );
+  }
 }

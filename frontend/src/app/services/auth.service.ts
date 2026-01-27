@@ -26,9 +26,6 @@ export class AuthService {
     }
   }
 
-  /**
-   * Login with username and password
-   */
   login(credentials: LoginRequest): Observable<LoginResponse> {
     return this.http.post<LoginResponse>(`${this.apiUrl}/login`, credentials).pipe(
       tap((response) => {
@@ -38,9 +35,6 @@ export class AuthService {
     );
   }
 
-  /**
-   * Register a new user
-   */
   register(userData: RegisterRequest): Observable<LoginResponse> {
     return this.http.post<LoginResponse>(`${this.apiUrl}/register`, userData).pipe(
       tap((response) => {
@@ -50,54 +44,75 @@ export class AuthService {
     );
   }
 
-  /**
-   * Logout the current user
-   */
   logout(): void {
     this.removeToken();
     this.currentUserSubject.next(null);
   }
 
-  /**
-   * Get the current JWT token
-   */
   getToken(): string | null {
     if (isPlatformBrowser(this.platformId)) {
-      return localStorage.getItem(this.TOKEN_KEY);
+      return this.getCookie(this.TOKEN_KEY);
     }
     return null;
   }
 
-  /**
-   * Check if user is authenticated
-   */
   isAuthenticated(): boolean {
     const token = this.getToken();
     return !!token; // Add token expiry check if needed
   }
 
-  /**
-   * Get current user
-   */
   getCurrentUser(): User | null {
     return this.currentUserSubject.value;
   }
 
-  /**
-   * Set authentication token
-   */
   private setToken(token: string): void {
     if (isPlatformBrowser(this.platformId)) {
-      localStorage.setItem(this.TOKEN_KEY, token);
+      this.setCookie(this.TOKEN_KEY, token, 7); // Token expires in 7 days
     }
   }
 
-  /**
-   * Remove authentication token
-   */
   private removeToken(): void {
     if (isPlatformBrowser(this.platformId)) {
-      localStorage.removeItem(this.TOKEN_KEY);
+      this.deleteCookie(this.TOKEN_KEY);
     }
+  }
+
+  private setCookie(name: string, value: string, days: number = 7): void {
+    const expires = new Date();
+    expires.setTime(expires.getTime() + days * 24 * 60 * 60 * 1000);
+    
+    // Encode the value to handle special characters in JWT
+    const encodedValue = encodeURIComponent(value);
+    
+    // Build cookie string step by step for debugging
+    let cookieString = `${name}=${encodedValue}`;
+    cookieString += `; expires=${expires.toUTCString()}`;
+    cookieString += `; path=/`;
+    cookieString += `; SameSite=Lax`;
+    
+    // Only add Secure in production and on HTTPS
+    if (environment.production && window.location.protocol === 'https:') {
+      cookieString += `; Secure`;
+    }
+    
+    document.cookie = cookieString;
+  }
+
+  private getCookie(name: string): string | null {
+    const nameEQ = name + '=';
+    const ca = document.cookie.split(';');
+    for (let i = 0; i < ca.length; i++) {
+      let c = ca[i];
+      while (c.charAt(0) === ' ') c = c.substring(1, c.length);
+      if (c.indexOf(nameEQ) === 0) {
+        // Decode the value when retrieving
+        return decodeURIComponent(c.substring(nameEQ.length, c.length));
+      }
+    }
+    return null;
+  }
+
+  private deleteCookie(name: string): void {
+    document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
   }
 }
