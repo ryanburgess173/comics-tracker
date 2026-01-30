@@ -1,10 +1,69 @@
 /* Home component styles */
 
+.intro-section {
+  text-align: center;
+  max-width: 800px;
+  margin: 2rem auto;
+  padding: 1.5rem;
+  background-color: black;
+  border-radius: 10px;
+}
+
+.intro-section h2 {
+  margin-top: 0;
+}
+
+.intro-section p {
+  margin: 1rem 0;
+  line-height: 1.6;
+}
+
 .cards-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 1.5rem;
   padding: 1rem;
+}
+
+.recommendation {
+  background-color: black;
+  padding: 1.5rem;
+  border-radius: 10px;
+  margin-top: 2rem;
+}
+
+.recommendation-content {
+  display: flex;
+  gap: 2rem;
+  align-items: flex-start;
+}
+
+.recommendation-image {
+  flex-shrink: 0;
+  width: 45%;
+}
+
+.recommendation-image img {
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+}
+
+.recommendation-text {
+  flex: 1;
+  text-align: left;
+}
+
+.recommendation-text h2 {
+  margin-top: 0;
+}
+
+.recommendation-text h4 {
+  margin-top: 0.5rem;
+}
+
+.recommendation-text p {
+  margin-top: 1rem;
 }
 
 /* Responsive: 3 columns on tablets */

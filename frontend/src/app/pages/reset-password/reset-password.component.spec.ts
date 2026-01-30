@@ -1,9 +1,10 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ResetPasswordComponentPage } from './reset-password.component';
 import { AuthService } from '../../services/auth.service';
-import { Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { of, throwError } from 'rxjs';
+import { provideRouter } from '@angular/router';
 
 describe('ResetPasswordComponentPage', () => {
   let component: ResetPasswordComponentPage;
@@ -12,13 +13,18 @@ describe('ResetPasswordComponentPage', () => {
 
   beforeEach(async () => {
     const authServiceSpy = jasmine.createSpyObj('AuthService', ['requestPasswordReset']);
-    const routerSpy = jasmine.createSpyObj('Router', ['navigate']);
 
     await TestBed.configureTestingModule({
       imports: [ResetPasswordComponentPage, FormsModule],
       providers: [
         { provide: AuthService, useValue: authServiceSpy },
-        { provide: Router, useValue: routerSpy },
+        provideRouter([]),
+        {
+          provide: ActivatedRoute,
+          useValue: {
+            queryParams: of({}),
+          },
+        },
       ],
     }).compileComponents();
 
