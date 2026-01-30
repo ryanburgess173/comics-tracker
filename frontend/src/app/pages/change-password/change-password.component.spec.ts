@@ -4,17 +4,17 @@ import { AuthService } from '../../services/auth.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { of, throwError } from 'rxjs';
+import { provideRouter } from '@angular/router';
 
 describe('ChangePasswordComponent', () => {
   let component: ChangePasswordComponent;
   let fixture: ComponentFixture<ChangePasswordComponent>;
   let authService: jasmine.SpyObj<AuthService>;
-  let router: jasmine.SpyObj<Router>;
+  let router: Router;
   let activatedRoute: Partial<ActivatedRoute>;
 
   beforeEach(async () => {
     const authServiceSpy = jasmine.createSpyObj('AuthService', ['resetPassword']);
-    const routerSpy = jasmine.createSpyObj('Router', ['navigate']);
 
     activatedRoute = {
       queryParams: of({ token: 'test-token-123' }),
@@ -24,13 +24,13 @@ describe('ChangePasswordComponent', () => {
       imports: [ChangePasswordComponent, FormsModule],
       providers: [
         { provide: AuthService, useValue: authServiceSpy },
-        { provide: Router, useValue: routerSpy },
+        provideRouter([]),
         { provide: ActivatedRoute, useValue: activatedRoute },
       ],
     }).compileComponents();
 
     authService = TestBed.inject(AuthService) as jasmine.SpyObj<AuthService>;
-    router = TestBed.inject(Router) as jasmine.SpyObj<Router>;
+    router = TestBed.inject(Router);
     fixture = TestBed.createComponent(ChangePasswordComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
@@ -168,6 +168,7 @@ describe('ChangePasswordComponent', () => {
     });
 
     it('should redirect to login after successful reset', fakeAsync(() => {
+      spyOn(router, 'navigate');
       component['password'].set('password123');
       component['confirmPassword'].set('password123');
       authService.resetPassword.and.returnValue(of({ message: 'Password reset successful' }));
