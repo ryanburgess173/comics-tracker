@@ -12,6 +12,6 @@ export class Card {
   comic = input.required<Comic>();
 
   clickHandler() {
-    this.router.navigate(['/comic-detais'], { queryParams: { id: this.comic().id } });
+    this.router.navigate(['/comic-details'], { queryParams: { id: this.comic().id } });
   }
 }
