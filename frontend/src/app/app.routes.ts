@@ -14,5 +14,5 @@ export const routes: Routes = [
   { path: 'admin', component: AdminComponent },
   { path: 'login', component: LoginPageComponent },
   { path: 'signout', component: SignOutPageComponent },
-  { path: 'comic-details', component: ComicDetailsPageComponent }
+  { path: 'comic-details', component: ComicDetailsPageComponent },
 ];

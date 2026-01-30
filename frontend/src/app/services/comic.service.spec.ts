@@ -275,7 +275,7 @@ describe('ComicService', () => {
       });
 
       const req = httpMock.expectOne(
-        `${environment.apiUrl}/comics/search?searchType=Author&searchTerm=Jason%20Aaron`
+        `${environment.apiUrl}/comics/search?searchType=Author&searchTerm=Jason%20Aaron`,
       );
       expect(req.request.method).toBe('GET');
       expect(req.request.params.get('searchType')).toBe('Author');
@@ -312,7 +312,7 @@ describe('ComicService', () => {
       });
 
       const req = httpMock.expectOne(
-        `${environment.apiUrl}/comics/search?searchType=Title&searchTerm=Spider-Man`
+        `${environment.apiUrl}/comics/search?searchType=Title&searchTerm=Spider-Man`,
       );
       expect(req.request.method).toBe('GET');
       expect(req.request.params.get('searchType')).toBe('Title');
@@ -328,7 +328,7 @@ describe('ComicService', () => {
       });
 
       const req = httpMock.expectOne(
-        `${environment.apiUrl}/comics/search?searchType=Title&searchTerm=NonExistentComic`
+        `${environment.apiUrl}/comics/search?searchType=Title&searchTerm=NonExistentComic`,
       );
       req.flush([]);
     });
@@ -375,7 +375,7 @@ describe('ComicService', () => {
       });
 
       const req = httpMock.expectOne(
-        `${environment.apiUrl}/comics/search?searchType=Title&searchTerm=`
+        `${environment.apiUrl}/comics/search?searchType=Title&searchTerm=`,
       );
       expect(req.request.params.get('searchTerm')).toBe('');
       req.flush([]);

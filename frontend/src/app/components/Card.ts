@@ -1,4 +1,4 @@
-import { Component, input } from '@angular/core';
+import { Component, input, inject } from '@angular/core';
 import { Comic } from '../models/comic.model';
 import { Router } from '@angular/router';
 
@@ -8,13 +8,10 @@ import { Router } from '@angular/router';
   styleUrls: ['./card.scss'],
 })
 export class Card {
-  constructor(private router: Router) {}
+  private router = inject(Router);
   comic = input.required<Comic>();
 
   clickHandler() {
-    this.router.navigate(
-      ['/comic-detais'], 
-      {queryParams: {id: this.comic.id}}
-    );
+    this.router.navigate(['/comic-details'], { queryParams: { id: this.comic().id } });
   }
 }

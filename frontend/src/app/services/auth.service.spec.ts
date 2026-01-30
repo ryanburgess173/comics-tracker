@@ -32,20 +32,23 @@ describe('AuthService', () => {
 
     // Clear localStorage before each test
     localStorage.clear();
+    // Clear auth cookie before each test
+    document.cookie = 'auth_token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
   });
 
   afterEach(() => {
     httpMock.verify();
     localStorage.clear();
+    document.cookie = 'auth_token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
   });
 
   it('should be created', () => {
     expect(service).toBeTruthy();
   });
 
-  it('should check for existing token on initialization', () => {
-    // Store a token before creating the service
-    localStorage.setItem('auth_token', 'existing-token');
+  it('should check for existing token on initialization (cookie)', () => {
+    // Store a token via cookie before creating the service
+    document.cookie = `auth_token=${encodeURIComponent('existing-token')}; path=/;`;
 
     // Destroy and recreate the TestBed to trigger constructor again
     TestBed.resetTestingModule();
@@ -149,8 +152,8 @@ describe('AuthService', () => {
   });
 
   describe('getToken', () => {
-    it('should return token from localStorage', () => {
-      localStorage.setItem('auth_token', 'test-token');
+    it('should return token from cookie', () => {
+      document.cookie = `auth_token=${encodeURIComponent('test-token')}; path=/;`;
       expect(service.getToken()).toBe('test-token');
     });
 
@@ -177,8 +180,8 @@ describe('AuthService', () => {
   });
 
   describe('isAuthenticated', () => {
-    it('should return true when token exists', () => {
-      localStorage.setItem('auth_token', 'test-token');
+    it('should return true when token exists (cookie)', () => {
+      document.cookie = `auth_token=${encodeURIComponent('test-token')}; path=/;`;
       expect(service.isAuthenticated()).toBe(true);
     });
 

@@ -120,11 +120,11 @@ describe('FindComicsComponent', () => {
     });
 
     it('should bind searchTerm to input element', async () => {
-        component.searchTerm = 'Spider-Man';
-        fixture.detectChanges();
-        await fixture.whenStable();
+      component.searchTerm = 'Spider-Man';
+      fixture.detectChanges();
+      await fixture.whenStable();
 
-        expect(component.searchTerm).toBe('Spider-Man');
+      expect(component.searchTerm).toBe('Spider-Man');
     });
 
     it('should update component properties when form inputs change', async () => {
@@ -186,7 +186,7 @@ describe('FindComicsComponent', () => {
 
       setTimeout(() => {
         fixture.detectChanges();
-        
+
         // Check if comics are rendered (implementation depends on template)
         expect(component['comics']().length).toBe(2);
         done();

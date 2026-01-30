@@ -77,32 +77,29 @@ export class AuthService {
     }
   }
 
-  private setCookie(name: string, value: string, days: number = 7): void {
+  private setCookie(name: string, value: string, days = 7): void {
     const expires = new Date();
     expires.setTime(expires.getTime() + days * 24 * 60 * 60 * 1000);
-    
-    // Encode the value to handle special characters in JWT
+
     const encodedValue = encodeURIComponent(value);
-    
-    // Build cookie string step by step for debugging
+
     let cookieString = `${name}=${encodedValue}`;
     cookieString += `; expires=${expires.toUTCString()}`;
     cookieString += `; path=/`;
     cookieString += `; SameSite=Lax`;
-    
-    // Only add Secure in production and on HTTPS
+
     if (environment.production && window.location.protocol === 'https:') {
       cookieString += `; Secure`;
     }
-    
+
     document.cookie = cookieString;
   }
 
   private getCookie(name: string): string | null {
     const nameEQ = name + '=';
     const ca = document.cookie.split(';');
-    for (let i = 0; i < ca.length; i++) {
-      let c = ca[i];
+    for (const cookie of ca) {
+      let c = cookie;
       while (c.charAt(0) === ' ') c = c.substring(1, c.length);
       if (c.indexOf(nameEQ) === 0) {
         // Decode the value when retrieving
