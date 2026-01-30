@@ -1,22 +1,6 @@
 require('dotenv/config');
 
-/** @type {{ development: any; test: any; production: any }} */
-const config = {
-  development: {
-    dialect: 'sqlite',
-    storage: './database.sqlite',
-    logging: false,
-  },
-  test: {
-    dialect: 'sqlite',
-    storage: ':memory:',
-    logging: false,
-  },
-  production: {
-    dialect: 'sqlite',
-    storage: './database.sqlite',
-    logging: false,
-  },
-};
+// Re-export the TypeScript configuration to keep a single source of truth.
+const tsConfig = require('./config.ts');
 
-module.exports = config;
+module.exports = tsConfig.default || tsConfig;
