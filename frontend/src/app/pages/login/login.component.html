@@ -3,9 +3,9 @@
     <h1>Login</h1>
 
     @if (errorMessage) {
-      <div class="error-message">
-        {{ errorMessage }}
-      </div>
+    <div class="error-message">
+      {{ errorMessage }}
+    </div>
     }
 
     <form class="login-form" [formGroup]="loginForm" (ngSubmit)="onSubmit()">
@@ -16,17 +16,16 @@
           id="email"
           formControlName="email"
           placeholder="Enter your email"
-          [class.invalid]="email?.invalid && email?.touched"
-        />
+          [class.invalid]="email?.invalid && email?.touched" />
         @if (email?.invalid && email?.touched) {
-          <span class="error">
-            @if (email?.errors?.['required']) {
-              Email is required
-            }
-            @if (email?.errors?.['email']) {
-              Please enter a valid email
-            }
-          </span>
+        <span class="error">
+          @if (email?.errors?.['required']) {
+          Email is required
+          }
+          @if (email?.errors?.['email']) {
+          Please enter a valid email
+          }
+        </span>
         }
       </div>
 
@@ -37,17 +36,16 @@
           id="password"
           formControlName="password"
           placeholder="Enter your password"
-          [class.invalid]="password?.invalid && password?.touched"
-        />
+          [class.invalid]="password?.invalid && password?.touched" />
         @if (password?.invalid && password?.touched) {
-          <span class="error">
-            @if (password?.errors?.['required']) {
-              Password is required
-            }
-            @if (password?.errors?.['minlength']) {
-              Password must be at least 6 characters
-            }
-          </span>
+        <span class="error">
+          @if (password?.errors?.['required']) {
+          Password is required
+          }
+          @if (password?.errors?.['minlength']) {
+          Password must be at least 6 characters
+          }
+        </span>
         }
       </div>
 
@@ -56,6 +54,7 @@
       </button>
 
       <div class="form-footer">
+        <a routerLink="/reset-password">Forgot Password? Reset it</a><br><br>
         <a routerLink="/register">Don't have an account? Sign up</a>
       </div>
     </form>

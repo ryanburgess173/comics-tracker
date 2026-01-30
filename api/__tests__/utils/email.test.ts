@@ -154,7 +154,7 @@ describe('Email Utils', () => {
           to: string;
           subject: string;
         };
-        const expectedUrl = 'https://example.com/reset-password/test-token-123';
+        const expectedUrl = 'https://example.com/change-password?token=test-token-123';
 
         expect(callArgs.html).toContain(expectedUrl);
         expect(callArgs.html).toContain('JohnDoe');
@@ -191,7 +191,7 @@ describe('Email Utils', () => {
           to: string;
           subject: string;
         };
-        const expectedUrl = 'https://example.com/reset-password/test-token-456';
+        const expectedUrl = 'https://example.com/change-password?token=test-token-456';
 
         expect(callArgs.text).toContain(expectedUrl);
         expect(callArgs.text).toContain('JaneSmith');
@@ -225,7 +225,7 @@ describe('Email Utils', () => {
           to: string;
           subject: string;
         };
-        const defaultUrl = 'http://localhost:3000/reset-password/token789';
+        const defaultUrl = 'http://localhost:4200/change-password?token=token789';
 
         expect(callArgs.html).toContain(defaultUrl);
         expect(callArgs.text).toContain(defaultUrl);

@@ -8,17 +8,19 @@ The password reset feature allows users to securely reset their passwords via em
 
 ### 1. Request Password Reset
 
+- **Frontend**: User accesses `/reset-password` page and enters email
 - **Endpoint**: `POST /auth/reset-password`
 - **Input**: User's email address
 - **Process**:
   - Generates a secure random token (32 bytes)
   - Hashes the token using SHA-256 before storing in database
   - Sets expiration time to 1 hour
-  - Sends email with reset link containing the unhashed token
+  - Sends email with reset link to `${FRONTEND_URL}/change-password?token=${token}`
   - Returns success message (even if email doesn't exist, for security)
 
 ### 2. Confirm Password Reset
 
+- **Frontend**: User clicks email link, redirected to `/change-password` page with token
 - **Endpoint**: `POST /auth/reset-password/:token`
 - **Input**: Reset token (from URL) and new password
 - **Process**:
@@ -27,6 +29,7 @@ The password reset feature allows users to securely reset their passwords via em
   - Hashes new password with bcrypt (10 salt rounds)
   - Updates password and clears reset token fields
   - Returns success message
+  - Frontend redirects to `/login` after 3 seconds
 
 ## Security Features
 
@@ -54,7 +57,7 @@ EMAIL_PORT=587                   # SMTP server port
 EMAIL_USER=your@email.com        # Email account username
 EMAIL_PASSWORD=your-password     # Email account password or app password
 EMAIL_FROM=noreply@domain.com   # From address for emails
-FRONTEND_URL=http://localhost:3000  # Frontend URL for reset links
+FRONTEND_URL=http://localhost:4200  # Frontend URL for reset links (Angular dev server)
 ```
 
 **Note**: If email credentials are not configured, the reset token will be logged to the console instead of being emailed. This is useful for development.
