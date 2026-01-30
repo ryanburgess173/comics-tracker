@@ -1,7 +1,97 @@
 <h1>Recent Releases</h1>
 
 <div class="cards-grid">
-@for (comic of comics(); track comic.id) {
+    @for (comic of comics(); track comic.id) {
     <app-card [comic]="comic" />
-}
+    }
+</div>
+
+<div>
+    <div class="intro-section">
+        <h2>Hello! My name is Ryan Burgess and this is Comics Tracker!</h2>
+        <p>Below you will find some comic shops I recommend checking out in
+            the
+            Greensboro, NC area.</p>
+        <p>These shops had a profound impact on me as I first got into comic
+            books
+            and
+            they'll ultimately
+            be a better resource than my app ever could be. Hope you check
+            them
+            out!
+        </p>
+    </div>
+    <div>
+        <div class="recommendation">
+            <div class="recommendation-content">
+                <div class="recommendation-image">
+                    <img
+                        src="https://comics-tracker-2025.s3.us-east-1.amazonaws.com/acmecomics.png"
+                        alt="Acme Comics Storefront" />
+                </div>
+                <div class="recommendation-text">
+                    <h2>Acme Comics</h2>
+                    <h4>Greensboro's Original Since 1983</h4>
+                    <p>Address: 2150 Lawndale Dr, Greensboro, NC 27408</p>
+                    <p>Phone: (336) 574-2263</p>
+                    <p>
+                        From Acme Comics:
+                        "New and used comic books, graphic novels, figurines and toys are sold at this store, which is known for its friendly service. Acme Comics is a locally owned and operated, full service comic book store. Established in 1983, we are the oldest and largest comic book store in the Greensboro, High Point, and Winston Salem North Carolina region collectively known as The Triad."
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="recommendation">
+            <div class="recommendation-content">
+                <div class="recommendation-image">
+                    <img
+                        src="https://comics-tracker-2025.s3.us-east-1.amazonaws.com/strangeways.png"
+                        alt="Strange Ways Comics & More (Formerly Acme Comics Downtown)" />
+                </div>
+                <div class="recommendation-text">
+                    <h2>Strange Ways Comics & More</h2>
+                    <h3>(Formerly Acme Comics Downtown)</h3>
+                    <p>Address: 335 S Davie St, Greensboro, NC 27401</p>
+                    <p>Phone: (743) 209-0940</p>
+                    <p>
+                        From Strange Ways:
+                        "Strange Ways Comics and More isn't just a comic book store, toy store, or video store. Strange Ways is a gathering space for those who have felt left out of conventional third space. We intend specialize in a diverse range of comics, graphic novels, collectibles, and vintage VHS tapes, ensuring there's something for everyone... Join us when we open our doors in January 2026 and be part of the excitement!"
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="recommendation">
+            <div class="recommendation-content">
+                <div class="recommendation-image">
+                    <img
+                        src="https://comics-tracker-2025.s3.us-east-1.amazonaws.com/partsunknown.png"
+                        alt="Parts Unknown the Comic Book Store" />
+                </div>
+                <div class="recommendation-text">
+                    <h2>Parts Unknown the Comic Book Store</h2>
+                    <h4>Since August 9th, 1989</h4>
+                    <p>Address: 906 Spring Garden St, Greensboro, NC 27403</p>
+                    <p>Phone: (336) 272-7060</p>
+                    <p>
+                        From Parts Unknown: "Comic book shop (including graphic
+                        novels), with graphic
+                        novel sections and a friendly staff. Parts Unknown
+                        opened its doors on August 9th 1989 at the now vacant
+                        Cotton Mill Square Outlet Mall in Greensboro, NC. And it
+                        is still open today at 906 Spring Garden Street.
+                        I have been a fan of comic books since the fourth grade
+                        and I used to dream about a store that sold comics. I
+                        even used to walk around Greensboro hoping to find one.
+                        That is why I decided to open my own store.""
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div>
+
+        </div>
+        <div>
+
+        </div>
+    </div>
 </div>
