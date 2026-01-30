@@ -20,9 +20,9 @@
     "migrate:status": "sequelize-cli db:migrate:status",
     "migration:generate": "sequelize-cli migration:generate --name",
     "model:generate": "sequelize-cli model:generate --name",
-    "seed": "sequelize-cli db:seed:all",
-    "seed:undo": "sequelize-cli db:seed:undo",
-    "seed:undo:all": "sequelize-cli db:seed:undo:all",
+    "seed": "node -r ts-node/register ./node_modules/sequelize-cli/lib/sequelize db:seed:all",
+    "seed:undo": "node -r ts-node/register ./node_modules/sequelize-cli/lib/sequelize db:seed:undo",
+    "seed:undo:all": "node -r ts-node/register ./node_modules/sequelize-cli/lib/sequelize db:seed:undo:all",
     "seed:generate": "sequelize-cli seed:generate --name"
   },
   "keywords": [],

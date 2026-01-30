@@ -1,4 +1,4 @@
-<div class="card" (click)="clickHandler()">
+<div class="card" role="button" tabindex="0" (click)="clickHandler()" (keyup.enter)="clickHandler()">
     <div class="card-header">
         <h3 class="card-title">{{ comic().title }} {{ comic().issueNumber }}</h3>
     </div>
