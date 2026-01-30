@@ -47,7 +47,7 @@ export async function sendPasswordResetEmail(
     return;
   }
 
-  const resetUrl = `${process.env.FRONTEND_URL || 'http://localhost:3000'}/reset-password/${resetToken}`;
+  const resetUrl = `${process.env.FRONTEND_URL || 'http://localhost:4200'}/change-password?token=${resetToken}`;
 
   const mailOptions = {
     from: EMAIL_FROM,

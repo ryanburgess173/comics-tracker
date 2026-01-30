@@ -6,6 +6,8 @@ import { AdminComponent } from './pages/admin/admin.component';
 import { FindComicsComponent } from './pages/find-comics/find-comics.component';
 import { SignOutPageComponent } from './pages/signout/signout.component';
 import { ComicDetailsPageComponent } from './pages/comic-details/comic-details.component';
+import { ChangePasswordComponent } from './pages/change-password/change-password.component';
+import { ResetPasswordComponentPage } from './pages/reset-password/reset-password.component';
 
 export const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -15,4 +17,6 @@ export const routes: Routes = [
   { path: 'login', component: LoginPageComponent },
   { path: 'signout', component: SignOutPageComponent },
   { path: 'comic-details', component: ComicDetailsPageComponent },
+  { path: 'change-password', component: ChangePasswordComponent },
+  { path: 'reset-password', component: ResetPasswordComponentPage },
 ];
