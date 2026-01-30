@@ -7,6 +7,7 @@ A full-stack application for tracking your comic book collection with user authe
 ## 🚀 Features
 
 - **User Authentication** - JWT-based authentication with secure cookie storage
+- **Password Reset** - Secure email-based password reset flow
 - **API Documentation** - Interactive Swagger/OpenAPI documentation
 - **Database** - SQLite with Sequelize ORM
 - **TypeScript** - Fully typed codebase for better developer experience
@@ -170,6 +171,8 @@ For detailed setup and usage information, see [API Documentation](./docs/api/swa
 
 - `POST /auth/register` - Register a new user
 - `POST /auth/login` - Login and receive JWT token
+- `POST /auth/reset-password` - Request password reset email
+- `POST /auth/reset-password/:token` - Reset password with token
 - `GET /auth/test` - Test authentication endpoint
 
 ## 💾 Database
@@ -225,6 +228,7 @@ Complete guide to the documentation structure and organization.
 
 - **[Security Linting](./docs/security/security-linting.md)** - Security rules and vulnerability detection
 - **[Password Security](./docs/security/password-security.md)** - Best practices for password handling
+- **[Password Reset](./docs/security/password-reset.md)** - Password reset implementation and flow
 
 ### 📡 API Documentation
 

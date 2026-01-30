@@ -65,6 +65,16 @@ export class AuthService {
     return this.currentUserSubject.value;
   }
 
+  requestPasswordReset(email: string): Observable<{ message: string }> {
+    return this.http.post<{ message: string }>(`${this.apiUrl}/reset-password`, { email });
+  }
+
+  resetPassword(token: string, password: string): Observable<{ message: string }> {
+    return this.http.post<{ message: string }>(`${this.apiUrl}/reset-password/${token}`, {
+      password,
+    });
+  }
+
   private setToken(token: string): void {
     if (isPlatformBrowser(this.platformId)) {
       this.setCookie(this.TOKEN_KEY, token, 7); // Token expires in 7 days
