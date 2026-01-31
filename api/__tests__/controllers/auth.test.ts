@@ -452,13 +452,35 @@ describe('Auth Controller', () => {
     });
 
     it('should handle missing password field', async () => {
-      (User.findOne as jest.Mock).mockResolvedValue(null);
+      // Set expiration to 1 hour from now
+      const expirationTime = new Date();
+      expirationTime.setHours(expirationTime.getHours() + 1);
+
+      const passwordHash = await bcrypt.hash('password123', 10);
+
+      const mockUser = {
+        id: 1,
+        username: 'testuser',
+        email: 'test@example.com',
+        passwordHash,
+        resetPasswordToken: hashedToken,
+        resetPasswordExpires: expirationTime,
+        update: jest.fn(),
+      };
+
+      // Mock User.findOne to return a valid user with valid token
+      (User.findOne as jest.Mock).mockResolvedValue(mockUser);
+
       const response = await request(app)
         .post(`/auth/reset-password/${resetToken}`)
-        .send({})
+        .send({}) // Send empty body (no password field)
         .expect(400);
 
       expect(response.body).toHaveProperty('message');
+      expect(response.body.message).toBe('Password is required.');
+      
+      // Verify that update was never called since validation failed
+      expect(mockUser.update).not.toHaveBeenCalled();
     });
 
     it('should allow login with new password after reset', async () => {
