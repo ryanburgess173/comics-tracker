@@ -372,6 +372,12 @@ router.post('/reset-password/:token', async (req: Request, res: Response) => {
 
   logger.info('Password reset confirmation attempt with token');
 
+  // Validate that password is provided
+  if (!password) {
+    logger.warn('Password reset failed: Missing password field');
+    return res.status(400).json({ message: 'Password is required.' });
+  }
+
   try {
     // Hash the provided token to match against database
     const hashedToken = crypto.createHash('sha256').update(token).digest('hex');
