@@ -10,6 +10,19 @@ import UserRoleXRef from '../../models/UserRoleXRef';
 jest.mock('../../models/User');
 jest.mock('../../models/UserRoleXRef');
 
+// Mock the logger
+jest.mock('../../utils/logger', () => ({
+  info: jest.fn(),
+  error: jest.fn(),
+  warn: jest.fn(),
+  debug: jest.fn(),
+}));
+
+// Mock email utility
+jest.mock('../../utils/email', () => ({
+  sendPasswordResetEmail: jest.fn(),
+}));
+
 // Create a test app
 const app = express();
 app.use(express.json());
