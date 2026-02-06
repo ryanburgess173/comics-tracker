@@ -1,0 +1,90 @@
+name: Deploy API to VM
+
+on:
+  push:
+    branches:
+      - develop
+    paths:
+      - 'api/**'
+      - '.github/workflows/deploy-api.yml'
+
+jobs:
+  deploy:
+    name: Deploy to Ubuntu VM via Tailscale
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Tailscale
+        uses: tailscale/github-action@v2
+        with:
+          oauth-client-id: ${{ secrets.TAILSCALE_OAUTH_CLIENT_ID }}
+          oauth-secret: ${{ secrets.TAILSCALE_OAUTH_SECRET }}
+          tags: tag:ci
+
+      - name: Setup SSH Key
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.VM_SSH_PRIVATE_KEY }}" > ~/.ssh/id_ed25519
+          chmod 600 ~/.ssh/id_ed25519
+          ssh-keyscan -H ${{ secrets.VM_TAILSCALE_IP }} >> ~/.ssh/known_hosts
+
+      - name: Test SSH Connection
+        run: |
+          ssh -o StrictHostKeyChecking=no ${{ secrets.VM_SSH_USER }}@${{ secrets.VM_TAILSCALE_IP }} "echo 'SSH connection successful'"
+
+      - name: Deploy Application
+        run: |
+          ssh ${{ secrets.VM_SSH_USER }}@${{ secrets.VM_TAILSCALE_IP }} << 'EOF'
+            set -e
+            
+            # Navigate to app directory
+            cd ${{ secrets.VM_APP_PATH || '~/comics-tracker' }}
+            
+            # Pull latest code
+            echo "Pulling latest code from develop branch..."
+            git fetch origin
+            git checkout develop
+            git pull origin develop
+            
+            # Install/update dependencies
+            echo "Installing API dependencies..."
+            cd api
+            npm ci --production
+            
+            # Build the application
+            echo "Building the application..."
+            npm run build
+            
+            # Run database migrations
+            echo "Running database migrations..."
+            npm run migrate
+            
+            # Restart PM2 process
+            echo "Restarting PM2 process..."
+            pm2 restart comics-tracker-api || pm2 start out/index.js --name comics-tracker-api
+            
+            # Save PM2 configuration
+            pm2 save
+            
+            echo "Deployment completed successfully!"
+          EOF
+
+      - name: Verify Deployment
+        run: |
+          ssh ${{ secrets.VM_SSH_USER }}@${{ secrets.VM_TAILSCALE_IP }} << 'EOF'
+            echo "Checking PM2 status..."
+            pm2 list
+            pm2 logs comics-tracker-api --lines 20 --nostream
+          EOF
+
+      - name: Notify Deployment Status
+        if: always()
+        run: |
+          if [ "${{ job.status }}" == "success" ]; then
+            echo "Deployment succeeded!"
+          else
+            echo "Deployment failed!"
+          fi
