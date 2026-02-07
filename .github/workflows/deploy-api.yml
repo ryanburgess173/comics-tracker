@@ -31,6 +31,7 @@ jobs:
 
       - name: Add VM to known_hosts
         run: |
+          mkdir -p ~/.ssh
           ssh-keyscan -H ${{ secrets.VM_TAILSCALE_IP }} >> ~/.ssh/known_hosts
 
       - name: Test SSH Connection
