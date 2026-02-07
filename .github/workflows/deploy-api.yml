@@ -39,12 +39,14 @@ jobs:
           ssh -o StrictHostKeyChecking=no ${{ secrets.VM_SSH_USER }}@${{ secrets.VM_TAILSCALE_IP }} "echo 'SSH connection successful'"
 
       - name: Deploy Application
+        env:
+          APP_PATH: ${{ secrets.VM_APP_PATH || '~/comics-tracker' }}
         run: |
-          ssh ${{ secrets.VM_SSH_USER }}@${{ secrets.VM_TAILSCALE_IP }} << 'EOF'
+          ssh ${{ secrets.VM_SSH_USER }}@${{ secrets.VM_TAILSCALE_IP }} << EOF
             set -e
             
             # Navigate to app directory
-            cd ${{ secrets.VM_APP_PATH || '~/comics-tracker' }}
+            cd ${APP_PATH}
             
             # Pull latest code
             echo "Pulling latest code from develop branch..."
@@ -53,7 +55,7 @@ jobs:
             git pull origin develop
             
             # Navigate to API directory
-            cd ${{ secrets.VM_APP_PATH || '~/comics-tracker' }}/api
+            cd ${APP_PATH}/api
             
             # Install/update dependencies
             echo "Installing API dependencies..."
