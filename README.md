@@ -161,6 +161,25 @@ Once the server is running, visit the interactive API documentation:
 
 For detailed setup and usage information, see [API Documentation](./docs/api/swagger.md)
 
+## 🚀 Deployment
+
+The API can be deployed to an Ubuntu VM with automated CI/CD via GitHub Actions and Tailscale.
+
+**Quick Setup:**
+
+- **VM Network**: Find IP with `ip addr show` (e.g., 192.168.255.128)
+- **Tailscale**: Install with `curl -fsSL https://tailscale.com/install.sh | sh`
+- **PM2**: Install globally with `sudo npm install -g pm2`
+- **Access**: Local network at `http://VM_IP:3000`, remote via Tailscale IP
+
+**Documentation:**
+
+- [VM Setup Quick Reference](./docs/deployment/vm-setup-quick-reference.md) - Commands and troubleshooting
+- [Full Deployment Guide](./docs/deployment/vm-deployment-setup.md) - Complete GitHub Actions setup
+
+**Automated Deployment:**
+Push to `develop` branch triggers automatic deployment to VM via GitHub Actions.
+
 ## 🔌 API Endpoints
 
 ### Health Check
