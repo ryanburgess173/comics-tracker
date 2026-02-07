@@ -16,6 +16,10 @@ const options: swaggerJsdoc.Options = {
         url: 'http://localhost:3000',
         description: 'Development server',
       },
+      {
+        url: 'http://192.168.255.128:3000',
+        description: 'VM server',
+      },
     ],
     components: {
       securitySchemes: {
