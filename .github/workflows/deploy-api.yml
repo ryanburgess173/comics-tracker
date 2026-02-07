@@ -52,9 +52,11 @@ jobs:
             git checkout develop
             git pull origin develop
             
+            # Navigate to API directory
+            cd ${{ secrets.VM_APP_PATH || '~/comics-tracker' }}/api
+            
             # Install/update dependencies
             echo "Installing API dependencies..."
-            cd api
             npm ci --production
             
             # Build the application
