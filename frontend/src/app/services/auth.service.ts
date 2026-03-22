@@ -93,10 +93,7 @@ export class AuthService {
 
     const encodedValue = encodeURIComponent(value);
 
-    let cookieString = `${name}=${encodedValue}`;
-    cookieString += `; expires=${expires.toUTCString()}`;
-    cookieString += `; path=/`;
-    cookieString += `; SameSite=Lax`;
+    let cookieString = this.buildCookieString(name, encodedValue, expires);
 
     if (environment.production && window.location.protocol === 'https:') {
       cookieString += `; Secure`;
@@ -107,8 +104,8 @@ export class AuthService {
 
   private getCookie(name: string): string | null {
     const nameEQ = name + '=';
-    const ca = document.cookie.split(';');
-    for (const cookie of ca) {
+    const cookieArray = document.cookie.split(';');
+    for (const cookie of cookieArray) {
       let c = cookie;
       while (c.charAt(0) === ' ') c = c.substring(1, c.length);
       if (c.indexOf(nameEQ) === 0) {
@@ -121,5 +118,13 @@ export class AuthService {
 
   private deleteCookie(name: string): void {
     document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
+  }
+
+  private buildCookieString(name: string, encodedValue: string, expires: Date): string {
+    let cookieString = `${name}=${encodedValue}`;
+    cookieString += `; expires=${expires.toUTCString()}`;
+    cookieString += `; path=/`;
+    cookieString += `; SameSite=Lax`;
+    return cookieString;
   }
 }

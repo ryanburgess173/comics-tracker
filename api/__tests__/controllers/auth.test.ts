@@ -490,8 +490,8 @@ describe('Auth Controller', () => {
         .expect(400);
 
       expect(response.body).toHaveProperty('message');
-      expect(response.body.message).toBe('Password is required.');
-      
+      expect((response.body as { message: string }).message).toBe('Password is required.');
+
       // Verify that update was never called since validation failed
       expect(mockUser.update).not.toHaveBeenCalled();
     });
