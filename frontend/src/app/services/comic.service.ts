@@ -3,6 +3,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
 import { Comic, ComicCreateRequest, ComicUpdateRequest, OwnedComic } from '../models/comic.model';
+import { ComicsListWithTotal, ComicsList } from '../types/RequestTypes';
 
 @Injectable({
   providedIn: 'root',
@@ -17,7 +18,7 @@ export class ComicService {
   getComics(page = 1, limit = 10): Observable<{ comics: Comic[]; total: number }> {
     const params = new HttpParams().set('page', page.toString()).set('limit', limit.toString());
 
-    return this.http.get<{ comics: Comic[]; total: number }>(this.apiUrl, { params });
+    return this.http.get<ComicsListWithTotal>(this.apiUrl, { params });
   }
 
   // get a user's comics
@@ -29,7 +30,7 @@ export class ComicService {
 
   // Get recent releases
   getRecentReleases(): Observable<{ comics: Comic[] }> {
-    return this.http.get<{ comics: Comic[] }>(`${this.apiUrl}/comics/recentReleases`);
+    return this.http.get<ComicsList>(`${this.apiUrl}/comics/recentReleases`);
   }
 
   /**
